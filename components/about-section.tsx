@@ -81,10 +81,11 @@ export function AboutSection() {
                 Over 26 Years of Providing Exceptional Medical Care
               </h2>
               <p className="text-blue-600/80 text-lg leading-relaxed">
-                We are proud to collaborate with forward-thinking medical institutions, 
-                including some of the world's leading healthcare brands. Our mission is 
-                to provide safe, comfortable, and innovative healthcare solutions accessible to everyone.
-              </p>
+  We are proud to collaborate with forward-thinking medical institutions, 
+  including some of the world&apos;s leading healthcare brands. Our mission is 
+  to provide safe, comfortable, and innovative healthcare solutions accessible to everyone.
+</p>
+
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
