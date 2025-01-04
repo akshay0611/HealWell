@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { Hospital } from 'lucide-react'; 
 
 export function Hero() {
   return (
@@ -7,7 +8,11 @@ export function Hero() {
       <div className="container mx-auto px-4 py-16">
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="space-y-6">
-            <div className="w-12 h-12 bg-blue-500/10 rounded-lg" />
+           
+            <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
+              <Hospital className="w-8 h-8 text-blue-500" />
+            </div>
+
             <h1 className="text-5xl font-bold leading-tight">
               World-Class Healthcare Services in 
               <span className="text-blue-500"> India.</span>
@@ -23,7 +28,13 @@ export function Hero() {
               <h3 className="text-xl font-bold text-[#0B1B3F]">
                 Trusted by Millions Across the Country.
               </h3>
-              <p className="text-blue-600">For Immediate Assistance, Call Us: +91 98765 43210</p>
+              {/* Making the phone number clickable with hover effect */}
+              <a 
+                href="tel:+919876543210" 
+                className="text-blue-600 hover:text-blue-800 hover:underline"
+              >
+                For Immediate Assistance, Call Us: +91 98765 43210
+              </a>
             </div>
             <div className="flex space-x-4">
               <Button className="bg-blue-500 hover:bg-blue-600 text-white px-6">
@@ -39,21 +50,12 @@ export function Hero() {
           </div>
           <div className="relative">
             <Image
-              src="/medical-team-india.svg"
+              src="/images/hero_1.jpg"
               alt="Team of Indian Medical Professionals"
               width={600}
               height={400}
               className="rounded-lg shadow-xl"
             />
-            <div className="absolute -bottom-8 -left-8">
-              <Image
-                src="/indian-medical-icon.svg"
-                alt="Healthcare Icon India"
-                width={100}
-                height={100}
-                className="w-24 h-24"
-              />
-            </div>
           </div>
         </div>
       </div>

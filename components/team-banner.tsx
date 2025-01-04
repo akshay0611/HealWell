@@ -6,14 +6,15 @@ export function TeamBanner() {
     <div className="bg-[#0B1B3F] text-white">
       <div className="container mx-auto">
         <div className="grid md:grid-cols-2 items-center">
-          <div className="relative h-[300px] md:h-[400px]">
-            <Image
-              src="/placeholder.svg"
-              alt="Medical Team"
-              fill
-              className="object-cover"
-            />
-          </div>
+        <div className="relative h-[200px] md:h-[300px]">
+  <Image
+    src="/images/team_1.jpg"
+    alt="Medical Team"
+    fill
+    className="object-cover rounded-lg"
+  />
+</div>
+
           <div className="p-8 md:p-16 flex flex-col justify-between h-full">
             <div className="space-y-4">
               <h2 className="text-3xl md:text-4xl font-bold">
