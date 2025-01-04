@@ -31,9 +31,10 @@ const OurBestService = () => {
             >
               {/* Card background image on hover */}
               <div
-                className="absolute inset-0 bg-cover bg-center transition-all duration-300 opacity-0 group-hover:opacity-50"
-                style={{ backgroundImage: "url('https://medilo-nextjs.vercel.app/assets/img/service_bg.jpg')" }} // Same image for all cards
-              ></div>
+  className="absolute inset-0 bg-cover bg-center transition-all duration-300 opacity-0 group-hover:opacity-50"
+  style={{ backgroundImage: "url('/images/service_bg.jpg')" }} 
+></div>
+
 
               {/* Text content with higher z-index to stay on top of the background */}
               <div className="relative z-10">
