@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button"
-import Image from "next/image"
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export function Hero() {
   return (
@@ -9,44 +9,46 @@ export function Hero() {
           <div className="space-y-6">
             <div className="w-12 h-12 bg-blue-500/10 rounded-lg" />
             <h1 className="text-5xl font-bold leading-tight">
-              We Hospital Doctors Patients{" "}
-              <span className="text-blue-500">Service.</span>
+              World-Class Healthcare Services in 
+              <span className="text-blue-500"> India.</span>
             </h1>
             <p className="text-gray-600 max-w-lg">
-              Medical ers piciatis unde omnis iste natus this the word medical this
-              mountains, far from the countries Vokalia and, live the docor white
-              teeth sitting on a dental for best medical.
+              Located in the heart of India, our hospital is dedicated to
+              providing affordable and comprehensive medical care to people
+              across the nation. With advanced technology, expert doctors,
+              and compassionate staff, we strive to meet the unique healthcare
+              needs of every individual.
             </p>
             <div className="space-y-4">
               <h3 className="text-xl font-bold text-[#0B1B3F]">
-                Receive Medical Service.
+                Trusted by Millions Across the Country.
               </h3>
-              <p className="text-blue-600">Call Us at: (+2) 56 54 1453</p>
+              <p className="text-blue-600">For Immediate Assistance, Call Us: +91 98765 43210</p>
             </div>
             <div className="flex space-x-4">
               <Button className="bg-blue-500 hover:bg-blue-600 text-white px-6">
-                Contact Now
+                Book an Appointment
               </Button>
               <Button
                 variant="outline"
                 className="border-[#0B1B3F] text-[#0B1B3F] hover:bg-[#0B1B3F] hover:text-white"
               >
-                Discover More
+                Explore Our Services
               </Button>
             </div>
           </div>
           <div className="relative">
             <Image
-              src="/placeholder.svg"
-              alt="Medical Professionals"
+              src="/medical-team-india.svg"
+              alt="Team of Indian Medical Professionals"
               width={600}
               height={400}
               className="rounded-lg shadow-xl"
             />
             <div className="absolute -bottom-8 -left-8">
               <Image
-                src="/placeholder.svg"
-                alt="Medical Icon"
+                src="/indian-medical-icon.svg"
+                alt="Healthcare Icon India"
                 width={100}
                 height={100}
                 className="w-24 h-24"
@@ -56,6 +58,5 @@ export function Hero() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

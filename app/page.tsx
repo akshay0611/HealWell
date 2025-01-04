@@ -1,6 +1,10 @@
-import { TopBar } from "@/components/top-bar"
-import { Navigation } from "@/components/navigation"
-import { Hero } from "@/components/hero"
+import { TopBar } from "@/components/top-bar";
+import { Navigation } from "@/components/navigation";
+import { Hero } from "@/components/hero";
+import { TeamBanner } from "@/components/team-banner";
+import { AboutSection } from "@/components/about-section";
+import { StatsSection } from "@/components/stats-section";
+import OurBestServiceSection from "@/components/our-best-service-section";
 
 export default function Home() {
   return (
@@ -8,7 +12,10 @@ export default function Home() {
       <TopBar />
       <Navigation />
       <Hero />
+      <TeamBanner />
+      <AboutSection />
+      <StatsSection />
+      <OurBestServiceSection />
     </main>
-  )
+  );
 }
-
