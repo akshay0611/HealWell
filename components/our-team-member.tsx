@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from "react"
+import React from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
 import { Facebook, Twitter, Linkedin } from "lucide-react"
