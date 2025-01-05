@@ -9,6 +9,7 @@ import OurTeamMember from "@/components/our-team-member";
 import WhyChooseUs from "@/components/why-choose-us";
 import OurPortfolio from "@/components/our-portfolio";
 import OurWatchVideo from "@/components/our-watch-video"
+import ContactUs from "@/components/contact-us"
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
       <WhyChooseUs />
       <OurPortfolio/>
       <OurWatchVideo />
+      <ContactUs/>
     </main>
   );
 }
