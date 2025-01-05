@@ -5,10 +5,12 @@ export function TopBar() {
   return (
     <div className="w-full bg-[#0B1B3F] text-white py-2">
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <Mail size={16} />
-          <span>demo@example.com</span>
-        </div>
+      <div className="flex items-center space-x-2">
+  <Mail size={16} />
+  <a href="mailto:info@healwell.com" className="text-white-600 hover:underline">
+    info@healwell.com
+  </a>
+</div>
         <div className="flex items-center space-x-2">
           <MapPin size={16} />
           <span>123 Safdurjung, New Delhi</span>
