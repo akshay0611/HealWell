@@ -49,7 +49,7 @@ const ContactPage = () => {
             transition={{ delay: 0.2 }}
             className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto text-center leading-relaxed"
           >
-            We're here to help. Reach out to us for any inquiries or to schedule an appointment.
+             We&apos;re here to help. Reach out to us for any inquiries or to schedule an appointment.
           </motion.p>
         </div>
       </motion.section>
