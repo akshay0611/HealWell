@@ -3,7 +3,6 @@
 import React from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
-import Link from "next/link"
 import { ArrowRight, MessageSquare, User } from 'lucide-react'
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
