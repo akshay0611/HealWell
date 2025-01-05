@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Heal Well 🏥
 
-## Getting Started
+Welcome to the **Heal Well** project repository! Heal Well is a hospital management website designed to provide a seamless user experience for managing healthcare services at a hospital based in New Delhi.
 
-First, run the development server:
+## Table of Contents 📚
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- [Features](#features) 🌟
+- [Technologies Used](#technologies-used) ⚙️
+- [Installation](#installation) 💻
+- [Usage](#usage) 🛠️
+- [Contributing](#contributing) 🤝
+- [License](#license) 📄
+- [Contact](#contact) 📞
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<!-- ## Features 🌟
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Patient Management**: Register and manage patient information efficiently. 🏥
+- **Appointment Scheduling**: Simplify scheduling appointments with doctors. 📅
+- **Doctor Profiles**: View and manage doctor details, including specializations. 👩‍⚕️👨‍⚕️
+- **Billing System**: Generate and track patient billing details. 💸
+- **Responsive Design**: Optimized for desktop and mobile devices. 📱💻 -->
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Technologies Used ⚙️
 
-## Learn More
+- **Framework**: Next.js ⚛️
+- **Styling**: Tailwind CSS, ShadCN 🌈
+- **UI Components**: Lucide React Icons 🖼️
+- **Backend**: Node.js, Express.js 🖥️
+- **Database**: MongoDB 🗄️
+- **Authentication**: JSON Web Tokens (JWT) 🔑
+- **Deployment**: Vercel 🚀
 
-To learn more about Next.js, take a look at the following resources:
+## Installation 💻
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To set up this project locally, follow these steps:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/akshay0611/HealWell.git
+   cd heal-well
+   ```
 
-## Deploy on Vercel
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+<!-- 3. **Set up environment variables**:
+   Create a `.env` file in the root directory and configure the following:
+   ```env
+   MONGO_URI=your_mongo_database_url
+   JWT_SECRET=your_jwt_secret
+   NEXT_PUBLIC_API_URL=your_api_url
+   PORT=5000
+   ``` -->
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. **Run the application**:
+   ```bash
+   npm run dev
+   ```
+
+4. **Access the application**:
+   Open your browser and navigate to `http://localhost:3000`. 🌍
+
+<!-- ## Usage 🛠️
+
+- Admins can log in to manage patients, doctors, and appointments. 🔑
+- Patients can book and view appointments. 🧑‍⚕️
+- Doctors can manage their schedules and patient interactions. 👨‍⚕️ -->
+
+## Contributing 🤝
+
+We welcome contributions to make Heal Well even better! To contribute:
+
+1. Fork the repository 🍴
+2. Create a new branch:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -m "Add your message here"
+   ```
+4. Push to the branch:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+5. Submit a pull request 🚀
+
+## License 📄
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Contact 📞
+
+For any queries or feedback, please reach out:
+
+- **Email**: info@healwell.com 📧
+- **Website**: [Heal Well](https://heal-well-brown.vercel.app/) 🌐
+
+---
+
+Thank you for contributing to and using Heal Well! 🎉
