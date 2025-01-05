@@ -1,19 +1,20 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { TopBar } from "@/components/top-bar";
 import { Navigation } from "@/components/navigation";
-import { Search, Star } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Search, Star } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Image from 'next/image';
 
 interface Doctor {
-  id: number
-  name: string
-  specialty: string
-  rating: number
-  image: string
+  id: number;
+  name: string;
+  specialty: string;
+  rating: number;
+  image: string;
 }
 
 const doctors: Doctor[] = [
@@ -23,15 +24,15 @@ const doctors: Doctor[] = [
   { id: 4, name: "Dr. David Kim", specialty: "Orthopedics", rating: 4.6, image: "/placeholder.svg?height=300&width=300" },
   { id: 5, name: "Dr. Rachel Green", specialty: "Dermatology", rating: 4.8, image: "/placeholder.svg?height=300&width=300" },
   { id: 6, name: "Dr. James Wilson", specialty: "Oncology", rating: 4.9, image: "/placeholder.svg?height=300&width=300" },
-]
+];
 
 export default function DoctorsPage() {
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredDoctors = doctors.filter(doctor =>
+  const filteredDoctors = doctors.filter((doctor) =>
     doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     doctor.specialty.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-white">
@@ -101,7 +102,13 @@ export default function DoctorsPage() {
               whileTap={{ scale: 0.95 }}
               className="bg-white rounded-lg shadow-lg overflow-hidden"
             >
-              <img src={doctor.image} alt={doctor.name} className="w-full h-48 object-cover" />
+              <Image
+                src={doctor.image}
+                alt={`Picture of ${doctor.name}`}
+                width={300}
+                height={300}
+                className="w-full h-48 object-cover"
+              />
               <div className="p-6">
                 <h2 className="text-xl font-semibold text-blue-900 mb-2">{doctor.name}</h2>
                 <p className="text-gray-600 mb-4">{doctor.specialty}</p>
@@ -118,5 +125,5 @@ export default function DoctorsPage() {
         </motion.div>
       </motion.div>
     </div>
-  )
+  );
 }
