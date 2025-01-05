@@ -1,16 +1,27 @@
 'use client'
 
-import React from "react"
+import React, { useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import Image from "next/image"
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Stethoscope } from 'lucide-react'
 
 const Footer = () => {
+  const [email, setEmail] = useState('')
+  const [showConfirmation, setShowConfirmation] = useState(false)
+
   const handleSubscribe = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setShowConfirmation(true)
+    
+    // Reset email and confirmation message after 5 seconds
+    setTimeout(() => {
+      setEmail('')
+      setShowConfirmation(false)
+    }, 5000)
+
     // Handle subscription logic here
     console.log("Subscribed to newsletter")
   }
@@ -26,7 +37,7 @@ const Footer = () => {
             transition={{ duration: 0.5 }}
           >
             <Link href="/" className="flex items-center mb-4">
-              <Image src="/placeholder.svg" alt="Heal Well Logo" width={40} height={40} />
+              <Stethoscope className="w-10 h-10 text-blue-600" />
               <span className="ml-2 text-2xl font-bold">Heal Well</span>
             </Link>
             <p className="text-gray-300 mb-4">
@@ -49,29 +60,28 @@ const Footer = () => {
           </motion.div>
 
           <motion.div
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
-  transition={{ duration: 0.5, delay: 0.1 }}
->
-  <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
-  <ul className="space-y-2">
-    {[
-      { name: 'About Us', href: '/about' },
-      { name: 'Our Services', href: '/services' },
-      { name: 'Our Team', href: '/doctors' },
-      { name: 'Contact Us', href: '/contact' },
-      { name: 'Blog', href: '/blog' },
-    ].map((item) => (
-      <li key={item.name}>
-        <Link href={item.href} className="text-gray-300 hover:text-white transition-colors">
-          {item.name}
-        </Link>
-      </li>
-    ))}
-  </ul>
-</motion.div>
-
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
+            <ul className="space-y-2">
+              {[
+                { name: 'About Us', href: '/about' },
+                { name: 'Our Services', href: '/services' },
+                { name: 'Our Team', href: '/doctors' },
+                { name: 'Contact Us', href: '/contact' },
+                { name: 'Blog', href: '/blog' },
+              ].map((item) => (
+                <li key={item.name}>
+                  <Link href={item.href} className="text-gray-300 hover:text-white transition-colors">
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -90,7 +100,7 @@ const Footer = () => {
               <li className="flex items-center">
                 <Phone size={20} className="mr-2 text-blue-400" />
                 <a href="tel:+91 9876543210" className="text-gray-300 hover:text-white transition-colors">
-                +91 9876543210
+                  +91 9876543210
                 </a>
               </li>
               <li className="flex items-start">
@@ -115,6 +125,8 @@ const Footer = () => {
             <form onSubmit={handleSubscribe} className="flex flex-col space-y-2">
               <Input
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email address"
                 className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                 required
@@ -123,6 +135,12 @@ const Footer = () => {
                 Subscribe
               </Button>
             </form>
+
+            {showConfirmation && (
+              <p className="text-green-400 mt-2">
+                Thank you for subscribing! We will send you the latest updates.
+              </p>
+            )}
           </motion.div>
         </div>
       </div>
@@ -139,4 +157,3 @@ const Footer = () => {
 }
 
 export default Footer
-
