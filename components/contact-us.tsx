@@ -60,7 +60,7 @@ const ContactUs = () => {
             className="relative"
           >
             <Image
-              src="/placeholder.svg"
+              src="/images/contactus.jpg"
               alt="Medical Professionals Meeting"
               width={600}
               height={400}

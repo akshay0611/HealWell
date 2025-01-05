@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Calendar, Users, Award, ArrowRight } from 'lucide-react';
+import Link from "next/link";
 
 export function TeamBanner() {
   return (
@@ -88,20 +89,22 @@ export function TeamBanner() {
               </p>
             </div>
             
-            <motion.div 
+            <motion.div
               className="mt-8 space-y-4"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2, duration: 0.8 }}
             >
-              <Button
-                className="group bg-blue-500 hover:bg-blue-600 text-white px-8 py-6 rounded-xl text-lg shadow-lg shadow-blue-200/50 transition-all duration-300"
-                size="lg"
-              >
-                Schedule a Consultation
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              <Link href="/appointment" passHref>
+                <Button
+                  className="group bg-blue-500 hover:bg-blue-600 text-white px-8 py-6 rounded-xl text-lg shadow-lg shadow-blue-200/50 transition-all duration-300 relative z-10"
+                  size="lg"
+                >
+                  Schedule a Consultation
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
               <p className="text-blue-600/60 text-sm">
                 * Our team is available 24/7 for emergency consultations
               </p>
@@ -112,4 +115,3 @@ export function TeamBanner() {
     </div>
   );
 }
-

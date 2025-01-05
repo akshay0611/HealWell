@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const OurBestService = () => {
   const services = [
@@ -65,22 +66,25 @@ const OurBestService = () => {
         </div>
 
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className="text-center mt-16"
-        >
-          <p className="text-blue-600/80 text-lg mb-6">
-            Delivering the highest standard of healthcare for you and your loved ones at Heal Well.
-          </p>
-          <Button
-            className="group bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full text-lg shadow-lg shadow-blue-200/50 transition-all duration-300"
-          >
-            See More Services
-            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Button>
-        </motion.div>
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+  transition={{ delay: 0.5, duration: 0.5 }}
+  className="text-center mt-16"
+>
+  <p className="text-blue-600/80 text-lg mb-6">
+    Delivering the highest standard of healthcare for you and your loved ones at Heal Well.
+  </p>
+  <Link href="/">
+    <Button
+      className="group bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full text-lg shadow-lg shadow-blue-200/50 transition-all duration-300"
+    >
+      See More Services
+      <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+    </Button>
+  </Link>
+</motion.div>
+
       </div>
     </section>
   );

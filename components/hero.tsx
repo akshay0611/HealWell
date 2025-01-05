@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Hospital, Phone, Calendar } from 'lucide-react';
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export function Hero() {
   return (
@@ -59,20 +60,25 @@ export function Hero() {
               </motion.a>
             </div>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Button className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white px-8 py-6 rounded-xl text-lg shadow-blue-200/50 shadow-lg transition-all duration-300 flex items-center justify-center">
-                  <Calendar className="w-5 h-5 mr-2" />
-                  Book an Appointment
-                </Button>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Button
-                  variant="outline"
-                  className="w-full sm:w-auto border-2 border-blue-200 bg-white/50 backdrop-blur-sm text-blue-600 hover:bg-blue-50 hover:border-blue-300 px-8 py-6 rounded-xl text-lg transition-all duration-300"
-                >
-                  Explore Our Services
-                </Button>
-              </motion.div>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+  <Link href="/appointment">
+    <Button className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white px-8 py-6 rounded-xl text-lg shadow-blue-200/50 shadow-lg transition-all duration-300 flex items-center justify-center">
+      <Calendar className="w-5 h-5 mr-2" />
+      Book an Appointment
+    </Button>
+  </Link>
+</motion.div>
+
+<motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+  <Link href="/services">
+    <Button
+      variant="outline"
+      className="w-full sm:w-auto border-2 border-blue-200 bg-white/50 backdrop-blur-sm text-blue-600 hover:bg-blue-50 hover:border-blue-300 px-8 py-6 rounded-xl text-lg transition-all duration-300"
+    >
+      Explore Our Services
+    </Button>
+  </Link>
+</motion.div>
             </div>
           </motion.div>
           <motion.div 

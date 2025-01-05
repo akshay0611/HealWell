@@ -24,7 +24,7 @@ export function AboutSection() {
           >
             <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl shadow-blue-100/50">
               <Image
-                src="/placeholder.svg?height=500&width=600"
+                src="/images/aboutus_1.jpg"
                 alt="Medical Team"
                 fill
                 className="object-cover transition-transform duration-700 hover:scale-105"
@@ -43,7 +43,7 @@ export function AboutSection() {
                 <div className="text-sm font-medium mt-1">Years of Excellence</div>
               </div>
             </motion.div>
-            <motion.div 
+            {/* <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -51,13 +51,13 @@ export function AboutSection() {
               className="absolute -bottom-12 left-12 w-48 h-48 rounded-2xl overflow-hidden shadow-xl"
             >
               <Image
-                src="/placeholder.svg?height=200&width=200"
+                src="/images/aboutus_2.png"
                 alt="Medical Care"
                 width={200}
                 height={200}
                 className="object-cover transition-transform duration-700 hover:scale-110"
               />
-            </motion.div>
+            </motion.div> */}
             <div className="absolute -left-4 top-1/2 -translate-y-1/2 bg-blue-100 text-blue-600 py-8 px-4 rounded-r-2xl shadow-lg">
               <div
                 className="vertical-text transform -rotate-180 font-semibold tracking-wider"
@@ -81,11 +81,10 @@ export function AboutSection() {
                 Over 26 Years of Providing Exceptional Medical Care
               </h2>
               <p className="text-blue-600/80 text-lg leading-relaxed">
-  We are proud to collaborate with forward-thinking medical institutions, 
-  including some of the world&apos;s leading healthcare brands. Our mission is 
-  to provide safe, comfortable, and innovative healthcare solutions accessible to everyone.
-</p>
-
+                We are proud to collaborate with forward-thinking medical institutions, 
+                including some of the world&apos;s leading healthcare brands. Our mission is 
+                to provide safe, comfortable, and innovative healthcare solutions accessible to everyone.
+              </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
@@ -138,10 +137,12 @@ export function AboutSection() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.8, duration: 0.5 }}
               >
-                <Button className="group bg-blue-500 hover:bg-blue-600 text-white px-8 py-6 rounded-xl text-lg shadow-lg shadow-blue-200/50 transition-all duration-300">
-                  Learn More
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <Link href="/">
+                  <Button className="group bg-blue-500 hover:bg-blue-600 text-white px-8 py-6 rounded-xl text-lg shadow-lg shadow-blue-200/50 transition-all duration-300 relative z-10">
+                    Learn More
+                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
               </motion.div>
             </div>
           </motion.div>
@@ -150,4 +151,3 @@ export function AboutSection() {
     </div>
   );
 }
-

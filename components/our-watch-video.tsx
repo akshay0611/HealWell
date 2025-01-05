@@ -100,7 +100,7 @@ const OurWatchVideo = () => {
               className="bg-white text-blue-900 hover:bg-blue-50 group"
               size="lg"
             >
-              Video More
+              More Video
               <Shield className="w-4 h-4 ml-2 opacity-50 group-hover:opacity-100 transition-opacity" />
             </Button>
           </motion.div>
