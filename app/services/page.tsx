@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Heart, Brain, Bone, Eye, SmileIcon as Tooth, Stethoscope, Pill, Scissors, ChevronRight, Calendar } from 'lucide-react';
 import Image from "next/image";
 
-const ServicePage = () => {
+const ServicesPage = () => {
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -196,5 +196,5 @@ const ServicePage = () => {
   );
 };
 
-export default ServicePage;
+export default ServicesPage;
 
