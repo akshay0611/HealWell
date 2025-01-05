@@ -6,14 +6,45 @@ import { TopBar } from "@/components/top-bar";
 import { Navigation } from "@/components/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Heart, User, Shield, Stethoscope, Award, Clock, Calendar } from 'lucide-react';
+import { Heart, User, Shield, Stethoscope, Award, Clock, Calendar, ArrowRight, ChevronRight } from 'lucide-react';
 import Image from "next/image";
 
 const AboutPage = () => {
+  const fadeInUp = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6 }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-white">
       <TopBar />
       <Navigation />
+
+      {/* Hero Section */}
+      <motion.section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="relative bg-gradient-to-r from-blue-600 to-blue-800 py-24 md:py-32 overflow-hidden"
+      >
+        <div className="absolute inset-0 bg-blue-900 opacity-20"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.h1
+            {...fadeInUp}
+            className="text-4xl md:text-6xl font-bold text-white mb-6 text-center"
+          >
+            About <span className="text-blue-300">Heal Well</span>
+          </motion.h1>
+          <motion.p
+            {...fadeInUp}
+            transition={{ delay: 0.2 }}
+            className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto text-center leading-relaxed"
+          >
+            Redefining healthcare through innovation, compassion, and excellence.
+          </motion.p>
+        </div>
+      </motion.section>
 
       {/* Mission Statement */}
       <motion.section
@@ -23,9 +54,7 @@ const AboutPage = () => {
         className="py-20 bg-white"
       >
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-blue-950 mb-8 text-center">
-            About <span className="text-blue-500">Heal Well</span>
-          </h1>
+          <h2 className="text-3xl md:text-4xl font-bold text-blue-800 mb-8 text-center">Our Mission</h2>
           <p className="text-lg text-blue-600/80 max-w-3xl mx-auto text-center leading-relaxed">
             Heal Well is committed to redefining healthcare through a seamless integration of 
             advanced medical technology and personalized, compassionate care. We aim to empower 
@@ -54,11 +83,13 @@ const AboutPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
               >
-                <Card className="h-full transition-all hover:shadow-lg hover:-translate-y-1">
+                <Card className="h-full transition-all hover:shadow-lg hover:-translate-y-1 group">
                   <CardContent className="p-6 flex flex-col items-center text-center">
-                    <value.icon className="w-12 h-12 text-blue-600 mb-4" />
-                    <h3 className="text-xl font-semibold text-blue-800 mb-2">{value.title}</h3>
-                    <p className="text-gray-600">{value.description}</p>
+                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors duration-300">
+                      <value.icon className="w-8 h-8 text-blue-600 group-hover:text-blue-700 transition-colors duration-300" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-blue-800 mb-2 group-hover:text-blue-600 transition-colors duration-300">{value.title}</h3>
+                    <p className="text-blue-600/70 group-hover:text-blue-600/90 transition-colors duration-300">{value.description}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -77,18 +108,30 @@ const AboutPage = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h3 className="text-2xl font-semibold text-blue-700 mb-4">Personalized Care</h3>
-              <p className="text-gray-700 mb-6">
-                We recognize that each patient is unique. Our approach combines advanced diagnostics 
-                with tailored treatment plans, ensuring that you receive care specifically designed 
-                for your individual needs and circumstances.
-              </p>
-              <h3 className="text-2xl font-semibold text-blue-700 mb-4">Advanced Technology</h3>
-              <p className="text-gray-700">
-                Heal Well invests in state-of-the-art medical technology to provide precise diagnoses 
-                and effective treatments. From advanced imaging systems to innovative therapeutic 
-                techniques, we harness technology to optimize patient outcomes and experiences.
-              </p>
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-2xl font-semibold text-blue-700 mb-4 flex items-center">
+                    <ChevronRight className="w-6 h-6 mr-2 text-blue-500" />
+                    Personalized Care
+                  </h3>
+                  <p className="text-blue-600/80 leading-relaxed">
+                    We recognize that each patient is unique. Our approach combines advanced diagnostics 
+                    with tailored treatment plans, ensuring that you receive care specifically designed 
+                    for your individual needs and circumstances.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-semibold text-blue-700 mb-4 flex items-center">
+                    <ChevronRight className="w-6 h-6 mr-2 text-blue-500" />
+                    Advanced Technology
+                  </h3>
+                  <p className="text-blue-600/80 leading-relaxed">
+                    Heal Well invests in state-of-the-art medical technology to provide precise diagnoses 
+                    and effective treatments. From advanced imaging systems to innovative therapeutic 
+                    techniques, we harness technology to optimize patient outcomes and experiences.
+                  </p>
+                </div>
+              </div>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, x: 50 }}
@@ -127,7 +170,7 @@ const AboutPage = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.2, duration: 0.5 }}
-                className="text-center"
+                className="text-center group"
               >
                 <div className="relative w-48 h-48 mx-auto mb-4 rounded-full overflow-hidden shadow-lg">
                   <Image
@@ -135,18 +178,20 @@ const AboutPage = () => {
                     alt={member.name}
                     width={192}
                     height={192}
-                    className="object-cover w-full h-full transition-all hover:scale-110"
+                    className="object-cover w-full h-full transition-all group-hover:scale-110 duration-300"
                   />
+                  <div className="absolute inset-0 bg-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
-                <h3 className="text-xl font-semibold text-blue-800">{member.name}</h3>
-                <p className="text-gray-600">{member.role}</p>
+                <h3 className="text-xl font-semibold text-blue-800 group-hover:text-blue-600 transition-colors duration-300">{member.name}</h3>
+                <p className="text-blue-600/70 group-hover:text-blue-600/90 transition-colors duration-300">{member.role}</p>
               </motion.div>
             ))}
           </div>
           <div className="text-center mt-12">
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button size="lg" className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-6 rounded-xl text-lg shadow-blue-200/50 shadow-lg transition-all duration-300">
+              <Button size="lg" className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-6 rounded-xl text-lg shadow-blue-200/50 shadow-lg transition-all duration-300 group">
                 Meet Our Full Team
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </motion.div>
           </div>
@@ -154,15 +199,34 @@ const AboutPage = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Experience World-Class Healthcare</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-blue-900 opacity-20"></div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl md:text-4xl font-bold mb-6"
+          >
+            Experience World-Class Healthcare
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-xl mb-8 max-w-2xl mx-auto"
+          >
             Take the first step towards optimal health. Schedule your appointment with our expert team today.
-          </p>
-          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-100 px-8 py-6 rounded-xl text-lg shadow-blue-800/50 shadow-lg transition-all duration-300">
-              <Calendar className="w-5 h-5 mr-2" />
+          </motion.p>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            whileHover={{ scale: 1.02 }} 
+            whileTap={{ scale: 0.98 }}
+          >
+            <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-100 px-8 py-6 rounded-xl text-lg shadow-blue-800/50 shadow-lg transition-all duration-300 group">
+              <Calendar className="w-5 h-5 mr-2 group-hover:animate-pulse" />
               Book Your Consultation
             </Button>
           </motion.div>
