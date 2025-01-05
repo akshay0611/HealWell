@@ -1,6 +1,6 @@
 'use client'
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { TopBar } from "@/components/top-bar";
 import { Navigation } from "@/components/navigation";
@@ -44,6 +44,65 @@ const ContactPage = () => {
     },
   ];
 
+  // State for form fields and errors
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [errors, setErrors] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const validateForm = () => {
+    let formValid = true;
+    const newErrors = { name: '', email: '', subject: '', message: '' };
+
+    if (!formData.name) {
+      newErrors.name = 'Name is required.';
+      formValid = false;
+    }
+
+    if (!formData.email) {
+      newErrors.email = 'Email is required.';
+      formValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address.';
+      formValid = false;
+    }
+
+    if (!formData.subject) {
+      newErrors.subject = 'Subject is required.';
+      formValid = false;
+    }
+
+    if (!formData.message) {
+      newErrors.message = 'Message is required.';
+      formValid = false;
+    }
+
+    setErrors(newErrors);
+    return formValid;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (validateForm()) {
+      // Submit form data (you can replace this with an actual API call)
+      console.log('Form submitted', formData);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-white">
       <TopBar />
@@ -69,7 +128,7 @@ const ContactPage = () => {
             transition={{ delay: 0.2 }}
             className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto text-center leading-relaxed"
           >
-             We&apos;re here to help. Reach out to us for any inquiries or to schedule an appointment.
+            We&apos;re here to help. Reach out to us for any inquiries or to schedule an appointment.
           </motion.p>
         </div>
       </motion.section>
@@ -121,24 +180,53 @@ const ContactPage = () => {
           >
             <Card>
               <CardContent className="p-6">
-                <form className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-blue-700 mb-1">Name</label>
-                      <Input id="name" placeholder="Your Name" className="w-full" />
+                      <Input
+                        id="name"
+                        placeholder="Your Name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        className="w-full"
+                      />
+                      {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
                     </div>
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium text-blue-700 mb-1">Email</label>
-                      <Input id="email" type="email" placeholder="your@email.com" className="w-full" />
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="your@email.com"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        className="w-full"
+                      />
+                      {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                     </div>
                   </div>
                   <div>
                     <label htmlFor="subject" className="block text-sm font-medium text-blue-700 mb-1">Subject</label>
-                    <Input id="subject" placeholder="Message Subject" className="w-full" />
+                    <Input
+                      id="subject"
+                      placeholder="Message Subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      className="w-full"
+                    />
+                    {errors.subject && <p className="text-red-500 text-sm">{errors.subject}</p>}
                   </div>
                   <div>
                     <label htmlFor="message" className="block text-sm font-medium text-blue-700 mb-1">Message</label>
-                    <Textarea id="message" placeholder="Your message here..." className="w-full min-h-[150px]" />
+                    <Textarea
+                      id="message"
+                      placeholder="Your message here..."
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      className="w-full min-h-[150px]"
+                    />
+                    {errors.message && <p className="text-red-500 text-sm">{errors.message}</p>}
                   </div>
                   <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                     <Send className="w-5 h-5 mr-2" />
@@ -159,51 +247,20 @@ const ContactPage = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg"
+            className="w-full h-[400px] bg-gray-100 rounded-lg"
           >
-            {/* Replace with actual map component or embed */}
-            <div className="absolute inset-0 bg-blue-100 flex items-center justify-center">
-              <MapPin className="w-16 h-16 text-blue-500" />
-            </div>
+            {/* Embed Google Map */}
+            <iframe
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3664.504818553374!2d78.1320427149986!3d28.585297086106122!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39747ad7cce35c19%3A0xd53e788273287604!2sHealWell%20Clinic!5e0!3m2!1sen!2sin!4v1633127398741!5m2!1sen!2sin"
+  className="w-full h-full border-0 rounded-lg"
+  allowFullScreen={true}  // Corrected here
+  loading="lazy"
+/>
           </motion.div>
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-blue-900 opacity-20"></div>
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl font-bold mb-6"
-          >
-            Need Immediate Assistance?
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl mb-8 max-w-2xl mx-auto"
-          >
-            Our team is available 24/7 to answer your questions and provide support.
-          </motion.p>
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            whileHover={{ scale: 1.02 }} 
-            whileTap={{ scale: 0.98 }}
-          >
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-100 px-8 py-6 rounded-xl text-lg shadow-blue-800/50 shadow-lg transition-all duration-300 group">
-              <Phone className="w-5 h-5 mr-2 group-hover:animate-pulse" />
-              Call Us Now
-            </Button>
-          </motion.div>
-        </div>
-      </section>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
