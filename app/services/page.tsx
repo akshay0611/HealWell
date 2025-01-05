@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Heart, Brain, Bone, Eye, SmileIcon as Tooth, Stethoscope, Pill, Scissors, ChevronRight, Calendar } from 'lucide-react';
 import Image from "next/image";
+import Footer from "@/components/footer"
 
 const ServicesPage = () => {
   const fadeInUp = {
@@ -192,6 +193,7 @@ const ServicesPage = () => {
           </motion.div>
         </div>
       </section>
+      <Footer/>
     </div>
   );
 };

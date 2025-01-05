@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { TopBar } from "@/components/top-bar";
 import { Navigation } from "@/components/navigation";
+import Footer from "@/components/footer"
 
 const schedule = [
   {
@@ -116,6 +117,7 @@ export default function TimetablePage() {
           ))}
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }
