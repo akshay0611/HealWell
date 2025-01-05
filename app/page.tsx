@@ -5,6 +5,7 @@ import { TeamBanner } from "@/components/team-banner";
 import { AboutSection } from "@/components/about-section";
 import { StatsSection } from "@/components/stats-section";
 import OurBestServiceSection from "@/components/our-best-service-section";
+import OurTeamMember from "@/components/our-team-member";
 
 export default function Home() {
   return (
@@ -15,7 +16,8 @@ export default function Home() {
       <TeamBanner />
       <AboutSection />
       <StatsSection />
-      <OurBestServiceSection />
+      <OurBestServiceSection/>
+      <OurTeamMember />
     </main>
   );
 }
