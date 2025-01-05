@@ -8,25 +8,25 @@ import { Facebook, Twitter, Linkedin } from "lucide-react"
 const OurTeamMember = () => {
   const teamMembers = [
     {
-      image: "/placeholder.svg",
+      image: "/images/teammember_1.jpg",   
       name: "Dr. John Smith",
       role: "Cardiologist",
       specialty: "Heart & Vascular",
     },
     {
-      image: "/placeholder.svg",
+      image: "/images/teammember_2.avif",
       name: "Dr. Michael Wilson",
       role: "General Practitioner",
       specialty: "Family Medicine",
     },
     {
-      image: "/placeholder.svg",
+      image: "/images/teammember_3.jpg",
       name: "Dr. Robert Brown",
       role: "Senior Physician",
       specialty: "Internal Medicine",
     },
     {
-      image: "/placeholder.svg",
+      image: "/images/teammember_4.avif",
       name: "Dr. Sarah Johnson",
       role: "Dentist",
       specialty: "Dental Care",

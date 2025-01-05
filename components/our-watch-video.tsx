@@ -24,7 +24,7 @@ const OurWatchVideo = () => {
         <div className="absolute inset-0 bg-[#0B1B3F]/90 z-10" />
         <video
           className="w-full h-full object-cover"
-          poster="/placeholder.svg"
+          poster="/images/"
           muted
           loop
           playsInline

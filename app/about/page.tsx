@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Heart, User, Shield, Stethoscope, Award, Clock, Calendar, ArrowRight, ChevronRight } from 'lucide-react';
 import Image from "next/image";
 import Footer from "@/components/footer"
+import Link from 'next/link'
 
 const AboutPage = () => {
   const fadeInUp = {
@@ -143,7 +144,7 @@ const AboutPage = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-white rounded-[2rem] transform rotate-3" />
               <div className="relative z-10 transform -rotate-3 transition-transform duration-300 hover:rotate-0">
                 <Image
-                  src="/placeholder.svg?height=400&width=600"
+                  src="/images/about_1.jpg"
                   alt="Advanced medical technology in use"
                   width={600}
                   height={400}
@@ -162,9 +163,9 @@ const AboutPage = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-blue-800 mb-12 text-center">Meet Our Experts</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { name: "Dr. Emily Chen", role: "Chief of Cardiology", image: "/placeholder.svg?height=300&width=300" },
-              { name: "Dr. Michael Patel", role: "Head of Neurology", image: "/placeholder.svg?height=300&width=300" },
-              { name: "Dr. Sarah Johnson", role: "Lead Pediatrician", image: "/placeholder.svg?height=300&width=300" }
+              { name: "Dr. John Smith", role: "Cardiologist", image: "/images/teammember_1.jpg" },
+              { name: "Dr. Michael Wilson", role: "General Practitioner", image: "/images/teammember_2.avif" },
+              { name: "Dr. Robert Brown", role: "Senior Physician", image: "/images/teammember_3.jpg" }
             ].map((member, index) => (
               <motion.div
                 key={index}
@@ -189,12 +190,17 @@ const AboutPage = () => {
             ))}
           </div>
           <div className="text-center mt-12">
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button size="lg" className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-6 rounded-xl text-lg shadow-blue-200/50 shadow-lg transition-all duration-300 group">
-                Meet Our Full Team
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </motion.div>
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+      <Link href="/doctors">
+        <Button
+          size="lg"
+          className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-6 rounded-xl text-lg shadow-blue-200/50 shadow-lg transition-all duration-300 group"
+        >
+          Meet Our Full Team
+          <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+        </Button>
+      </Link>
+    </motion.div>
           </div>
         </div>
       </section>
@@ -219,18 +225,23 @@ const AboutPage = () => {
           >
             Take the first step towards optimal health. Schedule your appointment with our expert team today.
           </motion.p>
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            whileHover={{ scale: 1.02 }} 
-            whileTap={{ scale: 0.98 }}
-          >
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-100 px-8 py-6 rounded-xl text-lg shadow-blue-800/50 shadow-lg transition-all duration-300 group">
-              <Calendar className="w-5 h-5 mr-2 group-hover:animate-pulse" />
-              Book Your Consultation
-            </Button>
-          </motion.div>
+          <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.4 }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+    >
+      <Link href="/appointment">
+        <Button
+          size="lg"
+          className="bg-white text-blue-600 hover:bg-blue-100 px-8 py-6 rounded-xl text-lg shadow-blue-800/50 shadow-lg transition-all duration-300 group"
+        >
+          <Calendar className="w-5 h-5 mr-2 group-hover:animate-pulse" />
+          Book Your Consultation
+        </Button>
+      </Link>
+    </motion.div>
         </div>
       </section>
       <Footer/>

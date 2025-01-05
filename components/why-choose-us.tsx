@@ -103,7 +103,7 @@ const WhyChooseUs = () => {
             <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-500 rounded-full opacity-20 blur-3xl" />
             <div className="relative">
               <Image
-                src="/placeholder.svg"
+                src="/images/whychooseus.jpg"
                 alt="Medical Professionals"
                 width={600}
                 height={700}

@@ -19,12 +19,10 @@ interface Doctor {
 }
 
 const doctors: Doctor[] = [
-  { id: 1, name: "Dr. Emily Johnson", specialty: "Cardiology", rating: 4.8, image: "/placeholder.svg?height=300&width=300" },
-  { id: 2, name: "Dr. Michael Lee", specialty: "Neurology", rating: 4.9, image: "/placeholder.svg?height=300&width=300" },
-  { id: 3, name: "Dr. Sarah Parker", specialty: "Pediatrics", rating: 4.7, image: "/placeholder.svg?height=300&width=300" },
-  { id: 4, name: "Dr. David Kim", specialty: "Orthopedics", rating: 4.6, image: "/placeholder.svg?height=300&width=300" },
-  { id: 5, name: "Dr. Rachel Green", specialty: "Dermatology", rating: 4.8, image: "/placeholder.svg?height=300&width=300" },
-  { id: 6, name: "Dr. James Wilson", specialty: "Oncology", rating: 4.9, image: "/placeholder.svg?height=300&width=300" },
+  { id: 1, name: "Dr. John Smith", specialty: "Cardiologist - Heart & Vascular", rating: 4.8, image: "/images/teammember_1.jpg" },
+  { id: 2, name: "Dr. Michael Wilson", specialty: "General Practitioner - Family Medicine", rating: 4.9, image: "/images/teammember_2.avif" },
+  { id: 3, name: "Dr. Robert Brown", specialty: "Senior Physician - Internal Medicine", rating: 4.7, image: "/images/teammember_3.jpg" },
+  { id: 4, name: "Dr. Sarah Johnson", specialty: "Dentist - Dental Care", rating: 4.6, image: "/images/teammember_4.avif" }
 ];
 
 export default function DoctorsPage() {

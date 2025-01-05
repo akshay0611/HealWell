@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Heart, Brain, Bone, Eye, SmileIcon as Tooth, Stethoscope, Pill, Scissors, ChevronRight, Calendar } from 'lucide-react';
 import Image from "next/image";
 import Footer from "@/components/footer"
+import Link from "next/link";  
 
 const ServicesPage = () => {
   const fadeInUp = {
@@ -118,7 +119,7 @@ const ServicesPage = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-white rounded-[2rem] transform rotate-3" />
               <div className="relative z-10 transform -rotate-3 transition-transform duration-300 hover:rotate-0">
                 <Image
-                  src="/placeholder.svg?height=400&width=600"
+                  src="/images/servicepage.jpg"
                   alt="Advanced Cardiac Care"
                   width={600}
                   height={400}
@@ -180,17 +181,19 @@ const ServicesPage = () => {
             Book an appointment today and take the first step towards better health.
           </motion.p>
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            whileHover={{ scale: 1.02 }} 
-            whileTap={{ scale: 0.98 }}
-          >
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-100 px-8 py-6 rounded-xl text-lg shadow-blue-800/50 shadow-lg transition-all duration-300 group">
-              <Calendar className="w-5 h-5 mr-2 group-hover:animate-pulse" />
-              Schedule Your Visit
-            </Button>
-          </motion.div>
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6, delay: 0.4 }}
+  whileHover={{ scale: 1.02 }} 
+  whileTap={{ scale: 0.98 }}
+>
+  <Link href="/appointment">
+    <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-100 px-8 py-6 rounded-xl text-lg shadow-blue-800/50 shadow-lg transition-all duration-300 group">
+      <Calendar className="w-5 h-5 mr-2 group-hover:animate-pulse" />
+      Schedule Your Visit
+    </Button>
+  </Link>
+</motion.div>
         </div>
       </section>
       <Footer/>

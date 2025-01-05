@@ -19,10 +19,29 @@ const ContactPage = () => {
   };
 
   const contactInfo = [
-    { icon: Phone, title: "Phone", content: "+1 (555) 123-4567" },
-    { icon: Mail, title: "Email", content: "info@healwell.com" },
-    { icon: MapPin, title: "Address", content: "123 Health Street, Medical City, MC 12345" },
-    { icon: Clock, title: "Hours", content: "Mon-Fri: 8am-8pm, Sat-Sun: 9am-5pm" },
+    { 
+      icon: Phone, 
+      title: "Phone", 
+      content: "+91 9876543210", 
+      link: "tel:+919876543210"  
+    },
+    { 
+      icon: Mail, 
+      title: "Email", 
+      content: "info@healwell.com", 
+      link: "mailto:info@healwell.com" 
+    },
+    { 
+      icon: MapPin, 
+      title: "Address", 
+      content: "123 Safdurjung, New Delhi", 
+      link: "https://www.google.com/maps/search/123+Safdurjung,+New+Delhi"  
+    },
+    { 
+      icon: Clock, 
+      title: "Hours", 
+      content: "Mon-Fri: 8am-8pm, Sat-Sun: 9am-5pm" 
+    },
   ];
 
   return (
@@ -73,7 +92,15 @@ const ContactPage = () => {
                       <info.icon className="w-8 h-8 text-blue-600 group-hover:text-blue-700 transition-colors duration-300" />
                     </div>
                     <h3 className="text-xl font-semibold text-blue-800 mb-2 group-hover:text-blue-600 transition-colors duration-300">{info.title}</h3>
-                    <p className="text-blue-600/70 group-hover:text-blue-600/90 transition-colors duration-300">{info.content}</p>
+                    <p className="text-blue-600/70 group-hover:text-blue-600/90 transition-colors duration-300">
+                      {info.link ? (
+                        <a href={info.link} className="hover:underline">
+                          {info.content}
+                        </a>
+                      ) : (
+                        info.content
+                      )}
+                    </p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -182,4 +209,3 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
-

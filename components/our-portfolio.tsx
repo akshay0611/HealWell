@@ -23,7 +23,7 @@ const OurPortfolio = () => {
       title: "Advanced Cardiac Surgery",
       category: "surgery",
       description: "Successful complex cardiac procedure",
-      image: "/placeholder.svg",
+      image: "/images/portfolio_1.png",
       stats: "98% Success Rate",
     },
     {
@@ -31,7 +31,7 @@ const OurPortfolio = () => {
       title: "Modern Dental Care",
       category: "dental",
       description: "State-of-the-art dental treatments",
-      image: "/placeholder.svg",
+      image: "/images/portfolio_2.jpg",
       stats: "5000+ Patients",
     },
     {
@@ -39,7 +39,7 @@ const OurPortfolio = () => {
       title: "Heart Diagnostics",
       category: "cardiology",
       description: "Comprehensive heart health assessment",
-      image: "/placeholder.svg",
+      image: "/images/portfolio_3.jpg",
       stats: "24/7 Care",
     },
     {
@@ -47,7 +47,7 @@ const OurPortfolio = () => {
       title: "Brain Mapping",
       category: "neurology",
       description: "Advanced neurological diagnostics",
-      image: "/placeholder.svg",
+      image: "/images/portfolio_4.jpg",
       stats: "15+ Years Experience",
     },
     {
@@ -55,7 +55,7 @@ const OurPortfolio = () => {
       title: "Minimally Invasive Surgery",
       category: "surgery",
       description: "Latest surgical techniques",
-      image: "/placeholder.svg",
+      image: "/images/portfolio_5.jpg",
       stats: "Quick Recovery",
     },
     {
@@ -63,7 +63,7 @@ const OurPortfolio = () => {
       title: "Preventive Care",
       category: "cardiology",
       description: "Heart disease prevention program",
-      image: "/placeholder.svg",
+      image: "/images/portfolio_6.jpg",
       stats: "Ongoing Support",
     },
   ]

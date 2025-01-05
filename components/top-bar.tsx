@@ -11,7 +11,7 @@ export function TopBar() {
         </div>
         <div className="flex items-center space-x-2">
           <MapPin size={16} />
-          <span>New Delhi</span>
+          <span>123 Safdurjung, New Delhi</span>
         </div>
         <div className="flex items-center space-x-4">
           <Link href="#" className="hover:text-blue-300">
