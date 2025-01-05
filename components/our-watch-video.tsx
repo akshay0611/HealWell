@@ -14,6 +14,10 @@ import {
 const OurWatchVideo = () => {
   const [isPlaying, setIsPlaying] = useState(false)
 
+  const handlePlayPause = () => {
+    setIsPlaying((prev) => !prev)
+  }
+
   return (
     <section className="relative bg-[#0B1B3F] overflow-hidden">
       <div className="absolute inset-0">
@@ -24,6 +28,7 @@ const OurWatchVideo = () => {
           muted
           loop
           playsInline
+          autoPlay={isPlaying} // Play based on state
         >
           <source src="/placeholder.mp4" type="video/mp4" />
         </video>
@@ -35,6 +40,7 @@ const OurWatchVideo = () => {
             <Dialog>
               <DialogTrigger asChild>
                 <button
+                  onClick={handlePlayPause} // Toggle play/pause
                   className="group relative w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm 
                     hover:bg-white/20 transition-all duration-300 mx-auto lg:mx-0"
                 >
@@ -46,7 +52,6 @@ const OurWatchVideo = () => {
               </DialogTrigger>
               <DialogContent className="sm:max-w-[800px] p-0 bg-black">
                 <DialogTitle>
-                  {/* Replace <h2> with direct text or another semantic element */}
                   <span className="sr-only">Watch Medical Care Video</span>
                 </DialogTitle>
                 <div className="aspect-video">
@@ -87,8 +92,8 @@ const OurWatchVideo = () => {
               Measure Medical.
             </h1>
             <p className="text-white/70 text-lg mb-8 max-w-xl">
-              We are privileged to work with hundreds of future-thinking medial,
-              including many of the world&apos;s top hardware, software, and brands, feel
+              We are privileged to work with hundreds of future-thinking medical
+              experts, including many of the world&apos;s top hardware, software, and brands. Feel
               safe and comfortable in establishing.
             </p>
             <Button
