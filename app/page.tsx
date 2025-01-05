@@ -6,6 +6,9 @@ import { AboutSection } from "@/components/about-section";
 import { StatsSection } from "@/components/stats-section";
 import OurBestServiceSection from "@/components/our-best-service-section";
 import OurTeamMember from "@/components/our-team-member";
+import WhyChooseUs from "@/components/why-choose-us";
+import OurPortfolio from "@/components/our-portfolio";
+import OurWatchVideo from "@/components/our-watch-video"
 
 export default function Home() {
   return (
@@ -18,6 +21,9 @@ export default function Home() {
       <StatsSection />
       <OurBestServiceSection/>
       <OurTeamMember />
+      <WhyChooseUs />
+      <OurPortfolio/>
+      <OurWatchVideo />
     </main>
   );
 }
