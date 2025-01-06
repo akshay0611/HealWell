@@ -32,32 +32,78 @@ const AppointmentPage = () => {
     }))
   }
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setIsSubmitting(true)
+  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault()
+  //   setIsSubmitting(true)
 
+  //   try {
+  //     const response = await fetch('/api/appointment', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify(formData)
+  //     })
+
+  //     const result = await response.json()
+
+  //     if (response.ok) {
+  //       setResponseMessage('Appointment booked successfully!')
+  //     } else {
+  //       setResponseMessage(result.message || 'Error booking appointment.')
+  //     }
+  //   } catch {
+  //     setResponseMessage('Error booking appointment.')
+  //   } finally {
+  //     setIsSubmitting(false)
+  //   }
+  // }
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+  
     try {
+      // First, submit the form data to store it in MongoDB
       const response = await fetch('/api/appointment', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
-      })
-
-      const result = await response.json()
-
+        body: JSON.stringify(formData),
+      });
+  
+      const result = await response.json();
+  
       if (response.ok) {
-        setResponseMessage('Appointment booked successfully!')
+        setResponseMessage('Appointment booked successfully!');
+  
+        // After successful form submission, send confirmation email
+        const emailResponse = await fetch('/api/send-confirmation-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),  // Send the form data to the email API
+        });
+  
+        const emailResult = await emailResponse.json();
+  
+        if (emailResponse.ok) {
+          setResponseMessage((prev) => `${prev} A confirmation email has been sent.`);
+        } else {
+          setResponseMessage((prev) => `${prev} However, we failed to send the confirmation email.`);
+        }
       } else {
-        setResponseMessage(result.message || 'Error booking appointment.')
+        setResponseMessage(result.message || 'Error booking appointment.');
       }
     } catch {
-      setResponseMessage('Error booking appointment.')
+      setResponseMessage('Error booking appointment.');
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
+  
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
