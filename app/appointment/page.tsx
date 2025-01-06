@@ -52,7 +52,7 @@ const AppointmentPage = () => {
       } else {
         setResponseMessage(result.message || 'Error booking appointment.')
       }
-    } catch (error) {
+    } catch {
       setResponseMessage('Error booking appointment.')
     } finally {
       setIsSubmitting(false)
@@ -243,4 +243,4 @@ const AppointmentPage = () => {
   )
 }
 
-export default AppointmentPage
+export default AppointmentPage 
