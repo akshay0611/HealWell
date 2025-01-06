@@ -58,8 +58,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await transporter.sendMail(mailOptions);
 
     res.status(200).json({ message: 'Confirmation email sent successfully' });
-  } catch (error: any) {
-    console.error('Error sending email:', error);
-    res.status(500).json({ message: 'Error sending confirmation email', error: error.message });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error sending email:', error.message);
+      res.status(500).json({ message: 'Error sending confirmation email', error: error.message });
+    } else {
+      console.error('Unexpected error:', error);
+      res.status(500).json({ message: 'An unexpected error occurred' });
+    }
   }
 }

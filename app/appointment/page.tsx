@@ -84,10 +84,8 @@ const AppointmentPage = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(formData),  // Send the form data to the email API
+          body: JSON.stringify(formData),
         });
-  
-        const emailResult = await emailResponse.json();
   
         if (emailResponse.ok) {
           setResponseMessage((prev) => `${prev} A confirmation email has been sent.`);
@@ -103,6 +101,7 @@ const AppointmentPage = () => {
       setIsSubmitting(false);
     }
   };
+  
   
 
   const fadeInUp = {
