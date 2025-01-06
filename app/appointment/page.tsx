@@ -32,33 +32,6 @@ const AppointmentPage = () => {
     }))
   }
 
-  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault()
-  //   setIsSubmitting(true)
-
-  //   try {
-  //     const response = await fetch('/api/appointment', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify(formData)
-  //     })
-
-  //     const result = await response.json()
-
-  //     if (response.ok) {
-  //       setResponseMessage('Appointment booked successfully!')
-  //     } else {
-  //       setResponseMessage(result.message || 'Error booking appointment.')
-  //     }
-  //   } catch {
-  //     setResponseMessage('Error booking appointment.')
-  //   } finally {
-  //     setIsSubmitting(false)
-  //   }
-  // }
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);

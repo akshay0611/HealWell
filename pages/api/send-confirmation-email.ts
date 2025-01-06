@@ -4,13 +4,13 @@ import { google } from 'googleapis';
 
 // Set up OAuth2 client
 const oAuth2Client = new google.auth.OAuth2(
-  process.env.GOOGLE_CLIENT_ID,      // Your Client ID
-  process.env.GOOGLE_CLIENT_SECRET,  // Your Client Secret
-  process.env.GOOGLE_REDIRECT_URI || 'https://developers.google.com/oauthplayground' // Redirect URI
+  process.env.GOOGLE_CLIENT_ID,      
+  process.env.GOOGLE_CLIENT_SECRET, 
+  process.env.GOOGLE_REDIRECT_URI || 'https://developers.google.com/oauthplayground' 
 );
 
 oAuth2Client.setCredentials({
-  refresh_token: process.env.GOOGLE_REFRESH_TOKEN, // Refresh token from OAuth2 Playground
+  refresh_token: process.env.GOOGLE_REFRESH_TOKEN, 
 });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -38,18 +38,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       service: 'gmail',
       auth: {
         type: 'OAuth2',
-        user: process.env.EMAIL_USER,        // Your email
+        user: process.env.EMAIL_USER,        
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-        accessToken: accessToken.token,     // Access token
+        accessToken: accessToken.token,     
       },
     });
 
     // Email options
     const mailOptions = {
-      from: `"HealWell Team" <${process.env.EMAIL_USER}>`, // Sender address
-      to: email,                                           // Receiver address
+      from: `"HealWell Team" <${process.env.EMAIL_USER}>`, 
+      to: email,                                           
       subject: 'Appointment Confirmation',
       text: `Hello ${name},\n\nYour appointment has been successfully booked.\n\nDetails:\nDate: ${preferredDate}\nTime: ${preferredTime}\n\nThank you for choosing us.\n\nBest regards,\nHealWell Team`,
     };
