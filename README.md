@@ -25,9 +25,8 @@ Welcome to the **Heal Well** project repository! Heal Well is a hospital managem
 - **Framework**: Next.js ⚛️
 - **Styling**: Tailwind CSS, ShadCN 🌈
 - **UI Components**: Lucide React Icons 🖼️
-- **Backend**: Node.js, Express.js 🖥️
+- **Backend**: Node.js (using Next.js API routes) 🖥️
 - **Database**: MongoDB 🗄️
-- **Authentication**: JSON Web Tokens (JWT) 🔑
 - **Deployment**: Vercel 🚀
 
 ## Installation 💻
