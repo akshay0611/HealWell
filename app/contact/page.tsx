@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { TopBar } from "@/components/top-bar";
 import { Navigation } from "@/components/navigation";
@@ -57,6 +57,9 @@ const ContactPage = () => {
     subject: '',
     message: ''
   });
+  
+  // State for confirmation message
+  const [confirmationMessage, setConfirmationMessage] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
@@ -94,14 +97,40 @@ const ContactPage = () => {
     return formValid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (validateForm()) {
-      // Submit form data (you can replace this with an actual API call)
-      console.log('Form submitted', formData);
+      // Submit form data to the API
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+  
+        const result = await response.json();
+  
+        if (result.success) {
+          setConfirmationMessage('Thank you for your message! We will get back to you shortly.');
+          
+          // Clear form fields after submission
+          setFormData({ name: '', email: '', subject: '', message: '' });
+
+          // Set a timeout to remove the confirmation message after 10 seconds
+          setTimeout(() => {
+            setConfirmationMessage('');
+          }, 10000);
+        } else {
+          console.error('Form submission failed');
+        }
+      } catch (error) {
+        console.error('Error submitting form:', error);
+      }
     }
-  };
+  };  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-white">
@@ -233,6 +262,11 @@ const ContactPage = () => {
                     Send Message
                   </Button>
                 </form>
+                {confirmationMessage && (
+                  <div className="mt-6 text-green-600 font-semibold text-center">
+                    {confirmationMessage}
+                  </div>
+                )}
               </CardContent>
             </Card>
           </motion.div>
