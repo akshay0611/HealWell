@@ -72,10 +72,22 @@ const AppointmentPage = () => {
       setResponseMessage('Error booking appointment.');
     } finally {
       setIsSubmitting(false);
+
+      // Reset form data and response message after 10 seconds
+      setTimeout(() => {
+        setFormData({
+          name: '',
+          phone: '',
+          email: '',
+          department: '',
+          preferredDate: '',
+          preferredTime: '',
+          message: ''
+        });
+        setResponseMessage(''); // Clear response message
+      }, 10000); // Reset after 10 seconds
     }
   };
-  
-  
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -242,23 +254,26 @@ const AppointmentPage = () => {
                 <Textarea 
                   id="message" 
                   name="message" 
-                  placeholder="Please provide any additional information or specific concerns..." 
-                  rows={4} 
+                  placeholder="Please provide any additional details..." 
                   value={formData.message}
-                  onChange={handleChange}
+                  onChange={handleChange} 
+                  rows={4}
                 />
-                <MessageSquare className="absolute right-3 top-3 text-gray-400" size={18} />
+                <MessageSquare className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
               </div>
             </div>
-            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white" disabled={isSubmitting}>
-              {isSubmitting ? 'Submitting...' : 'Book Appointment'}
-            </Button>
+            <div className="flex justify-center">
+              <Button type="submit" disabled={isSubmitting} className="w-full md:w-auto">
+                {isSubmitting ? 'Submitting...' : 'Book Appointment'}
+              </Button>
+            </div>
           </form>
         </motion.div>
       </div>
+
       <Footer />
     </div>
   )
 }
 
-export default AppointmentPage 
+export default AppointmentPage
