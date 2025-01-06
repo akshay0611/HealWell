@@ -4,7 +4,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Star, MessageSquare, ArrowRight, ChevronRight } from 'lucide-react'
+import { Star, MessageSquare, ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { TopBar } from "@/components/top-bar"

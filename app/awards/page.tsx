@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
-import { Award, Calendar, Star, ChevronRight, ArrowRight } from 'lucide-react'
+import { Award, Calendar, Star, ArrowRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { TopBar } from "@/components/top-bar"

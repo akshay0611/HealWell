@@ -4,7 +4,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Handshake, Building2, Globe, ArrowRight, ChevronRight } from 'lucide-react'
+import { Handshake, ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { TopBar } from "@/components/top-bar"

@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Camera, ArrowRight, ChevronRight } from 'lucide-react'
+import { Camera, ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { TopBar } from "@/components/top-bar"
@@ -137,7 +137,7 @@ const GalleryPage = () => {
                     Meet Our Team
                   </h3>
                   <p className="text-blue-600/80 leading-relaxed">
-                    See our dedicated medical professionals in action and get a sense of the caring environment we've created at Heal Well.
+                    See our dedicated medical professionals in action and get a sense of the caring environment we have created at Heal Well.
                   </p>
                 </div>
                 <div>

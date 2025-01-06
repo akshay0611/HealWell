@@ -70,7 +70,7 @@ const VolunteersPage = () => {
             transition={{ delay: 0.2 }}
             className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto text-center leading-relaxed"
           >
-            Meet the compassionate individuals who donate their time and skills to make a difference in our community's health and well-being.
+            Meet the compassionate individuals who donate their time and skills to make a difference in our community&apos;s health and well-being.
           </motion.p>
         </div>
       </motion.section>
@@ -135,7 +135,7 @@ const VolunteersPage = () => {
                     Gain Valuable Experience
                   </h3>
                   <p className="text-blue-600/80 leading-relaxed">
-                    Whether you're considering a career in healthcare or simply want to give back, volunteering provides invaluable insights and experiences.
+                    Whether you are considering a career in healthcare or simply want to give back, volunteering provides invaluable insights and experiences.
                   </p>
                 </div>
                 <div>
@@ -144,7 +144,7 @@ const VolunteersPage = () => {
                     Flexible Opportunities
                   </h3>
                   <p className="text-blue-600/80 leading-relaxed">
-                    We offer a variety of volunteer roles to match your skills, interests, and availability. From patient support to administrative tasks, there's a place for everyone.
+                    We offer a variety of volunteer roles to match your skills, interests, and availability. From patient support to administrative tasks, there is a place for everyone.
                   </p>
                 </div>
               </div>
