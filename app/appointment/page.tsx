@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { TopBar } from "@/components/top-bar";
 import { Navigation } from "@/components/navigation";
@@ -12,9 +12,51 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Footer from "@/components/footer"
 
 const AppointmentPage = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    department: '',
+    preferredDate: '',
+    preferredTime: '',
+    message: ''
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [responseMessage, setResponseMessage] = useState('')
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }))
+  }
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log("Appointment form submitted")
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch('/api/appointment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+
+      const result = await response.json()
+
+      if (response.ok) {
+        setResponseMessage('Appointment booked successfully!')
+      } else {
+        setResponseMessage(result.message || 'Error booking appointment.')
+      }
+    } catch (error) {
+      setResponseMessage('Error booking appointment.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const fadeInUp = {
@@ -69,6 +111,17 @@ const AppointmentPage = () => {
           </p>
         </motion.div>
 
+        {responseMessage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className={`text-center mb-6 text-xl font-semibold ${responseMessage.includes('Error') ? 'text-red-500' : 'text-green-500'}`}
+          >
+            {responseMessage}
+          </motion.div>
+        )}
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -80,27 +133,51 @@ const AppointmentPage = () => {
               <div className="space-y-2">
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
                 <div className="relative">
-                  <Input id="name" type="text" placeholder="John Doe" required />
+                  <Input 
+                    id="name" 
+                    type="text" 
+                    placeholder="John Doe" 
+                    name="name" 
+                    value={formData.name}
+                    onChange={handleChange}
+                    required 
+                  />
                   <User className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                 </div>
               </div>
               <div className="space-y-2">
                 <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
                 <div className="relative">
-                  <Input id="phone" type="tel" placeholder="+1 (234) 567-8900" required />
+                  <Input 
+                    id="phone" 
+                    type="tel" 
+                    placeholder="+1 (234) 567-8900" 
+                    name="phone" 
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required 
+                  />
                   <Phone className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                 </div>
               </div>
               <div className="space-y-2">
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address</label>
                 <div className="relative">
-                  <Input id="email" type="email" placeholder="johndoe@example.com" required />
+                  <Input 
+                    id="email" 
+                    type="email" 
+                    placeholder="johndoe@example.com" 
+                    name="email" 
+                    value={formData.email}
+                    onChange={handleChange}
+                    required 
+                  />
                   <Mail className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                 </div>
               </div>
               <div className="space-y-2">
                 <label htmlFor="department" className="block text-sm font-medium text-gray-700">Department</label>
-                <Select>
+                <Select value={formData.department} onValueChange={(value) => setFormData({ ...formData, department: value })}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a department" />
                   </SelectTrigger>
@@ -115,14 +192,28 @@ const AppointmentPage = () => {
               <div className="space-y-2">
                 <label htmlFor="date" className="block text-sm font-medium text-gray-700">Preferred Date</label>
                 <div className="relative">
-                  <Input id="date" type="date" required />
+                  <Input 
+                    id="date" 
+                    type="date" 
+                    name="preferredDate"
+                    value={formData.preferredDate}
+                    onChange={handleChange}
+                    required 
+                  />
                   <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                 </div>
               </div>
               <div className="space-y-2">
                 <label htmlFor="time" className="block text-sm font-medium text-gray-700">Preferred Time</label>
                 <div className="relative">
-                  <Input id="time" type="time" required />
+                  <Input 
+                    id="time" 
+                    type="time" 
+                    name="preferredTime" 
+                    value={formData.preferredTime}
+                    onChange={handleChange}
+                    required 
+                  />
                   <Clock className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                 </div>
               </div>
@@ -130,12 +221,19 @@ const AppointmentPage = () => {
             <div className="space-y-2">
               <label htmlFor="message" className="block text-sm font-medium text-gray-700">Additional Information</label>
               <div className="relative">
-                <Textarea id="message" placeholder="Please provide any additional information or specific concerns..." rows={4} />
+                <Textarea 
+                  id="message" 
+                  name="message" 
+                  placeholder="Please provide any additional information or specific concerns..." 
+                  rows={4} 
+                  value={formData.message}
+                  onChange={handleChange}
+                />
                 <MessageSquare className="absolute right-3 top-3 text-gray-400" size={18} />
               </div>
             </div>
-            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-              Book Appointment
+            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white" disabled={isSubmitting}>
+              {isSubmitting ? 'Submitting...' : 'Book Appointment'}
             </Button>
           </form>
         </motion.div>
