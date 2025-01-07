@@ -15,42 +15,42 @@ const testimonials = [
   {
     name: "Emily Thompson",
     role: "Patient",
-    image: "/images/testimonial_1.jpg",
+    image: "/images/partner_2.png",
     content: "The care I received at Heal Well was exceptional. The staff was attentive, and the doctors took the time to explain everything thoroughly. I felt truly cared for throughout my treatment.",
     rating: 5,
   },
   {
     name: "John Martinez",
     role: "Family Member",
-    image: "/images/testimonial_2.jpg",
+    image: "/images/partner_2.png",
     content: "When my mother needed urgent care, Heal Well was there for us. The efficiency and compassion shown by every team member made a difficult time much easier to handle.",
     rating: 5,
   },
   {
     name: "Sarah Lee",
     role: "Patient",
-    image: "/images/testimonial_3.jpg",
+    image: "/images/partner_2.png",
     content: "I've been a patient at Heal Well for years, and I'm always impressed by their commitment to staying at the forefront of medical technology while maintaining a personal touch.",
     rating: 5,
   },
   {
     name: "Michael Wong",
     role: "Healthcare Professional",
-    image: "/images/testimonial_4.jpg",
+    image: "/images/partner_2.png",
     content: "As a referring physician, I have complete confidence in Heal Well. Their expertise and patient-centered approach consistently result in positive outcomes for my patients.",
     rating: 5,
   },
   {
     name: "Rachel Green",
     role: "Patient",
-    image: "/images/testimonial_5.jpg",
+    image: "/images/partner_2.png",
     content: "The preventive care program at Heal Well has been life-changing. Their holistic approach to health has helped me make significant improvements to my overall well-being.",
     rating: 5,
   },
   {
     name: "David Schwimmer",
     role: "Family Member",
-    image: "/images/testimonial_6.jpg",
+    image: "/images/partner_2.png",
     content: "During my father's extended stay, the Heal Well team became like family. Their dedication to patient care and family support is truly commendable.",
     rating: 5,
   },
@@ -183,7 +183,7 @@ const TestimonialsPage = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-white rounded-[2rem] transform rotate-3" />
               <div className="relative z-10 transform -rotate-3 transition-transform duration-300 hover:rotate-0">
                 <Image
-                  src="/images/patient_care.jpg"
+                  src="/images/testimonial.jpg"
                   alt="Patient receiving care"
                   width={600}
                   height={400}
