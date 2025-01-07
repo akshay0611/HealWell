@@ -1,35 +1,159 @@
 'use client'
 
 import React, { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
-import Link from 'next/link'
-import { Briefcase, ChevronRight, Search } from 'lucide-react'
+import { Briefcase, ChevronRight, Search, X } from 'lucide-react'
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { TopBar } from "@/components/top-bar"
 import { Navigation } from "@/components/navigation"
 import Footer from "@/components/footer"
 
-const jobOpenings = [
-  { id: 1, title: "Senior Cardiologist", department: "Cardiology", location: "Main Hospital", type: "Full-time" },
-  { id: 2, title: "Registered Nurse", department: "Emergency", location: "Main Hospital", type: "Full-time" },
-  { id: 3, title: "Medical Laboratory Technician", department: "Pathology", location: "Research Center", type: "Full-time" },
-  { id: 4, title: "Pediatric Specialist", department: "Pediatrics", location: "Children's Wing", type: "Full-time" },
-  { id: 5, title: "Physical Therapist", department: "Rehabilitation", location: "Outpatient Clinic", type: "Part-time" },
-  { id: 6, title: "Radiologist", department: "Radiology", location: "Imaging Center", type: "Full-time" },
+const JobDetails: React.FC<{ job: Job; onClose: () => void }> = ({ job, onClose }) => {
+  return (
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle className="text-2xl font-bold text-blue-800">{job.title}</CardTitle>
+        <Button variant="ghost" onClick={onClose} aria-label="Close job details">
+          <X className="h-6 w-6" />
+        </Button>
+      </CardHeader>
+      <CardContent>
+        <div className="mb-4">
+          <p className="text-blue-600 font-semibold">{job.department}</p>
+          <p className="text-blue-600/70">{job.location} • {job.type}</p>
+        </div>
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold mb-2">Job Description</h3>
+          <p className="text-gray-700">{job.description}</p>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold mb-2">Requirements</h3>
+          <ul className="list-disc list-inside text-gray-700">
+            {job.requirements.map((req, index) => (
+              <li key={index}>{req}</li>
+            ))}
+          </ul>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+interface Job {
+  id: number;
+  title: string;
+  department: string;
+  location: string;
+  type: string;
+  description: string;
+  requirements: string[];
+}
+
+const jobOpenings: Job[] = [
+  { 
+    id: 1, 
+    title: "Senior Cardiologist", 
+    department: "Cardiology", 
+    location: "Main Hospital", 
+    type: "Full-time",
+    description: "We are seeking an experienced Senior Cardiologist to join our team at Heal Well. The ideal candidate will have a strong background in cardiovascular medicine and be committed to providing exceptional patient care.",
+    requirements: [
+      "Board certification in Cardiology",
+      "Minimum of 5 years of experience as a practicing cardiologist",
+      "Excellent communication and interpersonal skills",
+      "Experience with advanced cardiac imaging techniques",
+      "Ability to work collaboratively in a multidisciplinary team"
+    ]
+  },
+  { 
+    id: 2, 
+    title: "Registered Nurse", 
+    department: "Emergency", 
+    location: "Main Hospital", 
+    type: "Full-time",
+    description: "We are looking for a dedicated Registered Nurse to join our Emergency Department. The successful candidate will play a crucial role in providing high-quality care to patients in critical situations.",
+    requirements: [
+      "Valid RN license",
+      "BLS and ACLS certifications",
+      "Minimum of 2 years of experience in emergency nursing",
+      "Strong ability to work under pressure and make quick decisions",
+      "Excellent teamwork and communication skills"
+    ]
+  },
+  { 
+    id: 3, 
+    title: "Medical Laboratory Technician", 
+    department: "Pathology", 
+    location: "Research Center", 
+    type: "Full-time",
+    description: "We are seeking a skilled Medical Laboratory Technician to join our Pathology department. The ideal candidate will be responsible for conducting various laboratory tests and maintaining laboratory equipment.",
+    requirements: [
+      "Associate's degree in Medical Laboratory Technology or related field",
+      "ASCP certification",
+      "Experience with laboratory information systems",
+      "Strong attention to detail and accuracy",
+      "Ability to work independently and as part of a team"
+    ]
+  },
+  { 
+    id: 4, 
+    title: "Pediatric Specialist", 
+    department: "Pediatrics", 
+    location: "Children's Wing", 
+    type: "Full-time",
+    description: "We are looking for a compassionate Pediatric Specialist to join our Children's Wing. The successful candidate will provide comprehensive care for infants, children, and adolescents.",
+    requirements: [
+      "Board certification in Pediatrics",
+      "Minimum of 3 years of experience in pediatric care",
+      "Excellent communication skills with children and parents",
+      "Experience in managing complex pediatric cases",
+      "Commitment to ongoing professional development"
+    ]
+  },
+  { 
+    id: 5, 
+    title: "Physical Therapist", 
+    department: "Rehabilitation", 
+    location: "Outpatient Clinic", 
+    type: "Part-time",
+    description: "We are seeking a skilled Physical Therapist to join our Rehabilitation team. The ideal candidate will be responsible for assessing, planning, and providing physical therapy treatments to patients.",
+    requirements: [
+      "Doctor of Physical Therapy (DPT) degree",
+      "Valid state physical therapy license",
+      "Experience in outpatient rehabilitation settings",
+      "Strong interpersonal and motivational skills",
+      "Knowledge of current physical therapy techniques and practices"
+    ]
+  },
+  { 
+    id: 6, 
+    title: "Radiologist", 
+    department: "Radiology", 
+    location: "Imaging Center", 
+    type: "Full-time",
+    description: "We are looking for an experienced Radiologist to join our Imaging Center. The successful candidate will be responsible for interpreting various diagnostic imaging studies and collaborating with other healthcare providers.",
+    requirements: [
+      "Board certification in Radiology",
+      "Proficiency in interpreting CT, MRI, X-ray, and ultrasound images",
+      "Experience with PACS and RIS systems",
+      "Strong analytical and problem-solving skills",
+      "Excellent communication skills for report writing and consultations"
+    ]
+  },
 ]
 
 const CareersPage = () => {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedJob, setSelectedJob] = useState<typeof jobOpenings[0] | null>(null);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const [searchTerm, setSearchTerm] = useState('')
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -42,15 +166,22 @@ const CareersPage = () => {
   )
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevent default form behavior
-    setIsSubmitted(true); // Show confirmation message
+    e.preventDefault();
+    setIsSubmitted(true);
   
-    // Reset the form after 5 seconds
     setTimeout(() => {
       setIsSubmitted(false);
-      (e.currentTarget as HTMLFormElement).reset(); // Explicitly assert type
+      (e.currentTarget as HTMLFormElement).reset();
     }, 5000);
-  }; 
+  };
+
+  const handleViewDetails = (job: typeof jobOpenings[0]) => {
+    setSelectedJob(job);
+  };
+
+  const closeJobDetails = () => {
+    setSelectedJob(null);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-white">
@@ -116,11 +247,12 @@ const CareersPage = () => {
                     <p className="text-blue-600 mb-2">{job.department}</p>
                     <p className="text-blue-600/70 mb-4">{job.location} • {job.type}</p>
                     <div className="mt-auto">
-                      <Link href={`/careers/${job.id}`}>
-                        <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white transition-colors duration-300">
-                          View Details
-                        </Button>
-                      </Link>
+                      <Button 
+                        className="w-full bg-blue-500 hover:bg-blue-600 text-white transition-colors duration-300"
+                        onClick={() => handleViewDetails(job)}
+                      >
+                        View Details
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -129,6 +261,27 @@ const CareersPage = () => {
           </div>
         </div>
       </section>
+
+      {/* Job Details Modal */}
+      <AnimatePresence>
+        {selectedJob && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: 'spring', damping: 15 }}
+            >
+              <JobDetails job={selectedJob} onClose={closeJobDetails} />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Why Join Us Section */}
       <section className="py-20 bg-gradient-to-br from-white via-blue-50 to-white">
@@ -219,22 +372,20 @@ const CareersPage = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-           
-              <Button
-                size="lg"
-                onClick={openModal}
-                className="bg-white text-blue-600 hover:bg-blue-100 px-8 py-6 rounded-xl text-lg shadow-blue-800/50 shadow-lg transition-all duration-300 group"
-              >
-                <Briefcase className="w-5 h-5 mr-2 group-hover:animate-pulse" />
-                Apply Now
-              </Button>
-          
+            <Button
+              size="lg"
+              onClick={openModal}
+              className="bg-white text-blue-600 hover:bg-blue-100 px-8 py-6 rounded-xl text-lg shadow-blue-800/50 shadow-lg transition-all duration-300 group"
+            >
+              <Briefcase className="w-5 h-5 mr-2 group-hover:animate-pulse" />
+              Apply Now
+            </Button>
           </motion.div>
         </div>
       </section>
 
-       {/* Modal */}
-{isModalOpen && (
+      {/* Modal */}
+      {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
             <h3 className="text-2xl font-bold mb-4">Join us Application</h3>
@@ -274,18 +425,18 @@ const CareersPage = () => {
                 </div>
                  
                 {/* Certifications */}
-          <div className="mb-4">
-            <label htmlFor="certifications" className="block text-sm font-medium text-gray-700">
-              Upload Certifications
-            </label>
-            <input
-              type="file"
-              id="certifications"
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              accept=".pdf,.doc,.docx"
-            />
-            <small className="text-gray-500">Please upload relevant certificates or medical degrees.</small>
-          </div>
+                <div className="mb-4">
+                  <label htmlFor="certifications" className="block text-sm font-medium text-gray-700">
+                    Upload Certifications
+                  </label>
+                  <input
+                    type="file"
+                    id="certifications"
+                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    accept=".pdf,.doc,.docx"
+                  />
+                  <small className="text-gray-500">Please upload relevant certificates or medical degrees.</small>
+                </div>
 
                 <div className="mb-4">
                   <label
