@@ -149,7 +149,7 @@ const ContactUs = () => {
                   className="mt-4 p-4 bg-green-100 text-green-700 rounded-md flex items-center"
                 >
                   <CheckCircle className="w-5 h-5 mr-2" />
-                  <span>Your appointment request has been sent. We'll contact you shortly.</span>
+                  <span>Your appointment request has been sent. We&apos;ll contact you shortly.</span>
                 </motion.div>
               )}
             </AnimatePresence>
