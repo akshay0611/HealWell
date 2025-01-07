@@ -4,7 +4,6 @@ import React, { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Search, Plus } from 'lucide-react'
 
 const OurPortfolio = () => {
   const [activeFilter, setActiveFilter] = useState('all')
@@ -138,40 +137,29 @@ const OurPortfolio = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
-                className="group relative bg-white rounded-2xl shadow-lg overflow-hidden"
+                className="group relative bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer"
               >
                 <div className="relative h-64 overflow-hidden">
                   <Image
                     src={item.image}
                     alt={item.title}
                     fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-blue-900/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="rounded-full border-2 border-white text-white hover:bg-white hover:text-blue-900"
-                    >
-                      <Plus className="h-6 w-6" />
-                      <span className="sr-only">View details</span>
-                    </Button>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-blue-900 via-blue-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-blue-900 mb-2">
+                <div className="absolute inset-0 flex flex-col justify-end p-6 translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
+                  <h3 className="text-xl font-semibold text-white mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
                     {item.title}
                   </h3>
-                  <p className="text-blue-600/70 mb-4">
+                  <p className="text-blue-100 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">
                     {item.description}
                   </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-blue-600">
+                  <div className="flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300">
+                    <span className="text-sm font-medium text-blue-200">
                       {item.stats}
                     </span>
-                    <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
-                      <Search className="w-5 h-5 text-blue-600" />
-                    </div>
+                    <span className="text-blue-200 text-sm">Learn More →</span>
                   </div>
                 </div>
               </motion.div>
