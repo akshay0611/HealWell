@@ -1,79 +1,25 @@
 'use client'
 
-import React, { useState } from "react"
+import React from "react"
 import { motion } from "framer-motion"
-import { Play, Shield } from 'lucide-react'
+import { ChevronRight, Stethoscope, Heart, Users } from 'lucide-react'
 import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
 
-const OurWatchVideo = () => {
-  const [isPlaying, setIsPlaying] = useState(false)
-
-  const handlePlayPause = () => {
-    setIsPlaying((prev) => !prev)
-  }
-
+const HealWellVideo = () => {
   return (
-    <section className="relative bg-[#0B1B3F] overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[#0B1B3F]/90 z-10" />
-        <video
-          className="w-full h-full object-cover"
-          poster="/images/"
-          muted
-          loop
-          playsInline
-          autoPlay={isPlaying} // Play based on state
-        >
-          <source src="/placeholder.mp4" type="video/mp4" />
-        </video>
-      </div>
-
-      <div className="container mx-auto px-4 py-24 relative z-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="text-center lg:text-left">
-            <Dialog>
-              <DialogTrigger asChild>
-                <button
-                  onClick={handlePlayPause} // Toggle play/pause
-                  className="group relative w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm 
-                    hover:bg-white/20 transition-all duration-300 mx-auto lg:mx-0"
-                >
-                  <div className="absolute inset-2 bg-white rounded-full flex items-center justify-center">
-                    <Play className="w-8 h-8 text-blue-600 group-hover:scale-110 transition-transform" />
-                  </div>
-                  <div className="absolute inset-0 border border-white/30 rounded-full animate-ping" />
-                </button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[800px] p-0 bg-black">
-                <DialogTitle>
-                  <span className="sr-only">Watch Medical Care Video</span>
-                </DialogTitle>
-                <div className="aspect-video">
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src="https://www.youtube.com/embed/rRid6GCJtgc"
-                    title="Professional Medical Care Video"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                </div>
-              </DialogContent>
-            </Dialog>
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="text-white/70 mt-6 font-medium"
-            >
-              WATCH VIDEO
-            </motion.p>
+    <section className="relative bg-[#0B1B3F] overflow-hidden py-16 lg:py-24">
+      <div className="container mx-auto px-4 relative z-20">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+          <div className="relative aspect-video rounded-xl overflow-hidden shadow-2xl">
+            <iframe
+              width="100%"
+              height="100%"
+              src="https://youtu.be/D61Cc7i-PXI?si=rvwPeEUE50IveHCg"
+              title="Heal Well Healthcare Services"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute top-0 left-0 w-full h-full"
+            ></iframe>
           </div>
 
           <motion.div
@@ -83,42 +29,66 @@ const OurWatchVideo = () => {
             transition={{ duration: 0.8 }}
             className="text-white"
           >
-            <h2 className="text-blue-400 font-semibold uppercase tracking-wide mb-2 flex items-center gap-2">
-              <span className="w-6 h-px bg-blue-400"></span>
-              OUR WATCH VIDEO
+            <h2 className="text-blue-400 font-semibold uppercase tracking-wider mb-3 flex items-center gap-2">
+              <span className="w-8 h-px bg-blue-400"></span>
+              OUR COMMITMENT TO CARE
             </h2>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Professional Medical Care<br />
-              Measure Medical.
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+              Heal Well
+              <br />
+              <span className="text-blue-300">Healthcare Services</span>
             </h1>
-            <p className="text-white/70 text-lg mb-8 max-w-xl">
-              We are privileged to work with hundreds of future-thinking medical
-              experts, including many of the world&apos;s top hardware, software, and brands. Feel
-              safe and comfortable in establishing.
+            <p className="text-white/80 text-lg mb-8 max-w-xl leading-relaxed">
+              At Heal Well, we are dedicated to providing exceptional healthcare services. 
+              Our team of experienced professionals uses cutting-edge technology to ensure 
+              the best possible care for our patients.
             </p>
+            <ul className="space-y-4 mb-8">
+              {[
+                'State-of-the-art Facilities',
+                'Compassionate Care Team',
+                'Comprehensive Health Services'
+              ].map((item, index) => (
+                <motion.li
+                  key={item}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="flex items-center text-white/90"
+                >
+                  {index === 0 && <Stethoscope className="w-5 h-5 mr-3 text-blue-400" />}
+                  {index === 1 && <Heart className="w-5 h-5 mr-3 text-blue-400" />}
+                  {index === 2 && <Users className="w-5 h-5 mr-3 text-blue-400" />}
+                  {item}
+                </motion.li>
+              ))}
+            </ul>
             <Button
-              className="bg-white text-blue-900 hover:bg-blue-50 group"
+              className="bg-white text-blue-900 hover:bg-blue-50 group text-lg px-6 py-3 rounded-full"
               size="lg"
             >
-              More Video
-              <Shield className="w-4 h-4 ml-2 opacity-50 group-hover:opacity-100 transition-opacity" />
+              Learn More
+              <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </motion.div>
         </div>
       </div>
 
-      {/* Decorative Shield */}
+      {/* Decorative Elements */}
       <motion.div
         initial={{ opacity: 0, x: 100 }}
         whileInView={{ opacity: 0.1, x: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="absolute bottom-8 right-8 text-white"
+        className="absolute bottom-12 right-12 text-white"
       >
-        <Shield className="w-24 h-24" />
+        <Stethoscope className="w-32 h-32" />
       </motion.div>
+      <div className="absolute top-0 left-0 w-64 h-64 bg-blue-400 rounded-full filter blur-3xl opacity-10 -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-300 rounded-full filter blur-3xl opacity-10 translate-x-1/2 translate-y-1/2" />
     </section>
   )
 }
 
-export default OurWatchVideo
+export default HealWellVideo
+
