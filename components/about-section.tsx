@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from "@/components/ui/button";
-import { Headphones, UserRound, ArrowRight, Plus, Award, Users, Building2 } from 'lucide-react';
+import { Headphones, UserRound, ArrowRight, Award, Users, Building2 } from 'lucide-react';
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
