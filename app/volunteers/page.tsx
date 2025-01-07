@@ -51,16 +51,43 @@ const VolunteersPage = () => {
     transition: { duration: 0.6 }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevent default form behavior
-    setIsSubmitted(true); // Show confirmation message
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      message: formData.get('message'),
+    };
   
-    // Reset the form after 5 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
-      (e.currentTarget as HTMLFormElement).reset(); // Explicitly assert type
-    }, 5000);
-  }; 
+    try {
+      const res = await fetch('/api/volunteer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+  
+      const result = await res.json();
+  
+      if (res.ok) {
+        setIsSubmitted(true);
+  
+        // Hide success message and close modal after 5 seconds
+        setTimeout(() => {
+          setIsSubmitted(false);
+          closeModal(); // Close the modal
+        }, 5000);
+      } else {
+        alert(result.message || 'Something went wrong.');
+      }
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      alert('Failed to submit application.');
+    }
+  };
+  
   
   
   return (
@@ -250,10 +277,11 @@ const VolunteersPage = () => {
                   <input
                     type="text"
                     id="name"
+                    name="name"
                     className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                </div>
+      required
+    />
+  </div>
                 <div className="mb-4">
                   <label
                     htmlFor="email"
@@ -264,6 +292,7 @@ const VolunteersPage = () => {
                   <input
                     type="email"
                     id="email"
+                    name="email" 
                     className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                     required
                   />
@@ -277,6 +306,7 @@ const VolunteersPage = () => {
                   </label>
                   <textarea
                     id="message"
+                    name="message"
                     rows={4}
                     className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                     required
