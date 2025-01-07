@@ -13,14 +13,14 @@ import Footer from "@/components/footer"
 
 const galleryItems = [
   { id: 1, src: "/images/gallery_1.jpg", alt: "State-of-the-art operating room", category: "Facilities" },
-  { id: 2, src: "/images/gallery_2.jpg", alt: "Dedicated medical staff in action", category: "Staff" },
-  { id: 3, src: "/images/gallery_3.jpg", alt: "Advanced MRI machine", category: "Equipment" },
-  { id: 4, src: "/images/gallery_4.jpg", alt: "Comfortable patient room", category: "Facilities" },
-  { id: 5, src: "/images/gallery_5.jpg", alt: "Doctors in consultation", category: "Staff" },
-  { id: 6, src: "/images/gallery_6.jpg", alt: "Modern laboratory setup", category: "Equipment" },
-  { id: 7, src: "/images/gallery_7.jpg", alt: "Welcoming reception area", category: "Facilities" },
-  { id: 8, src: "/images/gallery_8.jpg", alt: "Nurse attending to patient", category: "Staff" },
-  { id: 9, src: "/images/gallery_9.jpg", alt: "Cutting-edge surgical tools", category: "Equipment" },
+  { id: 2, src: "/images/gallery_1.jpg", alt: "Dedicated medical staff in action", category: "Staff" },
+  { id: 3, src: "/images/gallery_1.jpg", alt: "Advanced MRI machine", category: "Equipment" },
+  { id: 4, src: "/images/gallery_1.jpg", alt: "Comfortable patient room", category: "Facilities" },
+  { id: 5, src: "/images/gallery_1.jpg", alt: "Doctors in consultation", category: "Staff" },
+  { id: 6, src: "/images/gallery_1.jpg", alt: "Modern laboratory setup", category: "Equipment" },
+  { id: 7, src: "/images/gallery_1.jpg", alt: "Welcoming reception area", category: "Facilities" },
+  { id: 8, src: "/images/gallery_1.jpg", alt: "Nurse attending to patient", category: "Staff" },
+  { id: 9, src: "/images/gallery_1.jpg", alt: "Cutting-edge surgical tools", category: "Equipment" },
 ]
 
 const GalleryPage = () => {
@@ -200,7 +200,7 @@ const GalleryPage = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <Link href="/contact">
+            <Link href="/appointment">
               <Button
                 size="lg"
                 className="bg-white text-blue-600 hover:bg-blue-100 px-8 py-6 rounded-xl text-lg shadow-blue-800/50 shadow-lg transition-all duration-300 group"
