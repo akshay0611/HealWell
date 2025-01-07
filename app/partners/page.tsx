@@ -57,16 +57,42 @@ const PartnersPage = () => {
     transition: { duration: 0.6 }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevent default form behavior
-    setIsSubmitted(true); // Show confirmation message
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      message: formData.get('message'),
+    };
   
-    // Reset the form after 5 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
-      (e.currentTarget as HTMLFormElement).reset(); // Explicitly assert type
-    }, 5000);
-  }; 
+    try {
+      const res = await fetch('/api/partner', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+  
+      const result = await res.json();
+  
+      if (res.ok) {
+        setIsSubmitted(true);
+  
+        // Hide success message and close modal after 5 seconds
+        setTimeout(() => {
+          setIsSubmitted(false);
+          closeModal(); // Close the modal
+        }, 5000);
+      } else {
+        alert(result.message || 'Something went wrong.');
+      }
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      alert('Failed to submit application.');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-white">
@@ -194,119 +220,122 @@ const PartnersPage = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-blue-900 opacity-20"></div>
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl font-bold mb-6"
-          >
-            Become a Partner
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl mb-8 max-w-2xl mx-auto"
-          >
-            Join our network of innovative healthcare partners and help shape the future of medical care and technology.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            
-              <Button
-                size="lg"
-                onClick={openModal}
-                className="bg-white text-blue-600 hover:bg-blue-100 px-8 py-6 rounded-xl text-lg shadow-blue-800/50 shadow-lg transition-all duration-300 group"
-              >
-                <Handshake className="w-5 h-5 mr-2 group-hover:animate-pulse" />
-                Explore Partnership Opportunities
-              </Button>
-           
-          </motion.div>
-        </div>
-      </section>
+<section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white relative overflow-hidden">
+  <div className="absolute inset-0 bg-blue-900 opacity-20"></div>
+  <div className="container mx-auto px-4 text-center relative z-10">
+    <motion.h2 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="text-3xl md:text-4xl font-bold mb-6"
+    >
+      Become a Partner
+    </motion.h2>
+    <motion.p 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.2 }}
+      className="text-xl mb-8 max-w-2xl mx-auto"
+    >
+      Join our network of innovative healthcare partners and help shape the future of medical care and technology.
+    </motion.p>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.4 }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+    >
+      <Button
+        size="lg"
+        onClick={openModal} // Open Modal on click
+        className="bg-white text-blue-600 hover:bg-blue-100 px-8 py-6 rounded-xl text-lg shadow-blue-800/50 shadow-lg transition-all duration-300 group"
+      >
+        <Handshake className="w-5 h-5 mr-2 group-hover:animate-pulse" />
+        Explore Partnership Opportunities
+      </Button>
+    </motion.div>
+  </div>
+</section>
 
-      {/* Modal */}
+{/* Modal */}
 {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-            <h3 className="text-2xl font-bold mb-4">Partner Application</h3>
-            {isSubmitted ? (
-              <p className="text-green-600 font-semibold">
-                Thank you for applying! We&apos;ll get back to you soon.
-              </p>
-            ) : (
-              <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Why do you want to partner?
-                  </label>
-                  <textarea
-                    id="message"
-                    rows={4}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  ></textarea>
-                </div>
-                <div className="flex justify-end">
-                  <button
-                    type="button"
-                    onClick={closeModal}
-                    className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                  >
-                    Submit
-                  </button>
-                </div>
-              </form>
-            )}
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
+      <h3 className="text-2xl font-bold mb-4">Partner Application</h3>
+      {isSubmitted ? (
+        <p className="text-green-600 font-semibold">
+          Thank you for applying! We&apos;ll get back to you soon.
+        </p>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
           </div>
-        </div>
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="message"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Why do you want to partner?
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows={4}
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              required
+            ></textarea>
+          </div>
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={closeModal}
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
       )}
+    </div>
+  </div>
+)}
+
+
 
       <Footer />
     </div>
