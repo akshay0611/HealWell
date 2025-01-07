@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Users, ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -227,7 +226,7 @@ const VolunteersPage = () => {
             </Button>
           </motion.div>
         </div>
-      </section>
+      </section> 
 
 
 {/* Modal */}
@@ -237,7 +236,7 @@ const VolunteersPage = () => {
             <h3 className="text-2xl font-bold mb-4">Volunteer Application</h3>
             {isSubmitted ? (
               <p className="text-green-600 font-semibold">
-                Thank you for applying! We'll get back to you soon.
+                Thank you for applying! We&apos;ll get back to you soon.
               </p>
             ) : (
               <form onSubmit={handleSubmit}>
