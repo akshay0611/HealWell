@@ -14,7 +14,7 @@ import Footer from "@/components/footer"
 const partners = [
   {
     name: "MediTech Solutions",
-    logo: "/images/partner_1.png",
+    logo: "/images/partner_1.webp",
     description: "Leading provider of advanced medical equipment and technology.",
   },
   {
@@ -24,22 +24,22 @@ const partners = [
   },
   {
     name: "PharmaCare Inc.",
-    logo: "/images/partner_3.png",
+    logo: "/images/partner_2.png",
     description: "Innovative pharmaceutical company developing cutting-edge treatments.",
   },
   {
     name: "HealthNet Systems",
-    logo: "/images/partner_4.png",
+    logo: "/images/partner_2.png",
     description: "Integrated healthcare management and information technology solutions.",
   },
   {
     name: "BioResearch Labs",
-    logo: "/images/partner_5.png",
+    logo: "/images/partner_2.png",
     description: "Pioneering research facility specializing in biotechnology and genetic studies.",
   },
   {
     name: "MedEd Institute",
-    logo: "/images/partner_6.png",
+    logo: "/images/partner_2.png",
     description: "Premier medical education and training institution for healthcare professionals.",
   },
 ]
@@ -163,7 +163,7 @@ const PartnersPage = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-white rounded-[2rem] transform rotate-3" />
               <div className="relative z-10 transform -rotate-3 transition-transform duration-300 hover:rotate-0">
                 <Image
-                  src="/images/partnership.jpg"
+                  src="/images/partnership.avif"
                   alt="Partnership handshake"
                   width={600}
                   height={400}
