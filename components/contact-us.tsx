@@ -6,7 +6,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Calendar, Mail, MessageSquare, Phone, User, CheckCircle } from 'lucide-react'
+import { Calendar, Mail, MessageSquare, User, CheckCircle } from 'lucide-react'
 
 const ContactUs = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
