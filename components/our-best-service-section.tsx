@@ -75,7 +75,7 @@ const OurBestService = () => {
   <p className="text-blue-600/80 text-lg mb-6">
     Delivering the highest standard of healthcare for you and your loved ones at Heal Well.
   </p>
-  <Link href="/appointment">
+  <Link href="/services">
     <Button
       className="group bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full text-lg shadow-lg shadow-blue-200/50 transition-all duration-300"
     >
@@ -91,4 +91,3 @@ const OurBestService = () => {
 };
 
 export default OurBestService;
-
