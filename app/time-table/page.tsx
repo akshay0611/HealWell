@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { TopBar } from "@/components/top-bar";
 import { Navigation } from "@/components/navigation";
 import Footer from "@/components/footer"
-import { Calendar, Clock, User, ChevronDown, Search } from 'lucide-react'
+import { Calendar, Clock, User, Search } from 'lucide-react'
 import { useState } from 'react'
 
 const schedule = [
