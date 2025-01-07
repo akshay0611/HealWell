@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { TopBar } from "@/components/top-bar"
 import { Navigation } from "@/components/navigation"
 import Footer from "@/components/footer"
+import Link from 'next/link'; 
 
 const awards = [
   {
@@ -17,7 +18,7 @@ const awards = [
     organization: "National Health Association",
     year: 2023,
     description: "Recognized for outstanding patient satisfaction and care quality.",
-    image: "/images/award_1.jpg"
+    image: "/images/award.jpg"
   },
   {
     id: 2,
@@ -25,7 +26,7 @@ const awards = [
     organization: "MedTech Innovators",
     year: 2022,
     description: "Awarded for implementing cutting-edge medical technologies.",
-    image: "/images/award_2.jpg"
+    image: "/images/award.jpg"
   },
   {
     id: 3,
@@ -33,7 +34,7 @@ const awards = [
     organization: "Healthcare Employers Association",
     year: 2023,
     description: "Honored for creating an exceptional work environment for healthcare professionals.",
-    image: "/images/award_3.jpg"
+     image: "/images/award.jpg"
   },
   {
     id: 4,
@@ -41,7 +42,7 @@ const awards = [
     organization: "Regional Health Board",
     year: 2022,
     description: "Recognized for impactful community health programs and outreach.",
-    image: "/images/award_4.jpg"
+    image: "/images/award.jpg"
   },
   {
     id: 5,
@@ -49,7 +50,7 @@ const awards = [
     organization: "Medical Research Foundation",
     year: 2023,
     description: "Awarded for groundbreaking research in various medical fields.",
-    image: "/images/award_5.jpg"
+    image: "/images/award.jpg"
   },
   {
     id: 6,
@@ -57,7 +58,7 @@ const awards = [
     organization: "Green Healthcare Alliance",
     year: 2022,
     description: "Recognized for implementing eco-friendly practices in healthcare operations.",
-    image: "/images/award_6.jpg"
+    image: "/images/award.jpg"
   }
 ]
 
@@ -110,39 +111,42 @@ const AwardsPage = () => {
         </div>
       </motion.section>
 
-      {/* Featured Award */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-blue-800 mb-12 text-center">Featured Award</h2>
-          <motion.div
-            key={featuredAward.id}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="bg-gradient-to-br from-blue-100 to-white rounded-3xl shadow-xl overflow-hidden"
-          >
-            <div className="md:flex">
-              <div className="md:w-1/2 relative h-64 md:h-auto">
-                <Image
-                  src={featuredAward.image}
-                  alt={featuredAward.title}
-                  layout="fill"
-                  objectFit="cover"
-                />
-              </div>
-              <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-                <h3 className="text-2xl font-bold text-blue-800 mb-4">{featuredAward.title}</h3>
-                <p className="text-blue-600 mb-2">{featuredAward.organization}</p>
-                <p className="text-blue-600/70 mb-4 flex items-center">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  {featuredAward.year}
-                </p>
-                <p className="text-blue-600/80">{featuredAward.description}</p>
-              </div>
-            </div>
-          </motion.div>
+    {/* Featured Award */}
+<section className="py-20 bg-white">
+  <div className="container mx-auto px-4">
+    <h2 className="text-3xl md:text-4xl font-bold text-blue-800 mb-12 text-center">Featured Award</h2>
+    <motion.div
+      key={featuredAward.id}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+      className="bg-gradient-to-br from-blue-100 to-white rounded-3xl shadow-xl overflow-hidden"
+    >
+      <div className="md:flex">
+        <div className="md:w-1/2 relative h-80 md:h-auto"> {/* Increased the height */}
+          <Image
+            src={featuredAward.image}
+            alt={featuredAward.title}
+            layout="fill"
+            objectFit="cover"
+          />
         </div>
-      </section>
+        <div className="md:w-1/2 p-10 md:p-16 flex flex-col justify-center"> {/* Increased padding */}
+          <h3 className="text-3xl font-bold text-blue-800 mb-6"> {/* Increased font size */}
+            {featuredAward.title}
+          </h3>
+          <p className="text-blue-600 mb-3">{featuredAward.organization}</p> {/* Increased margin */}
+          <p className="text-blue-600/70 mb-5 flex items-center"> {/* Increased margin */}
+            <Calendar className="w-5 h-5 mr-2" /> {/* Increased icon size */}
+            {featuredAward.year}
+          </p>
+          <p className="text-blue-600/80 text-lg">{featuredAward.description}</p> {/* Increased font size */}
+        </div>
+      </div>
+    </motion.div>
+  </div>
+</section>
+
 
       {/* Awards Timeline */}
       <section ref={parallaxRef} className="py-20 bg-gradient-to-br from-blue-50 to-white relative overflow-hidden">
@@ -213,42 +217,46 @@ const AwardsPage = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-blue-900 opacity-20"></div>
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl font-bold mb-6"
+<section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white relative overflow-hidden">
+  <div className="absolute inset-0 bg-blue-900 opacity-20"></div>
+  <div className="container mx-auto px-4 text-center relative z-10">
+    <motion.h2 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="text-3xl md:text-4xl font-bold mb-6"
+    >
+      Experience Award-Winning Care
+    </motion.h2>
+    <motion.p 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.2 }}
+      className="text-xl mb-8 max-w-2xl mx-auto"
+    >
+      Join the many satisfied patients who have experienced our commitment to excellence. Schedule your appointment today.
+    </motion.p>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.4 }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+    >
+      <Link href="/appointment"> {/* Wrap the button with Link */}
+        <a>
+          <Button
+            size="lg"
+            className="bg-white text-blue-600 hover:bg-blue-100 px-8 py-6 rounded-full text-lg shadow-lg transition-all duration-300 group"
           >
-            Experience Award-Winning Care
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl mb-8 max-w-2xl mx-auto"
-          >
-            Join the many satisfied patients who have experienced our commitment to excellence. Schedule your appointment today.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Button
-              size="lg"
-              className="bg-white text-blue-600 hover:bg-blue-100 px-8 py-6 rounded-full text-lg shadow-lg transition-all duration-300 group"
-            >
-              Book Your Appointment
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </motion.div>
-        </div>
-      </section>
+            Book Your Appointment
+            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+          </Button>
+        </a>
+      </Link>
+    </motion.div>
+  </div>
+</section>
 
       <Footer />
     </div>
