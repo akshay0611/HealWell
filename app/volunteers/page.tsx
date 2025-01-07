@@ -13,27 +13,27 @@ import Footer from "@/components/footer"
 
 const volunteers = [
   {
-    name: "Sarah Johnson",
+    name: "Michael Chen",
     role: "Community Outreach",
-    image: "/images/volunteer_1.jpg",
+    image: "/images/volunteer_1.avif",
     description: "Passionate about connecting our medical services with those in need.",
   },
   {
-    name: "Michael Chen",
+    name: "Adam Wilson",
     role: "Patient Support",
-    image: "/images/volunteer_2.jpg",
+    image: "/images/volunteer_2.avif",
     description: "Dedicated to ensuring patients feel comfortable and cared for during their stay.",
   },
   {
-    name: "Emily Rodriguez",
+    name: "Charles Rodriguez",
     role: "Health Education",
-    image: "/images/volunteer_3.jpg",
+    image: "/images/volunteer_4.jpg",
     description: "Committed to spreading awareness about preventive healthcare in our community.",
   },
   {
     name: "David Patel",
     role: "Administrative Support",
-    image: "/images/volunteer_4.jpg",
+    image: "/images/volunteer_3.jpg",
     description: "Helps keep our operations running smoothly behind the scenes.",
   },
 ]
