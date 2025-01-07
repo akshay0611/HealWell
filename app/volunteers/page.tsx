@@ -59,8 +59,8 @@ const VolunteersPage = () => {
     setTimeout(() => {
       setIsSubmitted(false);
       (e.currentTarget as HTMLFormElement).reset(); // Explicitly assert type
-    }, 50000);
-  };
+    }, 5000);
+  }; 
   
   
   return (
