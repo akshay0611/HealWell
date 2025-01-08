@@ -1,76 +1,105 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import { TopBar } from "@/components/top-bar";
-import { Navigation } from "@/components/navigation";
-import Footer from "@/components/footer"
-import { Calendar, Clock, User, Search } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { TopBar } from '@/components/top-bar';
+import { Navigation } from '@/components/navigation';
+import Footer from '@/components/footer';
+import { Calendar, Clock, User, Search } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 
-const schedule = [
-  {
-    day: "Monday",
-    timings: [
-      { time: "9:00 AM - 12:00 PM", doctor: "Dr. Emily Johnson", specialty: "Cardiology" },
-      { time: "1:00 PM - 4:00 PM", doctor: "Dr. Michael Lee", specialty: "Neurology" },
-    ],
-  },
-  {
-    day: "Tuesday",
-    timings: [
-      { time: "9:00 AM - 12:00 PM", doctor: "Dr. Sarah Parker", specialty: "Pediatrics" },
-      { time: "2:00 PM - 5:00 PM", doctor: "Dr. David Kim", specialty: "Orthopedics" },
-    ],
-  },
-  {
-    day: "Wednesday",
-    timings: [
-      { time: "10:00 AM - 1:00 PM", doctor: "Dr. Rachel Green", specialty: "Dermatology" },
-      { time: "3:00 PM - 6:00 PM", doctor: "Dr. James Wilson", specialty: "Oncology" },
-    ],
-  },
-  {
-    day: "Thursday",
-    timings: [
-      { time: "9:00 AM - 12:00 PM", doctor: "Dr. Emily Johnson", specialty: "Cardiology" },
-      { time: "1:00 PM - 4:00 PM", doctor: "Dr. Michael Lee", specialty: "Neurology" },
-    ],
-  },
-  {
-    day: "Friday",
-    timings: [
-      { time: "9:00 AM - 12:00 PM", doctor: "Dr. Sarah Parker", specialty: "Pediatrics" },
-      { time: "2:00 PM - 5:00 PM", doctor: "Dr. Rachel Green", specialty: "Dermatology" },
-    ],
-  },
-  {
-    day: "Saturday",
-    timings: [
-      { time: "10:00 AM - 2:00 PM", doctor: "Dr. James Wilson", specialty: "Oncology" },
-    ],
-  },
-  {
-    day: "Sunday",
-    timings: [],
-  },
-];
+type Timing = {
+  from: string;
+  to: string;
+  doctor: string;
+  specialty: string;
+};
+
+type DaySchedule = {
+  day: string;
+  timings: Timing[];
+};
+
+const formatTimeRange = (from: string, to: string): string => {
+  const formatTime = (time: string) => {
+    if (!time) return 'Not set';
+    const [hours, minutes] = time.split(':');
+    const parsedHours = parseInt(hours, 10);
+    const ampm = parsedHours >= 12 ? 'PM' : 'AM';
+    const formattedHours = parsedHours % 12 || 12;
+    return `${formattedHours}:${minutes.padStart(2, '0')} ${ampm}`;
+  };
+  
+  return `${formatTime(from)} - ${formatTime(to)}`;
+};
 
 export default function TimetablePage() {
-  const [selectedDay, setSelectedDay] = useState("Monday");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [schedule, setSchedule] = useState<DaySchedule[]>([]);
+  const [selectedDay, setSelectedDay] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const filteredSchedule = schedule.filter(day =>
-    day.timings.some(timing =>
-      timing.doctor.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      timing.specialty.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+  useEffect(() => {
+    const fetchTimetable = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/time-table');
+        if (!response.ok) throw new Error('Failed to fetch timetable.');
+        const data = await response.json();
+        setSchedule(data.schedule || []);
+        setSelectedDay(data.schedule[0]?.day || '');
+      } catch (err: unknown) {
+        const errorMessage =
+          err instanceof Error ? err.message : 'An unexpected error occurred.';
+        setError(errorMessage);
+        toast({
+          title: 'Error',
+          description: errorMessage,
+          variant: 'destructive',
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTimetable();
+  }, []);
+
+  const filteredSchedule = searchTerm
+    ? schedule.filter((day) =>
+        day.timings.some(
+          (timing) =>
+            timing.doctor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            timing.specialty.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      )
+    : schedule;
+
+  console.log('Schedule:', schedule);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-blue-50">
+        <p>Loading timetable...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-red-50 text-red-600">
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
       <TopBar />
       <Navigation />
 
+      {/* Hero Section */}
       <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -78,7 +107,10 @@ export default function TimetablePage() {
         className="py-24 md:py-32 bg-gradient-to-r from-blue-600 to-blue-800 text-white text-center relative overflow-hidden"
       >
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0 bg-repeat bg-center" style={{ backgroundImage: "url('/images/medical-pattern.png')" }} />
+          <div
+            className="absolute inset-0 bg-repeat bg-center"
+            style={{ backgroundImage: "url('/images/medical-pattern.png')" }}
+          />
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <motion.h1
@@ -109,6 +141,7 @@ export default function TimetablePage() {
         </div>
       </motion.section>
 
+      {/* Main Content */}
       <div className="container mx-auto px-4 py-16">
         <div className="mb-8">
           <div className="relative max-w-md mx-auto">
@@ -131,8 +164,8 @@ export default function TimetablePage() {
                 onClick={() => setSelectedDay(day.day)}
                 className={`flex-shrink-0 px-6 py-4 text-center focus:outline-none transition-colors duration-200 ${
                   selectedDay === day.day
-                    ? "bg-blue-600 text-white"
-                    : "text-blue-600 hover:bg-blue-50"
+                    ? 'bg-blue-600 text-white'
+                    : 'text-blue-600 hover:bg-blue-50'
                 }`}
               >
                 <p className="font-semibold">{day.day}</p>
@@ -149,7 +182,9 @@ export default function TimetablePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className={`bg-white rounded-3xl shadow-lg overflow-hidden border border-blue-100 transition-all duration-300 ${
-                selectedDay === daySchedule.day ? "ring-4 ring-blue-400 transform scale-105" : ""
+                selectedDay === daySchedule.day
+                  ? 'ring-4 ring-blue-400 transform scale-105'
+                  : ''
               }`}
             >
               <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white text-center py-6 relative">
@@ -159,10 +194,10 @@ export default function TimetablePage() {
                 </div>
               </div>
               <div className="p-6 pt-10">
-                {daySchedule.timings.length > 0 ? (
+                {daySchedule.timings && daySchedule.timings.length > 0 ? (
                   daySchedule.timings.map((timing, i) => (
-                    <motion.div 
-                      key={i} 
+                    <motion.div
+                      key={i}
                       className="mb-6 last:mb-0 p-4 bg-blue-50 rounded-2xl hover:bg-blue-100 transition-colors duration-200"
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -170,7 +205,9 @@ export default function TimetablePage() {
                     >
                       <div className="flex items-center mb-2">
                         <Clock className="text-blue-600 mr-2" />
-                        <p className="text-lg font-semibold text-blue-800">{timing.time}</p>
+                        <p className="text-lg font-semibold text-blue-800">
+                          {timing.from && timing.to ? formatTimeRange(timing.from, timing.to) : 'Time not set'}
+                        </p>
                       </div>
                       <div className="flex items-center">
                         <User className="text-blue-600 mr-2" />
@@ -192,8 +229,7 @@ export default function TimetablePage() {
           ))}
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
-
