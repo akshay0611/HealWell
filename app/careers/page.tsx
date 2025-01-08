@@ -384,90 +384,159 @@ const CareersPage = () => {
         </div>
       </section>
 
-      {/* Modal */}
-      {isModalOpen && (
+       {/* Modal */}
+       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-            <h3 className="text-2xl font-bold mb-4">Join us Application</h3>
+          <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <h3 className="text-2xl font-bold mb-4">Join Us Application</h3>
             {isSubmitted ? (
               <p className="text-green-600 font-semibold">
                 Thank you for applying! We&apos;ll get back to you soon.
               </p>
             ) : (
               <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                </div>
-                 
-                {/* Certifications */}
-                <div className="mb-4">
-                  <label htmlFor="certifications" className="block text-sm font-medium text-gray-700">
-                    Upload Certifications
-                  </label>
-                  <input
-                    type="file"
-                    id="certifications"
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                    accept=".pdf,.doc,.docx"
-                  />
-                  <small className="text-gray-500">Please upload relevant certificates or medical degrees.</small>
-                </div>
-
-                <div className="mb-4">
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Why do you want to join our hospital?
-                  </label>
-                  <textarea
-                    id="message"
-                    rows={4}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  ></textarea>
-                </div>
-                <div className="flex justify-end">
-                  <button
-                    type="button"
-                    onClick={closeModal}
-                    className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                  >
-                    Submit
-                  </button>
-                </div>
-              </form>
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name" // Added name attribute
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  required
+                />
+              </div>
+            
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email" // Added name attribute
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  required
+                />
+              </div>
+            
+              <div className="mb-4">
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone" // Added name attribute
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  required
+                />
+              </div>
+            
+              <div className="mb-4">
+                <label htmlFor="position" className="block text-sm font-medium text-gray-700">
+                  Position Applying For
+                </label>
+                <select
+                  id="position"
+                  name="positionApplied" // Added name attribute
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  required
+                >
+                  <option value="">Select a position</option>
+                  <option value="doctor">Doctor</option>
+                  <option value="nurse">Nurse</option>
+                  <option value="administrator">Administrator</option>
+                  <option value="technician">Technician</option>
+                </select>
+              </div>
+            
+              <div className="mb-4">
+                <label htmlFor="experience" className="block text-sm font-medium text-gray-700">
+                  Years of Experience
+                </label>
+                <input
+                  type="number"
+                  id="experience"
+                  name="experience" // Added name attribute
+                  min="0"
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  required
+                />
+              </div>
+            
+              <div className="mb-4">
+                <label htmlFor="resume" className="block text-sm font-medium text-gray-700">
+                  Upload Resume
+                </label>
+                <input
+                  type="file"
+                  id="resume"
+                  name="resume" // Added name attribute
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  accept=".pdf,.doc,.docx"
+                  required
+                />
+              </div>
+            
+              <div className="mb-4">
+                <label htmlFor="certifications" className="block text-sm font-medium text-gray-700">
+                  Upload Certifications
+                </label>
+                <input
+                  type="file"
+                  id="certifications"
+                  name="certifications" // Added name attribute
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  accept=".pdf,.doc,.docx"
+                />
+                <small className="text-gray-500">Please upload relevant certificates or medical degrees.</small>
+              </div>
+            
+              <div className="mb-4">
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+                  Why do you want to join our hospital?
+                </label>
+                <textarea
+                  id="message"
+                  name="message" // Added name attribute
+                  rows={4}
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  required
+                ></textarea>
+              </div>
+            
+              <div className="mb-4">
+                <label htmlFor="references" className="block text-sm font-medium text-gray-700">
+                  References (Optional)
+                </label>
+                <textarea
+                  id="references"
+                  name="references" // Added name attribute
+                  rows={3}
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                ></textarea>
+                <small className="text-gray-500">Provide references if available.</small>
+              </div>
+            
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+            
             )}
           </div>
         </div>
@@ -479,4 +548,3 @@ const CareersPage = () => {
 }
 
 export default CareersPage
-
