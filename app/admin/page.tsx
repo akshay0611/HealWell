@@ -3,7 +3,21 @@
 import { useState, useEffect } from 'react'
 import { Card } from "@/components/ui/card"
 import { motion } from "framer-motion"
-import { Clock, Calendar, Users } from 'lucide-react'
+import { Calendar, Users } from 'lucide-react'
+
+// Define types for the fetched data
+type Timing = {
+  startTime: string;  // Replace with the actual type of startTime
+  endTime: string;    // Replace with the actual type of endTime
+}
+
+type ScheduleDay = {
+  timings: Timing[];
+}
+
+type Appointment = {
+  id: string;  // Replace with actual fields of an appointment
+}
 
 export default function AdminDashboard() {
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -22,7 +36,7 @@ export default function AdminDashboard() {
         const data = await response.json()
 
         if (response.ok && data.schedule) {
-          const numOfAvailableDays = data.schedule.filter((day: { timings: any[] }) => day.timings.length > 0).length
+          const numOfAvailableDays = (data.schedule as ScheduleDay[]).filter((day) => day.timings.length > 0).length
           setAvailableDays(numOfAvailableDays)
         } else {
           console.error('Failed to fetch schedule')
@@ -42,7 +56,7 @@ export default function AdminDashboard() {
         const data = await response.json()
 
         if (response.ok && data.success) {
-          setTotalAppointments(data.data.length)
+          setTotalAppointments((data.data as Appointment[]).length)
         } else {
           console.error('Failed to fetch appointments')
         }
@@ -84,7 +98,7 @@ export default function AdminDashboard() {
               transition={{ delay: 0.2, duration: 0.5 }}
               className="text-gray-600 text-lg mb-8"
             >
-              Welcome to the <span className="font-bold text-indigo-600">HealWell</span> admin panel. Here's an overview of the platform's current status.
+              Welcome to the <span className="font-bold text-indigo-600">HealWell</span> admin panel. Here&apos;s an overview of the platform&apos;s current status.
             </motion.p>
 
             {/* Dashboard Cards */}
@@ -101,7 +115,6 @@ export default function AdminDashboard() {
                 icon={Users}
                 color="from-green-400 to-emerald-500"
               />
-             
             </div>
           </div>
         </motion.div>
@@ -110,7 +123,14 @@ export default function AdminDashboard() {
   )
 }
 
-function DashboardCard({ title, value, icon: Icon, color }: { title: string; value: string; icon: any; color: string }) {
+type DashboardCardProps = {
+  title: string
+  value: string
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
+  color: string
+}
+
+function DashboardCard({ title, value, icon: Icon, color }: DashboardCardProps) {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
