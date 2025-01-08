@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -13,7 +13,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 type Timing = {
   from: string;
@@ -68,10 +68,18 @@ const AdminTimeTablePage = () => {
             setSchedule(data.schedule);
           }
         } else {
-          toast({ title: 'Error', description: 'Failed to fetch existing schedule.', variant: 'destructive' });
+          toast({
+            title: 'Error',
+            description: 'Failed to fetch existing schedule.',
+            variant: 'destructive',
+          });
         }
       } catch {
-        toast({ title: 'Error', description: 'An unexpected error occurred while fetching the schedule.', variant: 'destructive' });
+        toast({
+          title: 'Error',
+          description: 'An unexpected error occurred while fetching the schedule.',
+          variant: 'destructive',
+        });
       }
     };
 
@@ -120,30 +128,44 @@ const AdminTimeTablePage = () => {
       });
 
       if (response.ok) {
-        toast({ title: 'Success', description: 'Time table updated successfully.', variant: 'default' });
+        toast({
+          title: 'Success',
+          description: 'Time table updated successfully.',
+          variant: 'default',
+        });
         router.push('/time-table');
       } else {
-        toast({ title: 'Error', description: 'Failed to update time table.', variant: 'destructive' });
+        toast({
+          title: 'Error',
+          description: 'Failed to update time table.',
+          variant: 'destructive',
+        });
       }
     } catch {
-      toast({ title: 'Error', description: 'An unexpected error occurred.', variant: 'destructive' });
+      toast({
+        title: 'Error',
+        description: 'An unexpected error occurred.',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="container mx-auto px-4 py-16 max-w-4xl">
-      <Card className="mb-8">
+    <div className="container mx-auto px-6 py-16 max-w-4xl bg-gray-50 rounded-lg shadow-md">
+      <Card className="mb-8 bg-white">
         <CardHeader>
-          <CardTitle className="text-3xl font-bold">Admin Panel - Time Table</CardTitle>
+          <CardTitle className="text-3xl font-extrabold text-blue-600">
+            Admin Panel - Time Table
+          </CardTitle>
         </CardHeader>
         <CardContent>
           {schedule.map((day, index) => (
-            <Card key={index} className="mb-8">
+            <Card key={index} className="mb-8 bg-blue-50">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-xl font-semibold">
+                  <CardTitle className="text-xl font-semibold text-blue-700">
                     Day: {day.day || `Day ${index + 1}`}
                   </CardTitle>
                   <div className="flex items-center space-x-2">
@@ -155,7 +177,7 @@ const AdminTimeTablePage = () => {
                         setSchedule(updatedSchedule);
                       }}
                     >
-                      <SelectTrigger className="w-[180px]">
+                      <SelectTrigger className="w-[180px] bg-white text-gray-700">
                         <SelectValue placeholder="Select a day" />
                       </SelectTrigger>
                       <SelectContent>
@@ -170,6 +192,7 @@ const AdminTimeTablePage = () => {
                       variant="destructive"
                       size="icon"
                       onClick={() => handleDeleteDay(index)}
+                      className="bg-red-600 text-white hover:bg-red-700"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -179,18 +202,23 @@ const AdminTimeTablePage = () => {
               <CardContent>
                 <Button
                   onClick={() => handleAddTiming(index)}
-                  className="mb-4"
+                  className="mb-4 bg-blue-600 text-white hover:bg-blue-700"
                   variant="outline"
                 >
                   <PlusCircle className="mr-2 h-4 w-4" /> Add Timing
                 </Button>
                 {day.timings.map((timing, timingIndex) => (
-                  <div key={timingIndex} className="grid grid-cols-5 gap-4 mb-4 items-center">
+                  <div
+                    key={timingIndex}
+                    className="grid grid-cols-5 gap-4 mb-4 items-center bg-white p-4 rounded-lg shadow-sm"
+                  >
                     <Select
                       value={timing.from}
-                      onValueChange={(value) => handleInputChange(index, timingIndex, 'from', value)}
+                      onValueChange={(value) =>
+                        handleInputChange(index, timingIndex, 'from', value)
+                      }
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-gray-50 text-gray-800 border border-gray-300">
                         <SelectValue placeholder="From">
                           {timing.from ? formatTime(timing.from) : 'From'}
                         </SelectValue>
@@ -205,9 +233,11 @@ const AdminTimeTablePage = () => {
                     </Select>
                     <Select
                       value={timing.to}
-                      onValueChange={(value) => handleInputChange(index, timingIndex, 'to', value)}
+                      onValueChange={(value) =>
+                        handleInputChange(index, timingIndex, 'to', value)
+                      }
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-gray-50 text-gray-800 border border-gray-300">
                         <SelectValue placeholder="To">
                           {timing.to ? formatTime(timing.to) : 'To'}
                         </SelectValue>
@@ -224,18 +254,25 @@ const AdminTimeTablePage = () => {
                       type="text"
                       placeholder="Doctor"
                       value={timing.doctor}
-                      onChange={(e) => handleInputChange(index, timingIndex, 'doctor', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(index, timingIndex, 'doctor', e.target.value)
+                      }
+                      className="border border-gray-300 rounded-md text-gray-800"
                     />
                     <Input
                       type="text"
                       placeholder="Specialty"
                       value={timing.specialty}
-                      onChange={(e) => handleInputChange(index, timingIndex, 'specialty', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(index, timingIndex, 'specialty', e.target.value)
+                      }
+                      className="border border-gray-300 rounded-md text-gray-800"
                     />
                     <Button
                       variant="destructive"
                       size="icon"
                       onClick={() => handleDeleteTiming(index, timingIndex)}
+                      className="bg-red-600 text-white hover:bg-red-700"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -247,12 +284,19 @@ const AdminTimeTablePage = () => {
         </CardContent>
       </Card>
       <div className="flex gap-4 justify-end">
-        <Button onClick={handleAddDay} variant="outline">
+        <Button
+          onClick={handleAddDay}
+          variant="outline"
+          className="bg-green-600 text-white hover:bg-green-700"
+        >
           <PlusCircle className="mr-2 h-4 w-4" /> Add Day
         </Button>
         <Button
           onClick={handleSave}
           disabled={loading}
+          className={`${
+            loading ? 'bg-gray-400 text-gray-200' : 'bg-blue-600 text-white hover:bg-blue-700'
+          }`}
         >
           {loading ? (
             <>
