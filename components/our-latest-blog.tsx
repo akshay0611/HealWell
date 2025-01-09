@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from "react"
+import { useRouter } from "next/navigation" // Update import to next/navigation
 import { motion } from "framer-motion"
 import Image from "next/image"
 import { ArrowRight, User, Calendar } from 'lucide-react'
@@ -9,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 
 interface BlogPost {
-  id: string;
+  _id: string;
   title: string;
   excerpt: string;
   description: string;
@@ -22,37 +23,41 @@ interface BlogPost {
 
 const OurLatestBlog = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
+  const router = useRouter() // Ensure it's in a client-only component
 
   useEffect(() => {
     const fetchBlogPosts = async () => {
       try {
-        const response = await fetch('/api/blogs')
-        const data = await response.json()
-
+        const response = await fetch('/api/blogs');
+        const data = await response.json();
+        console.log("Fetched blogs:", data.blogs); // Check the ID structure
         if (data.success) {
-          // Slice the first 3 blog posts
-          setBlogPosts(data.blogs.slice(0, 3))
+          setBlogPosts(data.blogs.slice(0, 3));
         } else {
-          console.error("Error fetching blogs")
+          console.error("Error fetching blogs");
         }
       } catch (error) {
-        console.error("Error fetching blogs:", error)
+        console.error("Error fetching blogs:", error);
       }
-    }
-
-    fetchBlogPosts()
-  }, [])
+    };
+    fetchBlogPosts();
+  }, []);  
 
   // Helper function to format the date
-const formatDate = (date: string) => {
-  const options: Intl.DateTimeFormatOptions = { 
-    day: '2-digit', 
-    month: '2-digit', 
-    year: 'numeric' 
-  };
-  const formattedDate = new Date(date).toLocaleDateString('en-GB', options);
-  return formattedDate;
-};
+  const formatDate = (date: string) => {
+    const options: Intl.DateTimeFormatOptions = { 
+      day: '2-digit', 
+      month: '2-digit', 
+      year: 'numeric' 
+    }
+    const formattedDate = new Date(date).toLocaleDateString('en-GB', options)
+    return formattedDate
+  }
+
+  const handleRedirect = (id: string) => {
+    console.log(`Redirecting to /blog/${id}`);
+    router.push(`/blog/${id}`);
+  };  
 
   return (
     <section className="relative bg-gradient-to-br from-blue-50 to-white overflow-hidden py-24">
@@ -85,7 +90,7 @@ const formatDate = (date: string) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {blogPosts.map((post, index) => (
             <motion.div
-              key={post.id}
+              key={post._id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -114,7 +119,7 @@ const formatDate = (date: string) => {
                     </div>
                     <div className="flex items-center">
                       <Calendar className="w-4 h-4 mr-2" />
-                      {formatDate(post.date)} {/* Format the date */}
+                      {formatDate(post.date)}
                     </div>
                   </div>
                   <h3 className="text-xl font-semibold mb-3 text-blue-900 group-hover:text-blue-700 transition-colors duration-300">
@@ -127,6 +132,7 @@ const formatDate = (date: string) => {
                   <Button 
                     variant="link" 
                     className="p-0 h-auto text-blue-600 hover:text-blue-800 transition-colors duration-300 flex items-center group"
+                    onClick={() => handleRedirect(post._id)}
                   >
                     Read More 
                     <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
