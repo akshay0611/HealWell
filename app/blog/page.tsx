@@ -1,6 +1,6 @@
 'use client';
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from 'next/image';
 import Link from 'next/link';
@@ -23,58 +23,19 @@ const stagger = {
 };
 
 interface BlogPost {
-  id: string;
+  _id: string;
   title: string;
   excerpt: string;
   category: string;
 }
 
-const blogPosts: BlogPost[] = [
-  {
-    id: '1',
-    title: '10 Simple Habits for a Healthier Life',
-    excerpt: 'Discover easy-to-implement daily habits that can significantly improve your overall health and well-being.',
-    category: 'Health & Wellness',
-  },
-  {
-    id: '2',
-    title: 'Understanding Common Heart Conditions',
-    excerpt: 'Learn about the most prevalent heart conditions, their symptoms, and how to maintain a healthy heart.',
-    category: 'Cardiology',
-  },
-  {
-    id: '3',
-    title: 'The Importance of Mental Health in Overall Wellness',
-    excerpt: 'Explore the connection between mental and physical health, and discover strategies for maintaining good mental health.',
-    category: 'Mental Health',
-  },
-  {
-    id: '4',
-    title: 'Nutrition Tips for a Balanced Diet',
-    excerpt: 'Get expert advice on creating a balanced diet that meets all your nutritional needs and supports your health goals.',
-    category: 'Nutrition',
-  },
-  {
-    id: '5',
-    title: 'The Latest Advancements in Cancer Research',
-    excerpt: 'Stay informed about the most recent breakthroughs in cancer research and treatment options.',
-    category: 'Oncology',
-  },
-  {
-    id: '6',
-    title: 'Pediatric Care: What Every Parent Should Know',
-    excerpt: 'Essential information for parents on common childhood illnesses, vaccinations, and developmental milestones.',
-    category: 'Pediatrics',
-  },
-];
-
-const BlogCard: React.FC<BlogPost> = ({ id, title, excerpt, category }) => {
+const BlogCard: React.FC<BlogPost> = ({ _id, title, excerpt, category }) => {
   return (
     <motion.div 
       whileHover={{ y: -5 }}
       className="bg-white rounded-lg shadow-md overflow-hidden transition-shadow duration-300 hover:shadow-lg"
     >
-      <Link href={`/blog/${id}`} className="block">
+      <Link href={`/blog/${_id}`} className="block">
         <Image
           className="h-48 w-full object-cover"
           src="/placeholder.svg"
@@ -94,6 +55,27 @@ const BlogCard: React.FC<BlogPost> = ({ id, title, excerpt, category }) => {
 };
 
 const BlogPage = () => {
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch('/api/blogs');
+        const data = await response.json();
+        if (data.success) {
+          setBlogPosts(data.blogs);
+        }
+      } catch (error) {
+        console.error('Failed to fetch blogs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-white">
       <TopBar />
@@ -128,18 +110,22 @@ const BlogPage = () => {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Recent Articles</h2>
-          <motion.div 
-            variants={stagger}
-            initial="initial"
-            animate="animate"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {blogPosts.map((post) => (
-              <motion.div key={post.id} variants={fadeInUp}>
-                <BlogCard {...post} />
-              </motion.div>
-            ))}
-          </motion.div>
+          {loading ? (
+            <div className="text-center text-gray-600">Loading...</div>
+          ) : (
+            <motion.div 
+              variants={stagger}
+              initial="initial"
+              animate="animate"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {blogPosts.map((post) => (
+                <motion.div key={post._id} variants={fadeInUp}>
+                  <BlogCard {...post} />
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
         </div>
       </section>
 
