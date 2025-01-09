@@ -1,0 +1,104 @@
+/* Paragraph Styling */
+.blog-content p {
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #374151; /* Dark gray for text */
+  text-align: justify; /* Clean text alignment */
+  text-justify: inter-word;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Ordered List Styling */
+.blog-content ol {
+  padding-left: 1.5rem;
+  list-style-type: decimal;
+  color: #2d3748; /* Darker gray for list items */
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+/* List Item Styling */
+.blog-content li {
+  margin-bottom: 1rem;
+  position: relative;
+  padding-left: 1rem;
+  color: #2d3748;
+}
+
+/* Strong Text Styling */
+.blog-content strong {
+  font-weight: bold;
+  color: #1d4ed8; /* Tailwind blue for emphasis */
+  padding: 0.2rem;
+  transition: color 0.3s ease;
+}
+
+/* Hover effect for strong text */
+.blog-content strong:hover {
+  color: #1e40af; /* Slightly darker blue on hover */
+}
+
+/* Anchor Styling */
+.blog-content a {
+  color: #2563eb; /* Tailwind blue-600 */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.blog-content a:hover {
+  color: #1d4ed8; /* Tailwind blue-700 */
+  text-decoration: underline;
+}
+
+/* Heading Styling */
+.blog-content h1, .blog-content h2, .blog-content h3 {
+  margin-bottom: 1.5rem;
+}
+
+.blog-content h1 {
+  font-size: 2.5rem; /* Larger size for h1 */
+  font-weight: bold;
+  color: #1e40af; /* Dark blue */
+}
+
+.blog-content h2 {
+  font-size: 2rem; /* Slightly smaller for h2 */
+  font-weight: semibold;
+  color: #2563eb; /* Tailwind blue */
+}
+
+.blog-content h3 {
+  font-size: 1.75rem; /* For h3 */
+  font-weight: semibold;
+  color: #1f2937; /* Slightly darker gray */
+}
+
+/* Add spacing for elements like headings */
+.blog-content h1, .blog-content h2, .blog-content h3, .blog-content p, .blog-content ol {
+  margin-top: 1.5rem; /* Space between elements */
+}
+
+/* Responsive typography for mobile */
+@media (max-width: 768px) {
+  .blog-content p {
+    font-size: 0.95rem; /* Slightly smaller for smaller screens */
+  }
+
+  .blog-content ol {
+    padding-left: 1.25rem; /* Adjust padding for smaller screens */
+  }
+
+  .blog-content h1 {
+    font-size: 2rem; /* Smaller h1 for mobile */
+  }
+
+  .blog-content h2 {
+    font-size: 1.75rem; /* Smaller h2 for mobile */
+  }
+
+  .blog-content h3 {
+    font-size: 1.5rem; /* Smaller h3 for mobile */
+  }
+}

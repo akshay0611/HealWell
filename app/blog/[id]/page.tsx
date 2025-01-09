@@ -6,6 +6,7 @@ import { TopBar } from '@/components/top-bar';
 import { Navigation } from '@/components/navigation';
 import Footer from '@/components/footer';
 import { ArrowLeft, Calendar, Clock, User, Tag } from 'lucide-react';
+import './blogStyles.css';
 
 interface BlogPost {
   title: string;
@@ -49,6 +50,15 @@ const BlogDetailPage = () => {
     return <div>Blog post not found</div>;
   }
 
+  // Format the date to dd/mm/yyyy format
+  const formatDate = (date: string) => {
+    const parsedDate = new Date(date);
+    const day = parsedDate.getDate().toString().padStart(2, '0');
+    const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0');
+    const year = parsedDate.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-white">
       <TopBar />
@@ -76,7 +86,7 @@ const BlogDetailPage = () => {
                 </div>
                 <div className="flex items-center mr-4 mb-2">
                   <Calendar className="w-4 h-4 mr-1" />
-                  <span>{blogPost.date}</span>
+                  <span>{formatDate(blogPost.date)}</span>
                 </div>
                 <div className="flex items-center mr-4 mb-2">
                   <Clock className="w-4 h-4 mr-1" />
@@ -87,8 +97,11 @@ const BlogDetailPage = () => {
                   <span>{blogPost.category}</span>
                 </div>
               </div>
-              <div className="prose prose-lg prose-blue max-w-none">
-                {blogPost.content}
+              <div className="blog-content">
+                <div
+                  className="prose prose-lg prose-blue max-w-none"
+                  dangerouslySetInnerHTML={{ __html: blogPost.content }}
+                ></div>
               </div>
             </div>
           </article>
