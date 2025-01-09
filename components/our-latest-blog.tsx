@@ -1,6 +1,6 @@
 'use client'
 
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
 import { ArrowRight, User, Calendar } from 'lucide-react'
@@ -8,37 +8,52 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 
-const blogPosts = [
-    {
-      id: 1,
-      title: "Advancing Modern Healthcare Practices",
-      description: "Explore how cutting-edge innovations are transforming the delivery of quality healthcare services worldwide.",
-      image: "/images/blog_1.jpg", 
-      date: "May 02, 2025",
-      author: "Heal Well Team",
-      readTime: "5 min read",
-    },
-    {
-      id: 2,
-      title: "The Essential Role of Hospitals in Community Health",
-      description: "Discover the pivotal role hospitals play in building healthier communities and fostering well-being.",
-      image: "/images/blog_2.jpg", 
-      date: "May 02, 2025",
-      author: "Heal Well Team",
-      readTime: "4 min read",
-    },
-    {
-      id: 3,
-      title: "Infection Prevention: Building a Safer Tomorrow",
-      description: "Learn about strategies and innovations in infection prevention to ensure a safer healthcare environment for all.",
-      image: "/images/blog_3.jpg", 
-      date: "May 02, 2025",
-      author: "Heal Well Team",
-      readTime: "6 min read",
-    },
-]
+interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  description: string;
+  imageUrl: string;
+  date: string;
+  author: string;
+  readTime: string;
+  category: string;
+}
 
 const OurLatestBlog = () => {
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
+
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      try {
+        const response = await fetch('/api/blogs')
+        const data = await response.json()
+
+        if (data.success) {
+          // Slice the first 3 blog posts
+          setBlogPosts(data.blogs.slice(0, 3))
+        } else {
+          console.error("Error fetching blogs")
+        }
+      } catch (error) {
+        console.error("Error fetching blogs:", error)
+      }
+    }
+
+    fetchBlogPosts()
+  }, [])
+
+  // Helper function to format the date
+const formatDate = (date: string) => {
+  const options: Intl.DateTimeFormatOptions = { 
+    day: '2-digit', 
+    month: '2-digit', 
+    year: 'numeric' 
+  };
+  const formattedDate = new Date(date).toLocaleDateString('en-GB', options);
+  return formattedDate;
+};
+
   return (
     <section className="relative bg-gradient-to-br from-blue-50 to-white overflow-hidden py-24">
       {/* Decorative elements */}
@@ -80,14 +95,14 @@ const OurLatestBlog = () => {
                 <CardHeader className="p-0 relative group">
                   <div className="relative h-64 overflow-hidden rounded-t-xl">
                     <Image
-                      src={post.image}
+                      src={post.imageUrl}
                       alt={post.title}
                       fill
                       className="object-cover transition-transform duration-300 transform group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 group-hover:to-black/60 transition-all duration-300" />
                     <Badge className="absolute top-4 left-4 bg-blue-500 hover:bg-blue-600 transition-colors duration-300">
-                      MEDICAL
+                      {post.category}
                     </Badge>
                   </div>
                 </CardHeader>
@@ -99,12 +114,13 @@ const OurLatestBlog = () => {
                     </div>
                     <div className="flex items-center">
                       <Calendar className="w-4 h-4 mr-2" />
-                      {post.date}
+                      {formatDate(post.date)} {/* Format the date */}
                     </div>
                   </div>
                   <h3 className="text-xl font-semibold mb-3 text-blue-900 group-hover:text-blue-700 transition-colors duration-300">
                     {post.title}
                   </h3>
+                  <p> {post.excerpt} </p>
                   <p className="text-gray-600 line-clamp-3">{post.description}</p>
                 </CardContent>
                 <CardFooter className="pt-4 pb-6 px-6 flex justify-between items-center">
