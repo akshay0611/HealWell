@@ -152,13 +152,14 @@ const OurLatestBlog = () => {
           className="mt-16 text-center"
         >
           <Button 
-            variant="outline" 
-            size="lg"
-            className="bg-white text-blue-600 border-blue-600 hover:bg-blue-50 transition-all duration-300 px-8 py-3 rounded-full font-semibold"
-          >
-            Explore All Articles
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </Button>
+  variant="outline" 
+  size="lg"
+  className="bg-white text-blue-600 border-blue-600 hover:bg-blue-50 transition-all duration-300 px-8 py-3 rounded-full font-semibold"
+  onClick={() => router.push('/blog')} // Add this line
+>
+  Explore All Articles
+  <ArrowRight className="w-5 h-5 ml-2" />
+</Button>
         </motion.div>
       </div>
     </section>
