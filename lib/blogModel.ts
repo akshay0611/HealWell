@@ -9,6 +9,7 @@ export interface IBlog extends Document {
   date: Date;
   readTime: string;
   category: string;
+  imageUrl: string;  // Added imageUrl for blog-specific images
 }
 
 // Define the Blog Schema
@@ -39,6 +40,10 @@ const BlogSchema: Schema = new Schema<IBlog>({
   },
   category: {
     type: String,
+    required: true,
+  },
+  imageUrl: {
+    type: String,  // Store the image URL here
     required: true,
   },
 });

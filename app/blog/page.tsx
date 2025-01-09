@@ -27,18 +27,20 @@ interface BlogPost {
   title: string;
   excerpt: string;
   category: string;
+  imageUrl: string;  // Added imageUrl
 }
 
-const BlogCard: React.FC<BlogPost> = ({ _id, title, excerpt, category }) => {
+const BlogCard: React.FC<BlogPost> = ({ _id, title, excerpt, category, imageUrl }) => {
   return (
     <motion.div 
       whileHover={{ y: -5 }}
       className="bg-white rounded-lg shadow-md overflow-hidden transition-shadow duration-300 hover:shadow-lg"
     >
       <Link href={`/blog/${_id}`} className="block">
+        {/* Use the dynamic imageUrl here */}
         <Image
           className="h-48 w-full object-cover"
-          src="/placeholder.svg"
+          src={imageUrl || "/placeholder.jpg"} // Fallback if imageUrl is missing
           alt={title}
           width={400}
           height={200}
@@ -53,6 +55,7 @@ const BlogCard: React.FC<BlogPost> = ({ _id, title, excerpt, category }) => {
     </motion.div>
   );
 };
+
 
 const BlogPage = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
