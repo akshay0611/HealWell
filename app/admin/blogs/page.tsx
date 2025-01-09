@@ -6,11 +6,10 @@ import { toast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Loader2, Trash2 } from 'lucide-react';
+import { PlusCircle, Loader2, Trash2, Edit2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { IBlog } from '@/lib/blogModel';
 
-// Blog categories or tags
 const categories = ['Health', 'Fitness', 'Nutrition', 'Wellness', 'Mental Health'];
 
 const AdminBlogsPage = () => {
@@ -24,7 +23,9 @@ const AdminBlogsPage = () => {
     readTime: '',
     category: categories[0],
     imageUrl: '',
-  });  
+  });
+  const [editMode, setEditMode] = useState(false);
+  const [editingBlogId, setEditingBlogId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -33,7 +34,6 @@ const AdminBlogsPage = () => {
       try {
         const response = await fetch('/api/blogs');
         if (response.ok) {
-          // Explicitly type the response as an array of IBlog objects
           const data: { blogs: IBlog[] } = await response.json();
           setBlogs(data.blogs);
         } else {
@@ -51,19 +51,24 @@ const AdminBlogsPage = () => {
         });
       }
     };
-  
+
     fetchBlogs();
-  }, []);  
+  }, []);
 
   const handleInputChange = (field: keyof IBlog, value: string) => {
     setNewBlog({ ...newBlog, [field]: value });
   };
 
-  const handleAddBlog = async () => {
+  const handleAddOrUpdateBlog = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/blogs', {
-        method: 'POST',
+      const endpoint = editMode
+        ? `/api/blogs/${editingBlogId}`
+        : '/api/blogs';
+      const method = editMode ? 'PATCH' : 'POST';
+
+      const response = await fetch(endpoint, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newBlog),
       });
@@ -71,7 +76,7 @@ const AdminBlogsPage = () => {
       if (response.ok) {
         toast({
           title: 'Success',
-          description: 'Blog created successfully.',
+          description: editMode ? 'Blog updated successfully.' : 'Blog created successfully.',
           variant: 'default',
         });
         setNewBlog({
@@ -84,11 +89,13 @@ const AdminBlogsPage = () => {
           category: categories[0],
           imageUrl: '',
         });
-        router.refresh(); // Refresh the page to show the newly added blog
+        setEditMode(false);
+        setEditingBlogId(null);
+        router.refresh();
       } else {
         toast({
           title: 'Error',
-          description: 'Failed to create blog.',
+          description: 'Failed to save blog.',
           variant: 'destructive',
         });
       }
@@ -103,20 +110,26 @@ const AdminBlogsPage = () => {
     }
   };
 
+  const handleEditBlog = (blog: IBlog) => {
+    setEditMode(true);
+    setEditingBlogId(blog._id);
+    setNewBlog({ ...blog });
+  };
+
   const handleDeleteBlog = async (id: string) => {
     setLoading(true);
     try {
       const response = await fetch(`/api/blogs/${id}`, {
         method: 'DELETE',
       });
-  
+
       if (response.ok) {
         toast({
           title: 'Success',
           description: 'Blog deleted successfully.',
           variant: 'default',
         });
-        setBlogs(blogs.filter(blog => blog._id !== id));
+        setBlogs(blogs.filter((blog) => blog._id !== id));
       } else {
         toast({
           title: 'Error',
@@ -133,7 +146,7 @@ const AdminBlogsPage = () => {
     } finally {
       setLoading(false);
     }
-  };  
+  };
 
   return (
     <div className="container mx-auto px-6 py-16 max-w-4xl bg-gray-50 rounded-lg shadow-md">
@@ -145,7 +158,9 @@ const AdminBlogsPage = () => {
         </CardHeader>
         <CardContent>
           <div className="mb-8">
-            <h2 className="text-xl font-bold">Create New Blog</h2>
+            <h2 className="text-xl font-bold">
+              {editMode ? 'Edit Blog' : 'Create New Blog'}
+            </h2>
             <div className="space-y-4">
               <Input
                 placeholder="Title"
@@ -193,33 +208,48 @@ const AdminBlogsPage = () => {
                 </SelectContent>
               </Select>
               <Button
-                onClick={handleAddBlog}
+                onClick={handleAddOrUpdateBlog}
                 className="w-full bg-blue-600 text-white"
                 disabled={loading}
               >
                 {loading ? <Loader2 className="animate-spin" /> : <PlusCircle />}
-                {loading ? 'Adding...' : 'Add Blog'}
+                {loading
+                  ? 'Saving...'
+                  : editMode
+                  ? 'Update Blog'
+                  : 'Add Blog'}
               </Button>
             </div>
           </div>
           <h2 className="text-xl font-bold">Existing Blogs</h2>
           <div>
-          {blogs.map((blog) => (
-  <Card key={String(blog._id)} className="mb-4 bg-blue-50">
-    <CardHeader>
-      <div className="flex items-center justify-between">
-        <CardTitle className="text-xl font-semibold text-blue-700">{blog.title}</CardTitle>
-        <Button
-          variant="destructive"
-          onClick={() => handleDeleteBlog(String(blog._id))}  // Cast to string explicitly
-          className="text-red-600"
-        >
-          <Trash2 />
-        </Button>
-      </div>
-    </CardHeader>
-  </Card>
-))}
+            {blogs.map((blog) => (
+              <Card key={String(blog._id)} className="mb-4 bg-blue-50">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-xl font-semibold text-blue-700">
+                      {blog.title}
+                    </CardTitle>
+                    <div className="flex space-x-2">
+                      <Button
+                        variant="default"
+                        onClick={() => handleEditBlog(blog)}
+                        className="text-blue-600"
+                      >
+                        <Edit2 />
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        onClick={() => handleDeleteBlog(String(blog._id))}
+                        className="text-red-600"
+                      >
+                        <Trash2 />
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+              </Card>
+            ))}
           </div>
         </CardContent>
       </Card>

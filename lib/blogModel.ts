@@ -2,6 +2,7 @@ import mongoose, { Document, Schema, Model, model } from 'mongoose';
 
 // Define the Blog interface
 export interface IBlog extends Document {
+  _id: string; // Explicitly type _id as string
   title: string;
   excerpt: string;
   content: string;
