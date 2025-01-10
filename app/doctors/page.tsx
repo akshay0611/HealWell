@@ -255,15 +255,26 @@ export default function DoctorsPage() {
                     <div className="flex items-center">
                       <Calendar className="text-blue-500 mr-3" />
                       <span>Available: {selectedDoctor.availability}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Phone className="text-blue-500 mr-3" />
-                      <span>{selectedDoctor.phone}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Mail className="text-blue-500 mr-3" />
-                      <span>{selectedDoctor.email}</span>
-                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <Phone className="text-blue-500 mr-3" />
+                    <a
+                    href={`tel:${selectedDoctor.phone}`}
+                    className="text-black-700 hover:underline"
+                    >
+                    {selectedDoctor.phone}
+                    </a>
+                  </div>
+                  
+                  <div className="flex items-center">
+                    <Mail className="text-blue-500 mr-3" />
+                    <a
+                    href={`mailto:${selectedDoctor.email}`}
+                    className="text-black-700 hover:underline"
+                    >
+                    {selectedDoctor.email}
+                    </a>
+                  </div>
                   </div>
                 </div>
                 <div>
