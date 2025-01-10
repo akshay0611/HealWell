@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { LayoutDashboard, Calendar, Users, Clock, Settings, BookOpen, LogOut } from 'lucide-react'
+import { LayoutDashboard, Calendar, Users, Clock, Settings, BookOpen, LogOut, Briefcase } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -15,6 +15,7 @@ const navItems = [
   { href: '/admin/appointments', label: 'Appointments', icon: Clock },
   { href: '/admin/doctors', label: 'Doctors', icon: Users },
   { href: '/admin/blogs', label: 'Blogs', icon: BookOpen },
+  { href: '/admin/careers', label: 'Careers', icon: Briefcase }, 
   { href: '/admin/settings', label: 'Settings', icon: Settings },
 ]
 
