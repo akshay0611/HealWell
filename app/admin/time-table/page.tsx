@@ -3,10 +3,11 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/hooks/use-toast';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { motion, AnimatePresence } from 'framer-motion';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Save, Loader2, Trash2 } from 'lucide-react';
+import { PlusCircle, Save, Loader2, Trash2, Clock, User, Stethoscope } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -14,6 +15,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 type Timing = {
   from: string;
@@ -153,164 +156,198 @@ const AdminTimeTablePage = () => {
   };
 
   return (
-    <div className="container mx-auto px-6 py-16 max-w-4xl bg-gray-50 rounded-lg shadow-md">
-      <Card className="mb-8 bg-white">
-        <CardHeader>
-          <CardTitle className="text-3xl font-extrabold text-blue-600">
-            Admin Panel - Time Table
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {schedule.map((day, index) => (
-            <Card key={index} className="mb-8 bg-blue-50">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-xl font-semibold text-blue-700">
-                    Day: {day.day || `Day ${index + 1}`}
-                  </CardTitle>
-                  <div className="flex items-center space-x-2">
-                    <Select
-                      value={day.day}
-                      onValueChange={(value) => {
-                        const updatedSchedule = [...schedule];
-                        updatedSchedule[index].day = value;
-                        setSchedule(updatedSchedule);
-                      }}
-                    >
-                      <SelectTrigger className="w-[180px] bg-white text-gray-700">
-                        <SelectValue placeholder="Select a day" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {days.map((d) => (
-                          <SelectItem key={d} value={d}>
-                            {d}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <Button
-                      variant="destructive"
-                      size="icon"
-                      onClick={() => handleDeleteDay(index)}
-                      className="bg-red-600 text-white hover:bg-red-700"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <Button
-                  onClick={() => handleAddTiming(index)}
-                  className="mb-4 bg-blue-600 text-white hover:bg-blue-700"
-                  variant="outline"
-                >
-                  <PlusCircle className="mr-2 h-4 w-4" /> Add Timing
-                </Button>
-                {day.timings.map((timing, timingIndex) => (
-                  <div
-                    key={timingIndex}
-                    className="grid grid-cols-5 gap-4 mb-4 items-center bg-white p-4 rounded-lg shadow-sm"
-                  >
-                    <Select
-                      value={timing.from}
-                      onValueChange={(value) =>
-                        handleInputChange(index, timingIndex, 'from', value)
-                      }
-                    >
-                      <SelectTrigger className="bg-gray-50 text-gray-800 border border-gray-300">
-                        <SelectValue placeholder="From">
-                          {timing.from ? formatTime(timing.from) : 'From'}
-                        </SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        {timeSlots.map((slot) => (
-                          <SelectItem key={slot} value={slot}>
-                            {formatTime(slot)}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <Select
-                      value={timing.to}
-                      onValueChange={(value) =>
-                        handleInputChange(index, timingIndex, 'to', value)
-                      }
-                    >
-                      <SelectTrigger className="bg-gray-50 text-gray-800 border border-gray-300">
-                        <SelectValue placeholder="To">
-                          {timing.to ? formatTime(timing.to) : 'To'}
-                        </SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        {timeSlots.map((slot) => (
-                          <SelectItem key={slot} value={slot}>
-                            {formatTime(slot)}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <Input
-                      type="text"
-                      placeholder="Doctor"
-                      value={timing.doctor}
-                      onChange={(e) =>
-                        handleInputChange(index, timingIndex, 'doctor', e.target.value)
-                      }
-                      className="border border-gray-300 rounded-md text-gray-800"
-                    />
-                    <Input
-                      type="text"
-                      placeholder="Specialty"
-                      value={timing.specialty}
-                      onChange={(e) =>
-                        handleInputChange(index, timingIndex, 'specialty', e.target.value)
-                      }
-                      className="border border-gray-300 rounded-md text-gray-800"
-                    />
-                    <Button
-                      variant="destructive"
-                      size="icon"
-                      onClick={() => handleDeleteTiming(index, timingIndex)}
-                      className="bg-red-600 text-white hover:bg-red-700"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
+    <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Card className="mb-8 bg-white shadow-lg">
+          <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-t-lg">
+            <CardTitle className="text-3xl font-extrabold">
+              Admin Panel - Time Table
+            </CardTitle>
+            <CardDescription className="text-blue-100">
+              Manage your weekly schedule with ease
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="p-6">
+            <ScrollArea className="h-[600px] rounded-md border p-4">
+              <Accordion type="single" collapsible className="w-full">
+                {schedule.map((day, index) => (
+                  <AccordionItem value={`day-${index}`} key={index}>
+                    <AccordionTrigger className="hover:no-underline">
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center space-x-2">
+                          <Select
+                            value={day.day}
+                            onValueChange={(value) => {
+                              const updatedSchedule = [...schedule];
+                              updatedSchedule[index].day = value;
+                              setSchedule(updatedSchedule);
+                            }}
+                          >
+                            <SelectTrigger className="w-[180px] bg-white text-gray-700">
+                              <SelectValue placeholder="Select a day" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {days.map((d) => (
+                                <SelectItem key={d} value={d}>
+                                  {d}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <span className="text-sm text-gray-500">
+                            {day.timings.length} time slot(s)
+                          </span>
+                        </div>
+                        <Button
+                          variant="destructive"
+                          size="icon"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteDay(index);
+                          }}
+                          className="bg-red-600 text-white hover:bg-red-700"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="space-y-4">
+                        <Button
+                          onClick={() => handleAddTiming(index)}
+                          className="w-full bg-blue-600 text-white hover:bg-blue-700"
+                          variant="outline"
+                        >
+                          <PlusCircle className="mr-2 h-4 w-4" /> Add Timing
+                        </Button>
+                        <AnimatePresence>
+                          {day.timings.map((timing, timingIndex) => (
+                            <motion.div
+                              key={timingIndex}
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                              transition={{ duration: 0.2 }}
+                              className="grid grid-cols-5 gap-4 items-center bg-white p-4 rounded-lg shadow-sm border border-gray-200"
+                            >
+                              <div className="col-span-2 flex items-center space-x-2">
+                                <Clock className="text-blue-500" />
+                                <Select
+                                  value={timing.from}
+                                  onValueChange={(value) =>
+                                    handleInputChange(index, timingIndex, 'from', value)
+                                  }
+                                >
+                                  <SelectTrigger className="w-[120px] bg-gray-50 text-gray-800 border border-gray-300">
+                                    <SelectValue placeholder="From">
+                                      {timing.from ? formatTime(timing.from) : 'From'}
+                                    </SelectValue>
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {timeSlots.map((slot) => (
+                                      <SelectItem key={slot} value={slot}>
+                                        {formatTime(slot)}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                                <span>-</span>
+                                <Select
+                                  value={timing.to}
+                                  onValueChange={(value) =>
+                                    handleInputChange(index, timingIndex, 'to', value)
+                                  }
+                                >
+                                  <SelectTrigger className="w-[120px] bg-gray-50 text-gray-800 border border-gray-300">
+                                    <SelectValue placeholder="To">
+                                      {timing.to ? formatTime(timing.to) : 'To'}
+                                    </SelectValue>
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {timeSlots.map((slot) => (
+                                      <SelectItem key={slot} value={slot}>
+                                        {formatTime(slot)}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <User className="text-green-500" />
+                                <Input
+                                  type="text"
+                                  placeholder="Doctor"
+                                  value={timing.doctor}
+                                  onChange={(e) =>
+                                    handleInputChange(index, timingIndex, 'doctor', e.target.value)
+                                  }
+                                  className="border border-gray-300 rounded-md text-gray-800"
+                                />
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <Stethoscope className="text-purple-500" />
+                                <Input
+                                  type="text"
+                                  placeholder="Specialty"
+                                  value={timing.specialty}
+                                  onChange={(e) =>
+                                    handleInputChange(index, timingIndex, 'specialty', e.target.value)
+                                  }
+                                  className="border border-gray-300 rounded-md text-gray-800"
+                                />
+                              </div>
+                              <Button
+                                variant="destructive"
+                                size="icon"
+                                onClick={() => handleDeleteTiming(index, timingIndex)}
+                                className="bg-red-600 text-white hover:bg-red-700"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </motion.div>
+                          ))}
+                        </AnimatePresence>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
                 ))}
-              </CardContent>
-            </Card>
-          ))}
-        </CardContent>
-      </Card>
-      <div className="flex gap-4 justify-end">
-        <Button
-          onClick={handleAddDay}
-          variant="outline"
-          className="bg-green-600 text-white hover:bg-green-700"
-        >
-          <PlusCircle className="mr-2 h-4 w-4" /> Add Day
-        </Button>
-        <Button
-          onClick={handleSave}
-          disabled={loading}
-          className={`${
-            loading ? 'bg-gray-400 text-gray-200' : 'bg-blue-600 text-white hover:bg-blue-700'
-          }`}
-        >
-          {loading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Saving...
-            </>
-          ) : (
-            <>
-              <Save className="mr-2 h-4 w-4" />
-              Save Changes
-            </>
-          )}
-        </Button>
-      </div>
+              </Accordion>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+        <div className="flex gap-4 justify-end">
+          <Button
+            onClick={handleAddDay}
+            variant="outline"
+            className="bg-green-600 text-white hover:bg-green-700"
+          >
+            <PlusCircle className="mr-2 h-4 w-4" /> Add Day
+          </Button>
+          <Button
+            onClick={handleSave}
+            disabled={loading}
+            className={`${
+              loading ? 'bg-gray-400 text-gray-200' : 'bg-blue-600 text-white hover:bg-blue-700'
+            }`}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <Save className="mr-2 h-4 w-4" />
+                Save Changes
+              </>
+            )}
+          </Button>
+        </div>
+      </motion.div>
     </div>
   );
 };
