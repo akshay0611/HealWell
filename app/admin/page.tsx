@@ -24,11 +24,16 @@ type Doctor = {
   _id: string;
 }
 
+type CareerApplication = {
+  _id: string;
+}
+
 export default function AdminDashboard() {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [availableDays, setAvailableDays] = useState<number | null>(null)
   const [totalAppointments, setTotalAppointments] = useState<number | null>(null)
   const [totalDoctors, setTotalDoctors] = useState<number | null>(null)
+  const [totalCareerApplications, setTotalCareerApplications] = useState<number | null>(null)
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000)
@@ -91,6 +96,25 @@ export default function AdminDashboard() {
     }
 
     fetchTotalDoctors()
+  }, [])
+
+  useEffect(() => {
+    async function fetchTotalCareerApplications() {
+      try {
+        const response = await fetch('/api/careers')
+        const data = await response.json()
+
+        if (response.ok && data.success) {
+          setTotalCareerApplications((data.data as CareerApplication[]).length)
+        } else {
+          console.error('Failed to fetch career applications')
+        }
+      } catch (error) {
+        console.error('Error fetching career applications:', error)
+      }
+    }
+
+    fetchTotalCareerApplications()
   }, [])
 
   return (
@@ -159,8 +183,8 @@ export default function AdminDashboard() {
                 color="from-blue-400 to-indigo-500"
               />
               <DashboardCard
-                title="Total Patients"
-                value={null}  // You can add this data fetching logic later
+                title="Total Career Applications"
+                value={totalCareerApplications}
                 icon={Users}
                 color="from-pink-400 to-rose-500"
               />
@@ -220,4 +244,3 @@ function DashboardCard({ title, value, icon: Icon, color }: DashboardCardProps) 
     </motion.div>
   )
 }
-
