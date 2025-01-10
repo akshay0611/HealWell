@@ -99,10 +99,15 @@ export default function AdminNavigation() {
             </p>
           </div>
         </div>
-        <Button variant="outline" className="w-full mt-4 text-indigo-600 hover:text-indigo-700">
-          <LogOut className="w-4 h-4 mr-2" />
-          Logout
-        </Button>
+        <Link href="/" className="w-full">
+  <Button 
+    variant="outline" 
+    className="w-full mt-4 text-indigo-600 hover:text-indigo-700"
+  >
+    <LogOut className="w-4 h-4 mr-2" />
+    Logout
+  </Button>
+</Link>
       </motion.div>
     </motion.nav>
   )
