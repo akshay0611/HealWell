@@ -27,14 +27,14 @@ const createEmailTemplate = (name: string, preferredDate: string, preferredTime:
       day: '2-digit', 
       month: '2-digit', 
       year: 'numeric' 
-    }).split('/').join('');
+    });
   };
 
   return `
     <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
       <h2 style="color: #007BFF; text-align: center;">Appointment Confirmation</h2>
       <p>Dear <strong>${name}</strong>,</p>
-      <p>Thank you for scheduling your appointment with <strong>Heal Well Hospital</strong>. We are pleased to confirm your appointment details as follows:</p>
+      <p>Thank you for scheduling your appointment with <strong>HealWell Hospital</strong>. We are pleased to confirm your appointment details as follows:</p>
       <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
         <tr style="background-color: #f9f9f9;">
           <td style="padding: 10px; border: 1px solid #ddd;"><strong>Date:</strong></td>
@@ -47,11 +47,11 @@ const createEmailTemplate = (name: string, preferredDate: string, preferredTime:
       </table>
       <p>Please ensure you arrive at least <strong>15 minutes</strong> prior to your scheduled time. If you have any questions or need to reschedule, feel free to contact our support team.</p>
       <p style="text-align: center; margin-top: 30px;">
-        <a href="https://heal-well-brown.vercel.app/" style="display: inline-block; background-color: #007BFF; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px;">Visit Our Website</a>
+        <a href="https://www.healwellhospital.com" style="display: inline-block; background-color: #007BFF; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px;">Visit Our Website</a>
       </p>
       <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
       <p style="font-size: 0.9em; text-align: center; color: #555;">
-        HealWell Hospital | Contact Us: +1 (123) 456-7890 | https://heal-well-brown.vercel.app/
+        HealWell Hospital | Contact Us: +1 (123) 456-7890 | www.healwellhospital.com
       </p>
     </div>
   `;
@@ -95,9 +95,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Prepare email content
     const mailOptions = {
-      from: `"Heal Well Hospital" <${process.env.EMAIL_USER}>`,
+      from: `"HealWell Hospital" <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: 'Your Appointment Confirmation - Heal Well Hospital',
+      subject: 'Your Appointment Confirmation - HealWell Hospital',
       html: createEmailTemplate(name, preferredDate, preferredTime),
     };
 
