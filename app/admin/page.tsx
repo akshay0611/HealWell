@@ -1,14 +1,15 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card } from "@/components/ui/card"
-import { motion } from "framer-motion"
-import { Calendar, Users } from 'lucide-react'
+import { motion, AnimatePresence } from "framer-motion"
+import { Calendar, Users, UserIcon as UserMd, Activity } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
 
 // Define types for the fetched data
 type Timing = {
-  startTime: string;  // Replace with the actual type of startTime
-  endTime: string;    // Replace with the actual type of endTime
+  startTime: string;
+  endTime: string;
 }
 
 type ScheduleDay = {
@@ -16,13 +17,18 @@ type ScheduleDay = {
 }
 
 type Appointment = {
-  id: string;  // Replace with actual fields of an appointment
+  id: string;
+}
+
+type Doctor = {
+  _id: string;
 }
 
 export default function AdminDashboard() {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [availableDays, setAvailableDays] = useState<number | null>(null)
   const [totalAppointments, setTotalAppointments] = useState<number | null>(null)
+  const [totalDoctors, setTotalDoctors] = useState<number | null>(null)
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000)
@@ -68,52 +74,95 @@ export default function AdminDashboard() {
     fetchTotalAppointments()
   }, [])
 
+  useEffect(() => {
+    async function fetchTotalDoctors() {
+      try {
+        const response = await fetch('/api/doctor')
+        const data = await response.json()
+
+        if (response.ok && data.success) {
+          setTotalDoctors((data.data as Doctor[]).length)
+        } else {
+          console.error('Failed to fetch doctors')
+        }
+      } catch (error) {
+        console.error('Error fetching doctors:', error)
+      }
+    }
+
+    fetchTotalDoctors()
+  }, [])
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-100">
       <div className="container mx-auto px-4 py-8">
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-white rounded-2xl shadow-xl overflow-hidden"
+          className="bg-white rounded-3xl shadow-2xl overflow-hidden"
         >
           {/* Header Section */}
-          <div className="flex flex-col md:flex-row justify-between items-center bg-gradient-to-r from-indigo-600 to-blue-500 p-6 text-white">
-            <h1 className="text-3xl font-bold mb-4 md:mb-0">Admin Dashboard</h1>
-            <div className="text-right">
+          <div className="flex flex-col md:flex-row justify-between items-center bg-gradient-to-r from-purple-700 to-indigo-600 p-8 text-white">
+            <motion.h1 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="text-4xl font-bold mb-4 md:mb-0"
+            >
+              Admin Dashboard
+            </motion.h1>
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="text-right"
+            >
               <p className="text-lg font-medium opacity-80">
-                {currentTime.toLocaleDateString()}
+                {currentTime.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
               </p>
-              <p className="text-2xl font-bold">
-                {currentTime.toLocaleTimeString()}
+              <p className="text-3xl font-bold mt-2">
+                {currentTime.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
               </p>
-            </div>
+            </motion.div>
           </div>
 
-          <div className="p-6">
+          <div className="p-8">
             {/* Welcome Message */}
             <motion.p 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="text-gray-600 text-lg mb-8"
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="text-gray-600 text-xl mb-12 text-center"
             >
-              Welcome to the <span className="font-bold text-indigo-600">HealWell</span> admin panel. Here&apos;s an overview of the platform&apos;s current status.
+              Welcome to the <span className="font-bold text-purple-700">HealWell</span> admin panel. Here&apos;s an overview of the hospital&apos;s current status.
             </motion.p>
 
             {/* Dashboard Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <DashboardCard
                 title="Available Days"
-                value={availableDays !== null ? availableDays.toString() : 'Loading...'}
+                value={availableDays}
                 icon={Calendar}
-                color="from-yellow-400 to-orange-500"
+                color="from-amber-400 to-orange-500"
               />
               <DashboardCard
                 title="Total Appointments"
-                value={totalAppointments !== null ? totalAppointments.toString() : 'Loading...'}
+                value={totalAppointments}
+                icon={Activity}
+                color="from-emerald-400 to-green-500"
+              />
+              <DashboardCard
+                title="Total Doctors"
+                value={totalDoctors}
+                icon={UserMd}
+                color="from-blue-400 to-indigo-500"
+              />
+              <DashboardCard
+                title="Total Patients"
+                value={null}  // You can add this data fetching logic later
                 icon={Users}
-                color="from-green-400 to-emerald-500"
+                color="from-pink-400 to-rose-500"
               />
             </div>
           </div>
@@ -125,7 +174,7 @@ export default function AdminDashboard() {
 
 type DashboardCardProps = {
   title: string
-  value: string
+  value: number | null
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
   color: string
 }
@@ -133,20 +182,42 @@ type DashboardCardProps = {
 function DashboardCard({ title, value, icon: Icon, color }: DashboardCardProps) {
   return (
     <motion.div
-      whileHover={{ scale: 1.05 }}
-      transition={{ type: "spring", stiffness: 300 }}
+      whileHover={{ scale: 1.03 }}
+      transition={{ type: "spring", stiffness: 400, damping: 10 }}
     >
       <Card className="overflow-hidden rounded-xl shadow-lg">
-        <div className={`p-4 bg-gradient-to-r ${color}`}>
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl font-semibold text-white">{title}</h3>
-            <Icon className="h-8 w-8 text-white opacity-75" />
-          </div>
-        </div>
-        <div className="p-4 bg-white">
-          <p className="text-3xl font-bold text-gray-800">{value}</p>
-        </div>
+        <CardHeader className={`p-6 bg-gradient-to-r ${color}`}>
+          <CardTitle className="flex items-center justify-between text-white">
+            <span className="text-lg font-medium">{title}</span>
+            <Icon className="h-8 w-8 opacity-75" />
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-6 bg-white">
+          <AnimatePresence mode="wait">
+            {value === null ? (
+              <motion.div
+                key="loading"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <Skeleton className="h-12 w-24" />
+              </motion.div>
+            ) : (
+              <motion.p
+                key="value"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="text-4xl font-bold text-gray-800"
+              >
+                {value.toLocaleString()}
+              </motion.p>
+            )}
+          </AnimatePresence>
+        </CardContent>
       </Card>
     </motion.div>
   )
 }
+
