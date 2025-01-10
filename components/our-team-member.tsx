@@ -27,7 +27,7 @@ const OurTeamMember = () => {
         const data = await response.json();
 
         if (data.success) {
-          setTeamMembers(data.data);
+          setTeamMembers(data.data.slice(0, 4)); // Slice to get only the first 4 members
         } else {
           setError('Failed to load team members');
         }
@@ -127,15 +127,24 @@ const OurTeamMember = () => {
         </div>
 
         {/* "Meet Our Team" Button */}
-        <div className="text-center mt-12">
-  <Link
-    href="/doctors"
-    className="px-6 py-3 bg-blue-600 text-white font-semibold text-lg rounded-full hover:bg-blue-700 transition-colors inline-flex items-center justify-center gap-2"
-  >
-    Discover Our Experts
-    <ArrowRight className="w-5 h-5 ml-2" style={{ color: '#3b82f6' }} />
+        <motion.div
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+  transition={{ delay: 0.5, duration: 0.5 }}
+  className="text-center mt-12"
+>
+  <p className="text-blue-600/80 text-lg mb-6">
+    Meet the specialists who are here to guide you on your healthcare journey.
+  </p>
+  <Link href="/doctors">
+    <div className="px-6 py-3 bg-blue-600 text-white font-semibold text-lg rounded-full hover:bg-blue-700 transition-colors inline-flex items-center justify-center gap-2">
+      Discover Our Experts
+      <ArrowRight className="w-5 h-5 ml-2" style={{ color: '#3b82f6' }} />
+    </div>
   </Link>
-</div>
+</motion.div>
+
       </div>
     </section>
   );

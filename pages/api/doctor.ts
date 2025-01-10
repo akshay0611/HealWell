@@ -1,25 +1,31 @@
 // pages/api/doctor.ts
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getAllDoctors, createDoctor } from '@/lib/doctor'; // Adjust the path based on your directory structure
-import dbConnect from '@/lib/dbConnect'; // Ensure you have a database connection utility
+import { getAllDoctors, createDoctor, updateDoctor, deleteDoctor } from '@/lib/doctor'; // Add the new functions
+import dbConnect from '@/lib/dbConnect';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  await dbConnect(); // Connect to your database before performing operations
+  await dbConnect();
 
   try {
     if (req.method === 'GET') {
-      // Fetch all doctors
       const doctors = await getAllDoctors();
       return res.status(200).json({ success: true, data: doctors });
     } else if (req.method === 'POST') {
-      // Create a new doctor
       const doctorData = req.body;
       const newDoctor = await createDoctor(doctorData);
       return res.status(201).json({ success: true, data: newDoctor });
+    } else if (req.method === 'PUT') {
+      const { id } = req.query;
+      const doctorData = req.body;
+      const updatedDoctor = await updateDoctor(id as string, doctorData);
+      return res.status(200).json({ success: true, data: updatedDoctor });
+    } else if (req.method === 'DELETE') {
+      const { id } = req.query;
+      await deleteDoctor(id as string);
+      return res.status(204).json({ success: true });
     } else {
-      // Method not allowed
-      res.setHeader('Allow', ['GET', 'POST']);
+      res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
       return res.status(405).json({ success: false, message: `Method ${req.method} not allowed` });
     }
   } catch (error) {
