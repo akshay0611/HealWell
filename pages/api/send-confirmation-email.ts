@@ -95,7 +95,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Prepare email content
     const mailOptions = {
-      from: `"HealWell Hospital" <${process.env.EMAIL_USER}>`,
+      from: `"Heal Well Hospital" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: 'Your Appointment Confirmation - Heal Well Hospital',
       html: createEmailTemplate(name, preferredDate, preferredTime),
