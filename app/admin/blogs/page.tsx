@@ -230,22 +230,23 @@ const AdminBlogsPage = () => {
                     <CardTitle className="text-xl font-semibold text-blue-700">
                       {blog.title}
                     </CardTitle>
-                    <div className="flex space-x-2">
-                      <Button
-                        variant="default"
-                        onClick={() => handleEditBlog(blog)}
-                        className="text-blue-600"
-                      >
-                        <Edit2 />
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        onClick={() => handleDeleteBlog(String(blog._id))}
-                        className="text-red-600"
-                      >
-                        <Trash2 />
-                      </Button>
-                    </div>
+                    
+  <div className="flex space-x-4 items-center">
+  <Button
+    variant="default"
+    onClick={() => handleEditBlog(blog)}
+    className="bg-blue-500 text-white hover:bg-blue-600 hover:shadow-md transition duration-300 rounded-full p-2"
+  >
+    <Edit2 className="w-5 h-5" />
+  </Button>
+  <Button
+    variant="destructive"
+    onClick={() => handleDeleteBlog(String(blog._id))}
+    className="bg-red-500 text-white hover:bg-red-600 hover:shadow-md transition duration-300 rounded-full p-2"
+  >
+    <Trash2 className="w-5 h-5" />
+  </Button>
+</div>
                   </div>
                 </CardHeader>
               </Card>
