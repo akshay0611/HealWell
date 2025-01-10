@@ -187,6 +187,11 @@ const CareersPage = () => {
   
       if (response.ok) {
         setIsSubmitted(true); // Show success message
+        // Close modal and reset after 5 seconds
+        setTimeout(() => {
+          setIsSubmitted(false);
+          closeModal(); // Close the modal after 5 seconds
+        }, 5000);
       } else {
         setError(data.error || 'An unexpected error occurred.');
       }
