@@ -1,37 +1,53 @@
 'use client'
 
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
 import { Facebook, Twitter, Linkedin } from "lucide-react"
+import Link from "next/link" // Import Link component from Next.js
+import { ArrowRight } from 'lucide-react'; // Import the ArrowRight icon
+
+// Define the type for a team member
+interface TeamMember {
+  name: string;
+  specialty: string;
+  image: string;
+}
 
 const OurTeamMember = () => {
-  const teamMembers = [
-    {
-      image: "/images/teammember_1.jpg",   
-      name: "Dr. John Smith",
-      role: "Cardiologist",
-      specialty: "Heart & Vascular",
-    },
-    {
-      image: "/images/teammember_2.avif",
-      name: "Dr. Michael Wilson",
-      role: "General Practitioner",
-      specialty: "Family Medicine",
-    },
-    {
-      image: "/images/teammember_3.jpg",
-      name: "Dr. Robert Brown",
-      role: "Senior Physician",
-      specialty: "Internal Medicine",
-    },
-    {
-      image: "/images/teammember_4.avif",
-      name: "Dr. Sarah Johnson",
-      role: "Dentist",
-      specialty: "Dental Care",
-    },
-  ]
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]); // Use specific type
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
+
+  // Fetch data from the backend
+  useEffect(() => {
+    const fetchTeamMembers = async () => {
+      try {
+        const response = await fetch('/api/doctor');
+        const data = await response.json();
+
+        if (data.success) {
+          setTeamMembers(data.data);
+        } else {
+          setError('Failed to load team members');
+        }
+      } catch {
+        setError('An error occurred while fetching data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTeamMembers();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading state
+  }
+
+  if (error) {
+    return <div>{error}</div>; // Show error message
+  }
 
   return (
     <section className="relative bg-gradient-to-br from-blue-50 to-white overflow-hidden py-24">
@@ -69,7 +85,7 @@ const OurTeamMember = () => {
             >
               <div className="relative overflow-hidden rounded-2xl">
                 <Image
-                  src={member.image}
+                  src={member.image} // The backend provides the image URL
                   alt={`Photo of ${member.name}`}
                   width={400}
                   height={500}
@@ -104,15 +120,25 @@ const OurTeamMember = () => {
               </div>
               <div className="text-center mt-4">
                 <h3 className="text-xl font-semibold text-blue-900">{member.name}</h3>
-                <p className="text-blue-600 font-medium">{member.role}</p>
-                <p className="text-blue-600/70">{member.specialty}</p>
+                <p className="text-blue-600 font-medium">{member.specialty}</p> {/* Displaying specialty from the backend */}
               </div>
             </motion.div>
           ))}
         </div>
+
+        {/* "Meet Our Team" Button */}
+        <div className="text-center mt-12">
+  <Link
+    href="/doctors"
+    className="px-6 py-3 bg-blue-600 text-white font-semibold text-lg rounded-full hover:bg-blue-700 transition-colors inline-flex items-center justify-center gap-2"
+  >
+    Discover Our Experts
+    <ArrowRight className="w-5 h-5 ml-2" style={{ color: '#3b82f6' }} />
+  </Link>
+</div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default OurTeamMember
+export default OurTeamMember;
