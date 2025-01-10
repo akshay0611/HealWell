@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TopBar } from "@/components/top-bar";
 import { Navigation } from "@/components/navigation";
@@ -8,10 +8,10 @@ import { Search, Star, Calendar, Phone, Mail, ArrowRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from 'next/image';
-import Footer from "@/components/footer"
+import Footer from "@/components/footer";
 
 interface Doctor {
-  id: number;
+  _id: string;
   name: string;
   specialty: string;
   rating: number;
@@ -25,81 +25,39 @@ interface Doctor {
   bio: string;
 }
 
-const doctors: Doctor[] = [
-  {
-    id: 1,
-    name: "Dr. John Smith",
-    specialty: "Cardiologist - Heart & Vascular",
-    rating: 4.8,
-    image: "/images/teammember_1.jpg",
-    availability: "Mon, Wed, Fri",
-    phone: "+1 (555) 123-4567",
-    email: "john.smith@healwell.com",
-    education: [
-      "MD from Johns Hopkins University School of Medicine",
-      "Residency in Internal Medicine at Mayo Clinic",
-      "Fellowship in Cardiology at Cleveland Clinic"
-    ],
-    experience: "15+ years",
-    specializations: ["Interventional Cardiology", "Echocardiography", "Preventive Cardiology"],
-    bio: "Dr. John Smith is a board-certified cardiologist with over 15 years of experience in diagnosing and treating complex heart conditions. He is passionate about preventive cardiology and has published numerous research papers on innovative cardiac care techniques."
-  },
-  {
-    id: 2,
-    name: "Dr. Michael Wilson",
-    specialty: "General Practitioner - Family Medicine",
-    rating: 4.9,
-    image: "/images/teammember_2.avif",
-    availability: "Tue, Thu, Sat",
-    phone: "+1 (555) 234-5678",
-    email: "michael.wilson@healwell.com",
-    education: [
-      "MD from Harvard Medical School",
-      "Residency in Family Medicine at University of California, San Francisco"
-    ],
-    experience: "10+ years",
-    specializations: ["Preventive Medicine", "Chronic Disease Management", "Pediatric Care"],
-    bio: "Dr. Michael Wilson is a dedicated family physician with a holistic approach to patient care. He specializes in managing chronic diseases and is known for his excellent rapport with patients of all ages."
-  },
-  {
-    id: 3,
-    name: "Dr. Robert Brown",
-    specialty: "Senior Physician - Internal Medicine",
-    rating: 4.7,
-    image: "/images/teammember_3.jpg",
-    availability: "Mon, Tue, Thu",
-    phone: "+1 (555) 345-6789",
-    email: "robert.brown@healwell.com",
-    education: [
-      "MD from Stanford University School of Medicine",
-      "Residency in Internal Medicine at Massachusetts General Hospital"
-    ],
-    experience: "20+ years",
-    specializations: ["Geriatric Medicine", "Endocrinology", "Rheumatology"],
-    bio: "Dr. Robert Brown is a highly experienced internist with a special focus on geriatric care. He is committed to providing comprehensive, patient-centered care and has received numerous awards for his contributions to internal medicine."
-  },
-  {
-    id: 4,
-    name: "Dr. Sarah Johnson",
-    specialty: "Dentist - Dental Care",
-    rating: 4.6,
-    image: "/images/teammember_4.avif",
-    availability: "Wed, Fri, Sat",
-    phone: "+1 (555) 456-7890",
-    email: "sarah.johnson@healwell.com",
-    education: [
-      "DDS from University of Michigan School of Dentistry",
-      "Advanced Education in General Dentistry at UCLA"
-    ],
-    experience: "8+ years",
-    specializations: ["Cosmetic Dentistry", "Orthodontics", "Pediatric Dentistry"],
-    bio: "Dr. Sarah Johnson is a skilled dentist known for her gentle approach and expertise in cosmetic dentistry. She is dedicated to providing a comfortable and positive dental experience for patients of all ages."
-  }
-];
-
 export default function DoctorsPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      setLoading(true);
+      setError(null); // Reset error before making the request
+      try {
+        const response = await fetch('/api/doctor');
+        const data = await response.json();
+
+        if (response.ok) {
+          setDoctors(data.data);
+        } else {
+          throw new Error(data.message || 'Failed to fetch doctors');
+        }
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
 
   const filteredDoctors = doctors.filter((doctor) =>
     doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -107,7 +65,7 @@ export default function DoctorsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
       <TopBar />
       <Navigation />
 
@@ -154,10 +112,6 @@ export default function DoctorsPage() {
             </div>
           </motion.div>
         </div>
-        {/* Decorative elements */}
-        <div className="absolute top-0 left-0 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
       </motion.section>
 
       {/* Doctors Section */}
@@ -167,6 +121,20 @@ export default function DoctorsPage() {
         transition={{ duration: 0.5 }}
         className="container mx-auto px-4 py-16"
       >
+        {/* Loading State */}
+        {loading && (
+          <div className="flex justify-center py-6">
+            <span className="loader">Loading...</span> {/* Add a loader */}
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="flex justify-center py-6 text-red-600">
+            <span>{error}</span>
+          </div>
+        )}
+
         {/* Doctors Grid */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -176,7 +144,7 @@ export default function DoctorsPage() {
         >
           {filteredDoctors.map((doctor) => (
             <motion.div
-              key={doctor.id}
+              key={doctor._id}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
               className="bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col"
@@ -213,6 +181,8 @@ export default function DoctorsPage() {
           ))}
         </motion.div>
       </motion.div>
+
+      <Footer />
 
       {/* Doctor Profile Modal */}
       <AnimatePresence>
@@ -255,26 +225,19 @@ export default function DoctorsPage() {
                     <div className="flex items-center">
                       <Calendar className="text-blue-500 mr-3" />
                       <span>Available: {selectedDoctor.availability}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Phone className="text-blue-500 mr-3" />
-                    <a
-                    href={`tel:${selectedDoctor.phone}`}
-                    className="text-black-700 hover:underline"
-                    >
-                    {selectedDoctor.phone}
-                    </a>
-                  </div>
-                  
-                  <div className="flex items-center">
-                    <Mail className="text-blue-500 mr-3" />
-                    <a
-                    href={`mailto:${selectedDoctor.email}`}
-                    className="text-black-700 hover:underline"
-                    >
-                    {selectedDoctor.email}
-                    </a>
-                  </div>
+                    </div>
+                    <div className="flex items-center">
+                      <Phone className="text-blue-500 mr-3" />
+                      <a href={`tel:${selectedDoctor.phone}`} className="text-black-700 hover:underline">
+                        {selectedDoctor.phone}
+                      </a>
+                    </div>
+                    <div className="flex items-center">
+                      <Mail className="text-blue-500 mr-3" />
+                      <a href={`mailto:${selectedDoctor.email}`} className="text-black-700 hover:underline">
+                        {selectedDoctor.email}
+                      </a>
+                    </div>
                   </div>
                 </div>
                 <div>
@@ -313,8 +276,6 @@ export default function DoctorsPage() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <Footer/>
     </div>
   );
 }
