@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { toast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from 'lucide-react';
+import { Trash2, Calendar, Clock, User, Phone, Mail, Building } from 'lucide-react';
 
 type Appointment = {
   _id: string;
@@ -80,57 +80,96 @@ const AdminAppointmentsPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-6 py-16 max-w-4xl bg-gray-50 rounded-lg shadow-md">
-      <Card className="mb-8 bg-white">
-        <CardHeader>
-          <CardTitle className="text-3xl font-extrabold text-blue-600">
-            Admin Panel - Appointments
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {appointments.length === 0 ? (
-            <p className="text-center text-gray-500">No appointments available.</p>
-          ) : (
-            <table className="min-w-full table-auto">
-              <thead>
-                <tr className="border-b">
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Name</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Phone</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Email</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Department</th> {/* Added department column */}
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Date</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Time</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {appointments.map((appointment) => (
-                  <tr key={appointment._id} className="border-b">
-                    <td className="px-6 py-3 text-sm text-gray-700">{appointment.name}</td>
-                    <td className="px-6 py-3 text-sm text-gray-700">{appointment.phone}</td>
-                    <td className="px-6 py-3 text-sm text-gray-700">{appointment.email}</td>
-                    <td className="px-6 py-3 text-sm text-gray-700">{appointment.department}</td> {/* Display department */}
-                    <td className="px-6 py-3 text-sm text-gray-700">{appointment.preferredDate}</td>
-                    <td className="px-6 py-3 text-sm text-gray-700">{appointment.preferredTime}</td>
-                    <td className="px-6 py-3 text-sm text-gray-700 flex items-center space-x-3">
-                      <Button
-                        onClick={() => handleDeleteAppointment(appointment._id)}
-                        variant="destructive"
-                        size="icon"
-                        className="bg-red-600 text-white hover:bg-red-700"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </CardContent>
-      </Card>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <Card className="overflow-hidden shadow-xl rounded-lg">
+          <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 p-6">
+            <CardTitle className="text-3xl font-extrabold text-white flex items-center">
+              <Calendar className="mr-2 h-8 w-8" />
+              Admin Panel - Appointments
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="bg-white p-6">
+            {appointments.length === 0 ? (
+              <div className="text-center py-12">
+                <Calendar className="mx-auto h-16 w-16 text-gray-400" />
+                <p className="mt-4 text-xl font-semibold text-gray-600">No appointments available.</p>
+                <p className="mt-2 text-gray-500">New appointments will appear here when scheduled.</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="bg-gray-50 border-b border-gray-200">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {appointments.map((appointment) => (
+                      <tr key={appointment._id} className="hover:bg-gray-50 transition-colors duration-150 ease-in-out">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <User className="h-5 w-5 text-gray-400 mr-3" />
+                            <div className="text-sm font-medium text-gray-900">{appointment.name}</div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex flex-col">
+                            <div className="flex items-center text-sm text-gray-500">
+                              <Phone className="h-4 w-4 text-gray-400 mr-2" />
+                              {appointment.phone}
+                            </div>
+                            <div className="flex items-center text-sm text-gray-500 mt-1">
+                              <Mail className="h-4 w-4 text-gray-400 mr-2" />
+                              {appointment.email}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <Building className="h-5 w-5 text-gray-400 mr-3" />
+                            <div className="text-sm text-gray-900">{appointment.department}</div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex flex-col">
+                            <div className="flex items-center text-sm text-gray-500">
+                              <Calendar className="h-4 w-4 text-gray-400 mr-2" />
+                              {appointment.preferredDate}
+                            </div>
+                            <div className="flex items-center text-sm text-gray-500 mt-1">
+                              <Clock className="h-4 w-4 text-gray-400 mr-2" />
+                              {appointment.preferredTime}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          <Button
+                            onClick={() => handleDeleteAppointment(appointment._id)}
+                            variant="destructive"
+                            size="sm"
+                            className="bg-red-600 text-white hover:bg-red-700 transition-colors duration-200"
+                          >
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Delete
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
 
 export default AdminAppointmentsPage;
+
