@@ -37,7 +37,7 @@ const AppointmentPage = () => {
     setIsSubmitting(true);
   
     try {
-      // First, submit the form data to store it in MongoDB
+      // Submit the form data to store it in MongoDB
       const response = await fetch('/api/appointment', {
         method: 'POST',
         headers: {
@@ -50,21 +50,6 @@ const AppointmentPage = () => {
   
       if (response.ok) {
         setResponseMessage('Appointment booked successfully!');
-  
-        // After successful form submission, send confirmation email
-        const emailResponse = await fetch('/api/send-confirmation-email', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-  
-        if (emailResponse.ok) {
-          setResponseMessage((prev) => `${prev} A confirmation email has been sent.`);
-        } else {
-          setResponseMessage((prev) => `${prev} However, we failed to send the confirmation email.`);
-        }
       } else {
         setResponseMessage(result.message || 'Error booking appointment.');
       }
