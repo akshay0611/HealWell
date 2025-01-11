@@ -1,3 +1,5 @@
+// pages/api/send-confirmation-email.ts
+
 import { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
 import { google } from 'googleapis';
@@ -15,7 +17,7 @@ oAuth2Client.setCredentials({
 // ==============================
 // Email Template
 // ==============================
-const createEmailTemplate = (name: string, preferredDate: string, preferredTime: string) => {
+const createEmailTemplate = (type: 'appointment' | 'career', name: string, preferredDate?: string, preferredTime?: string, positionApplied?: string) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', { 
@@ -24,31 +26,53 @@ const createEmailTemplate = (name: string, preferredDate: string, preferredTime:
       year: 'numeric' 
     });
   };
-  return `
-    <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
-      <h2 style="color: #007BFF; text-align: center;">Appointment Confirmation</h2>
-      <p>Dear <strong>${name}</strong>,</p>
-      <p>Thank you for scheduling your appointment with <strong>Heal Well Hospital</strong>. We are pleased to confirm your appointment details as follows:</p>
-      <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-        <tr style="background-color: #f9f9f9;">
-          <td style="padding: 10px; border: 1px solid #ddd;"><strong>Date:</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;">${formatDate(preferredDate)}</td>
-        </tr>
-        <tr style="background-color: #f9f9f9;">
-          <td style="padding: 10px; border: 1px solid #ddd;"><strong>Time:</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;">${preferredTime}</td>
-        </tr>
-      </table>
-      <p>Please ensure you arrive at least <strong>15 minutes</strong> prior to your scheduled time. If you have any questions or need to reschedule, feel free to contact our support team.</p>
-      <p style="text-align: center; margin-top: 30px;">
-        <a href="https://heal-well-brown.vercel.app/" style="display: inline-block; background-color: #007BFF; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px;">Visit Our Website</a>
-      </p>
-      <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
-      <p style="font-size: 0.9em; text-align: center; color: #555;">
-        Heal Well Hospital | Contact Us: +1 (123) 456-7890 | https://heal-well-brown.vercel.app/
-      </p>
-    </div>
-  `;
+
+  if (type === 'appointment') {
+    // Appointment email content
+    return `
+      <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
+        <h2 style="color: #007BFF; text-align: center;">Appointment Confirmation</h2>
+        <p>Dear <strong>${name}</strong>,</p>
+        <p>Thank you for scheduling your appointment with <strong>Heal Well Hospital</strong>. We are pleased to confirm your appointment details as follows:</p>
+        <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+          <tr style="background-color: #f9f9f9;">
+            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Date:</strong></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${formatDate(preferredDate!)}</td>
+          </tr>
+          <tr style="background-color: #f9f9f9;">
+            <td style="padding: 10px; border: 1px solid #ddd;"><strong>Time:</strong></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${preferredTime}</td>
+          </tr>
+        </table>
+        <p>Please ensure you arrive at least <strong>15 minutes</strong> prior to your scheduled time. If you have any questions or need to reschedule, feel free to contact our support team.</p>
+        <p style="text-align: center; margin-top: 30px;">
+          <a href="https://heal-well-brown.vercel.app/" style="display: inline-block; background-color: #007BFF; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px;">Visit Our Website</a>
+        </p>
+        <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
+        <p style="font-size: 0.9em; text-align: center; color: #555;">
+          Heal Well Hospital | Contact Us: +1 (123) 456-7890 | https://heal-well-brown.vercel.app/
+        </p>
+      </div>
+    `;
+  } else if (type === 'career') {
+    // Career email content
+    return `
+      <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
+        <h2 style="color: #007BFF; text-align: center;">Career Application Confirmation</h2>
+        <p>Dear <strong>${name}</strong>,</p>
+        <p>Thank you for applying for the position of <strong>${positionApplied}</strong> at Heal Well Hospital.</p>
+        <p>We have received your application and will review it. You will be contacted shortly with further details.</p>
+        <p>If you have any questions, please don't hesitate to reach out to us.</p>
+        <p style="text-align: center; margin-top: 30px;">
+          <a href="https://heal-well-brown.vercel.app/" style="display: inline-block; background-color: #007BFF; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px;">Visit Our Website</a>
+        </p>
+        <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
+        <p style="font-size: 0.9em; text-align: center; color: #555;">
+          Heal Well Hospital | Contact Us: +1 (123) 456-7890 | https://heal-well-brown.vercel.app/
+        </p>
+      </div>
+    `;
+  }
 };
 // ==============================
 // API Handler
@@ -59,16 +83,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Method not allowed' });
   }
   // Extract and validate request body
-  const { email, name, preferredDate, preferredTime } = req.body;
-  if (!email || !name || !preferredDate || !preferredTime) {
+  const { email, name, type, preferredDate, preferredTime, positionApplied } = req.body;
+
+  if (!email || !name || !type || (type === 'appointment' && (!preferredDate || !preferredTime)) || (type === 'career' && !positionApplied)) {
     return res.status(400).json({ message: 'Missing required fields' });
   }
+
   try {
     // Retrieve access token
     const accessToken = await oAuth2Client.getAccessToken();
     if (!accessToken.token) {
       throw new Error('Failed to retrieve access token');
     }
+
     // Create email transporter
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -81,15 +108,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         accessToken: accessToken.token,
       },
     });
+
     // Prepare email content
+    const emailContent = createEmailTemplate(type, name, preferredDate, preferredTime, positionApplied);
+
+    // Configure mail options with dynamic "from" field
     const mailOptions = {
-      from: `"Heal Well Appointment" <${process.env.EMAIL_USER}>`,
+      from: type === 'appointment' 
+        ? `"Heal Well Hospital" <${process.env.EMAIL_USER}>` 
+        : `Heal Well Careers <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: 'Your Appointment Confirmation - Heal Well Hospital',
-      html: createEmailTemplate(name, preferredDate, preferredTime),
+      subject: type === 'appointment' ? 'Your Appointment Confirmation - Heal Well Hospital' : 'Career Application Confirmation - Heal Well Hospital',
+      html: emailContent,
     };
+
     // Send email
     await transporter.sendMail(mailOptions);
+
     // Respond with success
     res.status(200).json({ message: 'Confirmation email sent successfully' });
   } catch (error: unknown) {
