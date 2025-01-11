@@ -19,7 +19,8 @@ type Appointment = {
 
 const AdminAppointmentsPage = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
-  
+  const [loadingEmail, setLoadingEmail] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -49,19 +50,19 @@ const AdminAppointmentsPage = () => {
   const handleDeleteAppointment = async (appointmentId: string) => {
     const confirmDelete = confirm('Are you sure you want to delete this appointment?');
     if (!confirmDelete) return;
-  
+
     try {
       const response = await fetch(`/api/appointment?appointmentId=${appointmentId}`, {
         method: 'DELETE',
       });
-  
+
       if (response.ok) {
         toast({
           title: 'Success',
           description: 'Appointment deleted successfully.',
           variant: 'default',
         });
-  
+
         setAppointments(appointments.filter((appt) => appt._id !== appointmentId));
       } else {
         toast({
@@ -76,6 +77,46 @@ const AdminAppointmentsPage = () => {
         description: 'An unexpected error occurred.',
         variant: 'destructive',
       });
+    }
+  };
+
+  const handleSendConfirmationEmail = async (appointment: Appointment) => {
+    setLoadingEmail(appointment._id); // Set loading state for the specific appointment
+    try {
+      const response = await fetch('/api/send-confirmation-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: appointment.email,
+          name: appointment.name,
+          preferredDate: appointment.preferredDate,
+          preferredTime: appointment.preferredTime,
+        }),
+      });
+
+      if (response.ok) {
+        toast({
+          title: 'Success',
+          description: 'Confirmation email sent successfully.',
+          variant: 'default',
+        });
+      } else {
+        toast({
+          title: 'Error',
+          description: 'Failed to send confirmation email.',
+          variant: 'destructive',
+        });
+      }
+    } catch {
+      toast({
+        title: 'Error',
+        description: 'An unexpected error occurred while sending the email.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoadingEmail(null); // Reset loading state
     }
   };
 
@@ -157,6 +198,15 @@ const AdminAppointmentsPage = () => {
                             <Trash2 className="h-4 w-4 mr-2" />
                             Delete
                           </Button>
+                          <Button
+                            onClick={() => handleSendConfirmationEmail(appointment)}
+                            variant="outline"
+                            size="sm"
+                            className="ml-2 text-blue-600 hover:bg-blue-100 transition-colors duration-200"
+                            disabled={loadingEmail === appointment._id} // Disable button if loading
+                          >
+                            {loadingEmail === appointment._id ? 'Sending...' : 'Send Confirmation'}
+                          </Button>
                         </td>
                       </tr>
                     ))}
@@ -172,4 +222,3 @@ const AdminAppointmentsPage = () => {
 };
 
 export default AdminAppointmentsPage;
-
