@@ -1,3 +1,5 @@
+// lib/volunteerModel.ts
+
 import mongoose from 'mongoose';
 
 const VolunteerSchema = new mongoose.Schema({
