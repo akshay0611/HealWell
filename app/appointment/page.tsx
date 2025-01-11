@@ -49,7 +49,7 @@ const AppointmentPage = () => {
       const result = await response.json();
   
       if (response.ok) {
-        setResponseMessage('Appointment booked successfully!');
+        setResponseMessage('Your appointment request has been received. We will send you an email once your appointment is confirmed.');
       } else {
         setResponseMessage(result.message || 'Error booking appointment.');
       }
