@@ -17,7 +17,7 @@ oAuth2Client.setCredentials({
 // ==============================
 // Email Template
 // ==============================
-const createEmailTemplate = (type: 'appointment' | 'career' | 'volunteer', name: string, preferredDate?: string, preferredTime?: string, positionApplied?: string) => {
+const createEmailTemplate = (type: 'appointment' | 'career' | 'volunteer' | 'partner', name: string, preferredDate?: string, preferredTime?: string, positionApplied?: string) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', { 
@@ -26,6 +26,26 @@ const createEmailTemplate = (type: 'appointment' | 'career' | 'volunteer', name:
       year: 'numeric' 
     });
   };
+
+  if (type === 'partner') {
+    // Partner email content
+    return `
+      <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
+        <h2 style="color: #007BFF; text-align: center;">Partnership Confirmation</h2>
+        <p>Dear <strong>${name}</strong>,</p>
+        <p>Thank you for your interest in partnering with <strong>Heal Well Hospital</strong>.</p>
+        <p>We are excited about the possibility of collaborating and will reach out shortly with further details.</p>
+        <p>If you have any questions or would like to provide additional information, please feel free to contact us.</p>
+        <p style="text-align: center; margin-top: 30px;">
+          <a href="https://heal-well-brown.vercel.app/" style="display: inline-block; background-color: #007BFF; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px;">Visit Our Website</a>
+        </p>
+        <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
+        <p style="font-size: 0.9em; text-align: center; color: #555;">
+          Heal Well Hospital | Contact Us: +1 (123) 456-7890 | https://heal-well-brown.vercel.app/
+        </p>
+      </div>
+    `;
+  }
 
   if (type === 'appointment') {
     // Appointment email content
@@ -106,7 +126,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!email || !name || !type || 
     (type === 'appointment' && (!preferredDate || !preferredTime)) || 
     (type === 'career' && !positionApplied) || 
-    (type === 'volunteer' && !name)) {  // Removed preferredDate and preferredTime check for volunteer
+    (type === 'partner' && !name) || 
+    (type === 'volunteer' && !name)) {  
   return res.status(400).json({ message: 'Missing required fields' });
 }
 
@@ -142,6 +163,8 @@ const mailOptions = {
       return `"Heal Well Volunteer Team" <${process.env.EMAIL_USER}>`;
     } else if (type === 'career') {
       return `Heal Well Careers <${process.env.EMAIL_USER}>`;
+    } else if (type === 'partner') {
+      return `"Heal Well Partnerships" <${process.env.EMAIL_USER}>`;
     } else {
       throw new Error('Invalid email type');
     }
@@ -154,6 +177,8 @@ const mailOptions = {
       return 'Volunteer Registration Confirmation - Heal Well Hospital';
     } else if (type === 'career') {
       return 'Career Application Confirmation - Heal Well Hospital';
+    } else if (type === 'partner') {
+      return 'Partnership Interest Confirmation - Heal Well Hospital';
     } else {
       throw new Error('Invalid email type');
     }
