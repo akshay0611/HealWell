@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { toast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trash2, Calendar, Mail, Loader2, RefreshCw, Eye } from 'lucide-react';
@@ -11,6 +10,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 type Appointment = {
   _id: string;
@@ -30,6 +31,7 @@ const AdminAppointmentsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
+  const { toast } = useToast();
 
   const fetchAppointments = async () => {
     setIsLoading(true);
@@ -39,6 +41,11 @@ const AdminAppointmentsPage = () => {
         const data = await response.json();
         setAppointments(data.data);
         setFilteredAppointments(data.data);
+        toast({
+          title: 'Appointments Loaded',
+          description: `${data.data.length} appointments loaded successfully.`,
+          variant: 'default',
+        });
       } else {
         toast({
           title: 'Error',
@@ -293,37 +300,32 @@ const AdminAppointmentsPage = () => {
                   <p>{selectedAppointment.name}</p>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Email</h3>
-                  <p>{selectedAppointment.email}</p>
-                </div>
-                <div>
                   <h3 className="font-semibold text-gray-900">Phone</h3>
                   <p>{selectedAppointment.phone}</p>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Department</h3>
-                  <p>{selectedAppointment.department}</p>
+                  <h3 className="font-semibold text-gray-900">Email</h3>
+                  <p>{selectedAppointment.email}</p>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Preferred Date</h3>
-                  <p>{selectedAppointment.preferredDate}</p>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900">Preferred Time</h3>
-                  <p>{selectedAppointment.preferredTime}</p>
+                  <h3 className="font-semibold text-gray-900">Preferred Date & Time</h3>
+                  <p>{selectedAppointment.preferredDate} - {selectedAppointment.preferredTime}</p>
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900">Message</h3>
-                  <p className="whitespace-pre-wrap">{selectedAppointment.message}</p>
+                  <p>{selectedAppointment.message}</p>
                 </div>
               </div>
             </ScrollArea>
           )}
           <DialogFooter>
-            <Button onClick={() => setSelectedAppointment(null)}>Close</Button>
+            <Button variant="outline" onClick={() => setSelectedAppointment(null)}>
+              Close
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <Toaster />
     </div>
   );
 };
