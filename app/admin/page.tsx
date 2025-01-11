@@ -28,12 +28,21 @@ type CareerApplication = {
   _id: string;
 }
 
+type Volunteer = {
+  _id: string;
+  name: string;
+  email: string;
+  message: string;
+}
+
+
 export default function AdminDashboard() {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [availableDays, setAvailableDays] = useState<number | null>(null)
   const [totalAppointments, setTotalAppointments] = useState<number | null>(null)
   const [totalDoctors, setTotalDoctors] = useState<number | null>(null)
   const [totalCareerApplications, setTotalCareerApplications] = useState<number | null>(null)
+  const [totalVolunteerApplications, setTotalVolunteerApplications] = useState<number | null>(null) // New state for volunteer applications
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000)
@@ -117,6 +126,25 @@ export default function AdminDashboard() {
     fetchTotalCareerApplications()
   }, [])
 
+  useEffect(() => {
+    async function fetchTotalVolunteerApplications() {
+      try {
+        const response = await fetch('/api/volunteer')
+        const data = await response.json()
+
+        if (response.ok && data.success) {
+          setTotalVolunteerApplications((data.data as Volunteer[]).length)
+        } else {
+          console.error('Failed to fetch volunteer applications')
+        }
+      } catch (error) {
+        console.error('Error fetching volunteer applications:', error)
+      }
+    }
+
+    fetchTotalVolunteerApplications()
+  }, [])
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-100">
       <div className="container mx-auto px-4 py-8">
@@ -187,6 +215,12 @@ export default function AdminDashboard() {
                 value={totalCareerApplications}
                 icon={Users}
                 color="from-pink-400 to-rose-500"
+              />
+              <DashboardCard
+                title="Total Volunteer Applications"
+                value={totalVolunteerApplications}
+                icon={Users}
+                color="from-blue-400 to-indigo-500"
               />
             </div>
           </div>
