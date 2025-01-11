@@ -16,6 +16,7 @@ const navItems = [
   { href: '/admin/doctors', label: 'Doctors', icon: Users },
   { href: '/admin/blogs', label: 'Blogs', icon: BookOpen },
   { href: '/admin/careers', label: 'Careers', icon: Briefcase }, 
+  { href: '/admin/volunteers', label: 'Volunteers', icon: Users }, 
   { href: '/admin/settings', label: 'Settings', icon: Settings },
 ]
 

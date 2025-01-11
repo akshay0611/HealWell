@@ -17,7 +17,7 @@ oAuth2Client.setCredentials({
 // ==============================
 // Email Template
 // ==============================
-const createEmailTemplate = (type: 'appointment' | 'career', name: string, preferredDate?: string, preferredTime?: string, positionApplied?: string) => {
+const createEmailTemplate = (type: 'appointment' | 'career' | 'volunteer', name: string, preferredDate?: string, preferredTime?: string, positionApplied?: string) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', { 
@@ -72,6 +72,24 @@ const createEmailTemplate = (type: 'appointment' | 'career', name: string, prefe
         </p>
       </div>
     `;
+  } else if (type === 'volunteer') {
+    // Volunteer email content
+    return `
+      <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
+        <h2 style="color: #007BFF; text-align: center;">Volunteer Confirmation</h2>
+        <p>Dear <strong>${name}</strong>,</p>
+        <p>Thank you for volunteering with <strong>Heal Well Hospital</strong>. We are thrilled to have you join us in making a positive impact.</p>
+        <p>Your volunteer registration has been successfully received. We will reach out soon with more details about the upcoming volunteering opportunities and how you can contribute.</p>
+        <p>If you have any questions or need further information, please don't hesitate to contact us.</p>
+        <p style="text-align: center; margin-top: 30px;">
+          <a href="https://heal-well-brown.vercel.app/" style="display: inline-block; background-color: #007BFF; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px;">Visit Our Website</a>
+        </p>
+        <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
+        <p style="font-size: 0.9em; text-align: center; color: #555;">
+          Heal Well Hospital | Contact Us: +1 (123) 456-7890 | https://heal-well-brown.vercel.app/
+        </p>
+      </div>
+    `;
   }
 };
 // ==============================
@@ -85,9 +103,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // Extract and validate request body
   const { email, name, type, preferredDate, preferredTime, positionApplied } = req.body;
 
-  if (!email || !name || !type || (type === 'appointment' && (!preferredDate || !preferredTime)) || (type === 'career' && !positionApplied)) {
-    return res.status(400).json({ message: 'Missing required fields' });
-  }
+  if (!email || !name || !type || 
+    (type === 'appointment' && (!preferredDate || !preferredTime)) || 
+    (type === 'career' && !positionApplied) || 
+    (type === 'volunteer' && !name)) {  // Removed preferredDate and preferredTime check for volunteer
+  return res.status(400).json({ message: 'Missing required fields' });
+}
 
   try {
     // Retrieve access token
@@ -112,17 +133,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Prepare email content
     const emailContent = createEmailTemplate(type, name, preferredDate, preferredTime, positionApplied);
 
-    // Configure mail options with dynamic "from" field
-    const mailOptions = {
-      from: type === 'appointment' 
-        ? `"Heal Well Hospital" <${process.env.EMAIL_USER}>` 
-        : `Heal Well Careers <${process.env.EMAIL_USER}>`,
-      to: email,
-      subject: type === 'appointment' ? 'Your Appointment Confirmation - Heal Well Hospital' : 'Career Application Confirmation - Heal Well Hospital',
-      html: emailContent,
-    };
+// Configure mail options with dynamic "from" field
+const mailOptions = {
+  from: (() => {
+    if (type === 'appointment') {
+      return `"Heal Well Hospital" <${process.env.EMAIL_USER}>`;
+    } else if (type === 'volunteer') {
+      return `"Heal Well Volunteer Team" <${process.env.EMAIL_USER}>`;
+    } else if (type === 'career') {
+      return `Heal Well Careers <${process.env.EMAIL_USER}>`;
+    } else {
+      throw new Error('Invalid email type');
+    }
+  })(),
+  to: email,
+  subject: (() => {
+    if (type === 'appointment') {
+      return 'Your Appointment Confirmation - Heal Well Hospital';
+    } else if (type === 'volunteer') {
+      return 'Volunteer Registration Confirmation - Heal Well Hospital';
+    } else if (type === 'career') {
+      return 'Career Application Confirmation - Heal Well Hospital';
+    } else {
+      throw new Error('Invalid email type');
+    }
+  })(),
+  html: emailContent,
+};
 
-    // Send email
+  // Send email
     await transporter.sendMail(mailOptions);
 
     // Respond with success
