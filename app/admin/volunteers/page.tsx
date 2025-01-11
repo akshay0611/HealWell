@@ -139,7 +139,7 @@ const VolunteersAdminPanel = () => {
                       size="icon"
                       className="text-white border-white hover:bg-white/20 transition-colors duration-200"
                     >
-                      <RefreshCw className="h-5 w-5" />
+                       <RefreshCw className="h-5 w-5 text-red-500 hover:text-red-500" />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>

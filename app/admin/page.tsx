@@ -35,6 +35,13 @@ type Volunteer = {
   message: string;
 }
 
+type Partner = {
+  _id: string;
+  name: string;
+  email: string;
+  message: string;
+}
+
 
 export default function AdminDashboard() {
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -43,6 +50,7 @@ export default function AdminDashboard() {
   const [totalDoctors, setTotalDoctors] = useState<number | null>(null)
   const [totalCareerApplications, setTotalCareerApplications] = useState<number | null>(null)
   const [totalVolunteerApplications, setTotalVolunteerApplications] = useState<number | null>(null) // New state for volunteer applications
+  const [totalPartnerApplications, setTotalPartnerApplications] = useState<number | null>(null) // New state for volunteer applications
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000)
@@ -145,6 +153,25 @@ export default function AdminDashboard() {
     fetchTotalVolunteerApplications()
   }, [])
 
+  useEffect(() => {
+    async function fetchTotalPartnerApplications() {
+      try {
+        const response = await fetch('/api/partner')
+        const data = await response.json()
+
+        if (response.ok && data.success) {
+          setTotalPartnerApplications((data.data as Partner[]).length)
+        } else {
+          console.error('Failed to fetch volunteer applications')
+        }
+      } catch (error) {
+        console.error('Error fetching volunteer applications:', error)
+      }
+    }
+
+    fetchTotalPartnerApplications()
+  }, [])
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-100">
       <div className="container mx-auto px-4 py-8">
@@ -220,7 +247,13 @@ export default function AdminDashboard() {
                 title="Total Volunteer Applications"
                 value={totalVolunteerApplications}
                 icon={Users}
-                color="from-blue-400 to-indigo-500"
+                 color="from-teal-400 to-cyan-500"
+              />
+              <DashboardCard
+                title="Total Partner Applications"
+                value={totalPartnerApplications}
+                icon={Users}
+                color="from-purple-400 to-violet-500"
               />
             </div>
           </div>

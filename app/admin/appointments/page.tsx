@@ -165,7 +165,7 @@ const AdminAppointmentsPage = () => {
                 onClick={fetchAppointments}
                 className="text-white border-white hover:bg-white/20"
               >
-                <RefreshCw className="h-4 w-4" />
+                <RefreshCw className="h-5 w-5 text-red-500 hover:text-red-500" />
                 <span className="sr-only">Refresh Appointments</span>
               </Button>
             </div>
