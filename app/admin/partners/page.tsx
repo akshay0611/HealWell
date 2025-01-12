@@ -18,6 +18,7 @@ interface PartnerApplication {
   name: string;
   email: string;
   message: string;
+  status?: string;
 }
 
 const PartnersAdminPanel = () => {
@@ -101,12 +102,22 @@ const PartnersAdminPanel = () => {
           type: 'partner',
         }),
       });
+
       const data = await response.json();
       if (response.ok) {
         toast({
           title: "Email Sent",
           description: `Confirmation email sent successfully to ${name}`,
         });
+
+        // Update the status in the UI
+        setApplications((prevApplications) =>
+          prevApplications.map((application) =>
+            application.email === email
+              ? { ...application, status: 'Email Sent' }
+              : application
+          )
+        );
       } else {
         setError(data.message || 'Failed to send confirmation email');
         toast({
@@ -172,6 +183,7 @@ const PartnersAdminPanel = () => {
                       <TableHead className="w-[150px]">Name</TableHead>
                       <TableHead className="w-[200px]">Email</TableHead>
                       <TableHead className="w-[250px]">Message</TableHead>
+                      <TableHead className="w-[150px]">Status</TableHead>
                       <TableHead className="text-right w-[150px]">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -181,6 +193,21 @@ const PartnersAdminPanel = () => {
                         <TableCell className="font-medium">{application.name}</TableCell>
                         <TableCell>{application.email}</TableCell>
                         <TableCell>{application.message}</TableCell>
+                        {/* <TableCell>{application.status}</TableCell> */}
+                        <TableCell>
+  <span
+    className={`px-2 py-1 rounded-full text-sm font-medium ${
+      application.status === 'Email Sent'
+        ? 'bg-green-100 text-green-800'
+        : application.status === 'Pending'
+        ? 'bg-yellow-100 text-yellow-800'
+        : 'bg-gray-100 text-gray-800'
+    }`}
+  >
+    {application.status}
+  </span>
+</TableCell>
+
                         <TableCell className="text-right">
                           <TooltipProvider>
                             <Tooltip>
@@ -251,36 +278,36 @@ const PartnersAdminPanel = () => {
         </Card>
 
         <Dialog open={!!selectedApplication} onOpenChange={() => setSelectedApplication(null)}>
-  <DialogContent className="sm:max-w-[425px]">
-    <DialogHeader>
-      <DialogTitle>Partner Details</DialogTitle>
-      <DialogDescription>
-        Full information for the selected partner application.
-      </DialogDescription>
-    </DialogHeader>
-    {selectedApplication && (
-      <ScrollArea className="h-[60vh] pr-4">
-        <div className="space-y-4">
-          <div>
-            <h3 className="font-semibold text-gray-900">Name</h3>
-            <p>{selectedApplication.name}</p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-gray-900">Email</h3>
-            <p>{selectedApplication.email}</p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-gray-900">Message</h3>
-            <p className="whitespace-pre-wrap">{selectedApplication.message}</p>
-          </div>
-        </div>
-      </ScrollArea>
-    )}
-  </DialogContent>
-</Dialog>
-</div>
-<Toaster />
-</>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Partner Details</DialogTitle>
+              <DialogDescription>
+                Full information for the selected partner application.
+              </DialogDescription>
+            </DialogHeader>
+            {selectedApplication && (
+              <ScrollArea className="h-[60vh] pr-4">
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="font-semibold text-gray-900">Name</h3>
+                    <p>{selectedApplication.name}</p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900">Email</h3>
+                    <p>{selectedApplication.email}</p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900">Message</h3>
+                    <p className="whitespace-pre-wrap">{selectedApplication.message}</p>
+                  </div>
+                </div>
+              </ScrollArea>
+            )}
+          </DialogContent>
+        </Dialog>
+      </div>
+      <Toaster />
+    </>
   );
 };
 

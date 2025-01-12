@@ -3,6 +3,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
 import { google } from 'googleapis';
+import Partner from '../../lib/Partner';
 // ==============================
 // OAuth2 Configuration
 // ==============================
@@ -116,29 +117,22 @@ const createEmailTemplate = (type: 'appointment' | 'career' | 'volunteer' | 'par
 // API Handler
 // ==============================
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // Method validation
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
-  // Extract and validate request body
+  
   const { email, name, type, preferredDate, preferredTime, positionApplied } = req.body;
 
-  if (!email || !name || !type || 
-    (type === 'appointment' && (!preferredDate || !preferredTime)) || 
-    (type === 'career' && !positionApplied) || 
-    (type === 'partner' && !name) || 
-    (type === 'volunteer' && !name)) {  
-  return res.status(400).json({ message: 'Missing required fields' });
-}
+  if (!email || !name || !type) {
+    return res.status(400).json({ message: 'Missing required fields' });
+  }
 
   try {
-    // Retrieve access token
     const accessToken = await oAuth2Client.getAccessToken();
     if (!accessToken.token) {
       throw new Error('Failed to retrieve access token');
     }
 
-    // Create email transporter
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -151,51 +145,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
     });
 
-    // Prepare email content
     const emailContent = createEmailTemplate(type, name, preferredDate, preferredTime, positionApplied);
 
-// Configure mail options with dynamic "from" field
-const mailOptions = {
-  from: (() => {
-    if (type === 'appointment') {
-      return `"Heal Well Hospital" <${process.env.EMAIL_USER}>`;
-    } else if (type === 'volunteer') {
-      return `"Heal Well Volunteer Team" <${process.env.EMAIL_USER}>`;
-    } else if (type === 'career') {
-      return `Heal Well Careers <${process.env.EMAIL_USER}>`;
-    } else if (type === 'partner') {
-      return `"Heal Well Partnerships" <${process.env.EMAIL_USER}>`;
-    } else {
-      throw new Error('Invalid email type');
-    }
-  })(),
-  to: email,
-  subject: (() => {
-    if (type === 'appointment') {
-      return 'Your Appointment Confirmation - Heal Well Hospital';
-    } else if (type === 'volunteer') {
-      return 'Volunteer Registration Confirmation - Heal Well Hospital';
-    } else if (type === 'career') {
-      return 'Career Application Confirmation - Heal Well Hospital';
-    } else if (type === 'partner') {
-      return 'Partnership Interest Confirmation - Heal Well Hospital';
-    } else {
-      throw new Error('Invalid email type');
-    }
-  })(),
-  html: emailContent,
-};
+    const mailOptions = {
+      from: `"Heal Well Hospital" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: 'Confirmation Email',
+      html: emailContent,
+    };
 
-  // Send email
+    // Send the email
     await transporter.sendMail(mailOptions);
 
-    // Respond with success
-    res.status(200).json({ message: 'Confirmation email sent successfully' });
+    // Update the partner's status in the database
+    const updatedPartner = await Partner.findOneAndUpdate(
+      { email },
+      { status: 'Email Sent' },
+      { new: true }
+    );
+
+    if (!updatedPartner) {
+      return res.status(404).json({ message: 'Partner not found' });
+    }
+
+    res.status(200).json({ message: 'Email sent and status updated', partner: updatedPartner });
   } catch (error: unknown) {
-    // Error handling
     if (error instanceof Error) {
-      console.error('Error sending email:', error.message);
-      res.status(500).json({ message: 'Error sending confirmation email', error: error.message });
+      console.error('Error:', error.message);
+      res.status(500).json({ message: 'Error sending confirmation email or updating status', error: error.message });
     } else {
       console.error('Unexpected error:', error);
       res.status(500).json({ message: 'An unexpected error occurred' });
