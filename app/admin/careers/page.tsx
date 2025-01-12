@@ -9,8 +9,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useToast } from "@/hooks/use-toast"
-import { Toaster } from "@/components/ui/toaster"
+import { useToast } from "@/hooks/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 interface CareerApplication {
   _id: string;
@@ -21,6 +21,7 @@ interface CareerApplication {
   experience: number;
   message: string;
   references?: string;
+  status?: string;
 }
 
 const CareersAdminPanel = () => {
@@ -93,7 +94,7 @@ const CareersAdminPanel = () => {
     }
   };
 
-  const handleSendConfirmation = async (email: string, name: string, positionApplied: string) => {
+  const handleSendEmail = async (email: string, name: string, positionApplied: string) => {
     try {
       const response = await fetch('/api/send-confirmation-email', {
         method: 'POST',
@@ -111,6 +112,15 @@ const CareersAdminPanel = () => {
           title: "Email Sent",
           description: `Confirmation email sent successfully to ${name}`,
         });
+
+        // Update the status in the UI
+        setApplications((prevApplications) =>
+          prevApplications.map((application) =>
+            application.email === email
+              ? { ...application, status: 'Email Sent' }
+              : application
+          )
+        );
       } else {
         setError(data.message || 'Failed to send confirmation email');
         toast({
@@ -177,6 +187,7 @@ const CareersAdminPanel = () => {
                       <TableHead className="w-[200px]">Email</TableHead>
                       <TableHead className="w-[150px]">Position</TableHead>
                       <TableHead className="w-[100px]">Experience</TableHead>
+                      <TableHead className="w-[150px]">Status</TableHead>
                       <TableHead className="text-right w-[150px]">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -191,6 +202,19 @@ const CareersAdminPanel = () => {
                           </Badge>
                         </TableCell>
                         <TableCell>{application.experience} years</TableCell>
+                        <TableCell>
+                          <span
+                            className={`px-2 py-1 rounded-full text-sm font-medium ${
+                              application.status === 'Email Sent'
+                                ? 'bg-green-100 text-green-800'
+                                : application.status === 'Pending'
+                                ? 'bg-yellow-100 text-yellow-800'
+                                : 'bg-gray-100 text-gray-800'
+                            }`}
+                          >
+                            {application.status || 'Pending'}
+                          </span>
+                        </TableCell>
                         <TableCell className="text-right">
                           <TooltipProvider>
                             <Tooltip>
@@ -230,7 +254,7 @@ const CareersAdminPanel = () => {
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <Button
-                                  onClick={() => handleSendConfirmation(application.email, application.name, application.positionApplied)}
+                                  onClick={() => handleSendEmail(application.email, application.name, application.positionApplied)}
                                   variant="ghost"
                                   size="icon"
                                   className="text-green-600 hover:text-green-800 hover:bg-green-100"

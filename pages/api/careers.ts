@@ -5,52 +5,79 @@ import CareerApplication from '@/lib/careers';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
 
-  // Handling POST request to submit a new career application
   if (req.method === 'POST') {
     try {
-      const application = new CareerApplication(req.body);
-      await application.save();
-      return res.status(201).json({ success: true, message: 'Application submitted successfully!' });
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred.';
-      return res.status(400).json({ success: false, error: errorMessage });
-    }
-  }
+      const { name, email, phone, positionApplied, experience, message, references } = req.body;
 
-  // Handling GET request to fetch career applications
-  if (req.method === 'GET') {
+      if (!name || !email || !phone || !positionApplied || !experience || !message) {
+        return res.status(400).json({ success: false, message: 'All fields are required.' });
+      }
+
+      const newApplication = new CareerApplication({
+        name,
+        email,
+        phone,
+        positionApplied,
+        experience,
+        message,
+        references,
+        status: 'Pending', // Default status
+      });
+
+      await newApplication.save();
+
+      return res.status(201).json({ success: true, message: 'Application submitted successfully.' });
+    } catch (error) {
+      console.error('Error saving career application:', error);
+      return res.status(500).json({ success: false, message: 'Internal server error.' });
+    }
+  } else if (req.method === 'GET') {
     try {
-      const applications = await CareerApplication.find();
+      const applications = await CareerApplication.find(); // Fetch all career applications
       return res.status(200).json({ success: true, data: applications });
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred while fetching applications.';
-      return res.status(400).json({ success: false, error: errorMessage });
+    } catch (error) {
+      console.error('Error fetching career applications:', error);
+      return res.status(500).json({ success: false, message: 'Internal server error.' });
     }
-  }
+  } else if (req.method === 'PATCH') {
+    try {
+      const { id, updates } = req.body;
 
-  // Handling DELETE request to delete a career application
-  if (req.method === 'DELETE') {
+      if (!id) {
+        return res.status(400).json({ success: false, message: 'Application ID is required for updating.' });
+      }
+
+      const updatedApplication = await CareerApplication.findByIdAndUpdate(id, updates, { new: true });
+
+      if (!updatedApplication) {
+        return res.status(404).json({ success: false, message: 'Career application not found.' });
+      }
+
+      return res.status(200).json({ success: true, message: 'Application updated successfully.', data: updatedApplication });
+    } catch (error) {
+      console.error('Error updating career application:', error);
+      return res.status(500).json({ success: false, message: 'Internal server error.' });
+    }
+  } else if (req.method === 'DELETE') {
     try {
       const { id } = req.query;
 
       if (!id) {
-        return res.status(400).json({ success: false, error: 'Application ID is required.' });
+        return res.status(400).json({ success: false, message: 'Application ID is required for deletion.' });
       }
 
-      // Find and delete the application by ID
       const deletedApplication = await CareerApplication.findByIdAndDelete(id);
 
       if (!deletedApplication) {
-        return res.status(404).json({ success: false, error: 'Application not found.' });
+        return res.status(404).json({ success: false, message: 'Career application not found.' });
       }
 
-      return res.status(200).json({ success: true, message: 'Application deleted successfully!' });
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred while deleting the application.';
-      return res.status(400).json({ success: false, error: errorMessage });
+      return res.status(200).json({ success: true, message: 'Application deleted successfully.' });
+    } catch (error) {
+      console.error('Error deleting career application:', error);
+      return res.status(500).json({ success: false, message: 'Internal server error.' });
     }
+  } else {
+    return res.status(405).json({ success: false, message: 'Method Not Allowed' });
   }
-
-  // Return method not allowed for other HTTP methods
-  return res.status(405).json({ success: false, message: 'Method not allowed.' });
 }

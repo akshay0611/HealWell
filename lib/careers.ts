@@ -35,6 +35,7 @@ const CareerApplicationSchema = new Schema({
     required: true,
     trim: true,
   },
+  status: { type: String, default: 'Pending' },  // Add status field here
   references: {
     type: String,
     trim: true,
