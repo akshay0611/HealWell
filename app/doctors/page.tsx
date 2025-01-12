@@ -31,17 +31,22 @@ export default function DoctorsPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+  const [specialties, setSpecialties] = useState<string[]>([]);
+  const [selectedSpecialty, setSelectedSpecialty] = useState('');
 
   useEffect(() => {
     const fetchDoctors = async () => {
       setLoading(true);
-      setError(null); // Reset error before making the request
+      setError(null);
       try {
         const response = await fetch('/api/doctor');
         const data = await response.json();
-
+  
         if (response.ok) {
-          setDoctors(data.data);
+          const doctors: Doctor[] = data.data; // Assert the type of data.data
+          setDoctors(doctors);
+          const uniqueSpecialties = [...new Set(doctors.map((doctor) => doctor.specialty))];
+          setSpecialties(uniqueSpecialties); // No error here
         } else {
           throw new Error(data.message || 'Failed to fetch doctors');
         }
@@ -55,14 +60,18 @@ export default function DoctorsPage() {
         setLoading(false);
       }
     };
-
+  
     fetchDoctors();
   }, []);
+  
 
-  const filteredDoctors = doctors.filter((doctor) =>
-    doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    doctor.specialty.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredDoctors = doctors.filter((doctor) => {
+    const matchesSearch = doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      doctor.specialty.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSpecialty = selectedSpecialty ? doctor.specialty === selectedSpecialty : true;
+
+    return matchesSearch && matchesSpecialty;
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
@@ -98,7 +107,7 @@ export default function DoctorsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="flex justify-center"
+            className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4"
           >
             <div className="relative max-w-md w-full">
               <Input
@@ -110,6 +119,18 @@ export default function DoctorsPage() {
               />
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400" />
             </div>
+            <select
+              className="pl-4 pr-8 py-3 w-full max-w-xs rounded-full border-none focus:ring-2 focus:ring-blue-300 bg-white/90 backdrop-blur-sm text-blue-900"
+              value={selectedSpecialty}
+              onChange={(e) => setSelectedSpecialty(e.target.value)}
+            >
+              <option value="">All Specialties</option>
+              {specialties.map((specialty, index) => (
+                <option key={index} value={specialty}>
+                  {specialty}
+                </option>
+              ))}
+            </select>
           </motion.div>
         </div>
       </motion.section>
@@ -124,7 +145,7 @@ export default function DoctorsPage() {
         {/* Loading State */}
         {loading && (
           <div className="flex justify-center py-6">
-            <span className="loader">Loading...</span> {/* Add a loader */}
+            <span className="loader">Loading...</span>
           </div>
         )}
 
