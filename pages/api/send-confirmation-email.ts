@@ -4,6 +4,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
 import { google } from 'googleapis';
 import Partner from '../../lib/Partner';
+import Contact from '../../lib/contactModel'; 
+
 // ==============================
 // OAuth2 Configuration
 // ==============================
@@ -15,10 +17,11 @@ const oAuth2Client = new google.auth.OAuth2(
 oAuth2Client.setCredentials({
   refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
 });
+
 // ==============================
 // Email Template
 // ==============================
-const createEmailTemplate = (type: 'appointment' | 'career' | 'volunteer' | 'partner', name: string, preferredDate?: string, preferredTime?: string, positionApplied?: string) => {
+const createEmailTemplate = (type: 'appointment' | 'career' | 'volunteer' | 'partner' | 'contact', name: string, preferredDate?: string, preferredTime?: string, positionApplied?: string) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', { 
@@ -29,7 +32,6 @@ const createEmailTemplate = (type: 'appointment' | 'career' | 'volunteer' | 'par
   };
 
   if (type === 'partner') {
-    // Partner email content
     return `
       <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
         <h2 style="color: #007BFF; text-align: center;">Partnership Confirmation</h2>
@@ -46,10 +48,23 @@ const createEmailTemplate = (type: 'appointment' | 'career' | 'volunteer' | 'par
         </p>
       </div>
     `;
-  }
-
-  if (type === 'appointment') {
-    // Appointment email content
+  } else if (type === 'contact') {
+    return `
+      <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
+        <h2 style="color: #007BFF; text-align: center;">Contact Form Submission Confirmation</h2>
+        <p>Dear <strong>${name}</strong>,</p>
+        <p>Thank you for reaching out to Heal Well Hospital. We have received your message and will get back to you shortly.</p>
+        <p>If you have any further questions, feel free to contact us again.</p>
+        <p style="text-align: center; margin-top: 30px;">
+          <a href="https://heal-well-brown.vercel.app/" style="display: inline-block; background-color: #007BFF; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 5px;">Visit Our Website</a>
+        </p>
+        <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
+        <p style="font-size: 0.9em; text-align: center; color: #555;">
+          Heal Well Hospital | Contact Us: +1 (123) 456-7890 | https://heal-well-brown.vercel.app/
+        </p>
+      </div>
+    `;
+  } else if (type === 'appointment') {
     return `
       <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
         <h2 style="color: #007BFF; text-align: center;">Appointment Confirmation</h2>
@@ -76,7 +91,6 @@ const createEmailTemplate = (type: 'appointment' | 'career' | 'volunteer' | 'par
       </div>
     `;
   } else if (type === 'career') {
-    // Career email content
     return `
       <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
         <h2 style="color: #007BFF; text-align: center;">Career Application Confirmation</h2>
@@ -94,7 +108,6 @@ const createEmailTemplate = (type: 'appointment' | 'career' | 'volunteer' | 'par
       </div>
     `;
   } else if (type === 'volunteer') {
-    // Volunteer email content
     return `
       <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
         <h2 style="color: #007BFF; text-align: center;">Volunteer Confirmation</h2>
@@ -113,6 +126,7 @@ const createEmailTemplate = (type: 'appointment' | 'career' | 'volunteer' | 'par
     `;
   }
 };
+
 // ==============================
 // API Handler
 // ==============================
@@ -120,7 +134,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
-  
+
   const { email, name, type, preferredDate, preferredTime, positionApplied } = req.body;
 
   if (!email || !name || !type) {
@@ -157,18 +171,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Send the email
     await transporter.sendMail(mailOptions);
 
-    // Update the partner's status in the database
-    const updatedPartner = await Partner.findOneAndUpdate(
-      { email },
-      { status: 'Email Sent' },
-      { new: true }
-    );
+    if (type === 'partner') {
+      // Update the partner's status in the database
+      const updatedPartner = await Partner.findOneAndUpdate(
+        { email },
+        { status: 'Email Sent' },
+        { new: true }
+      );
 
-    if (!updatedPartner) {
-      return res.status(404).json({ message: 'Partner not found' });
+      if (!updatedPartner) {
+        return res.status(404).json({ message: 'Partner not found' });
+      }
+      res.status(200).json({ message: 'Email sent and status updated', partner: updatedPartner });
+    } else if (type === 'contact') {
+      // Update the contact's status in the database
+      const updatedContact = await Contact.findOneAndUpdate(
+        { email },
+        { status: 'Email Sent' },
+        { new: true }
+      );
+
+      if (!updatedContact) {
+        return res.status(404).json({ message: 'Contact not found' });
+      }
+      res.status(200).json({ message: 'Email sent and status updated', contact: updatedContact });
     }
-
-    res.status(200).json({ message: 'Email sent and status updated', partner: updatedPartner });
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error('Error:', error.message);

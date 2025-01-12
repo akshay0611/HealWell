@@ -7,6 +7,7 @@ const contactSchema = new mongoose.Schema(
     email: { type: String, required: true },
     subject: { type: String, required: true },
     message: { type: String, required: true },
+    status: { type: String, default: 'Pending' },  // Add status field here
     createdAt: { type: Date, default: Date.now }
   },
   { timestamps: true }
