@@ -1,10 +1,9 @@
-// pages/api/send-confirmation-email.ts
-
 import { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
 import { google } from 'googleapis';
 import Partner from '../../lib/Partner';
-import Contact from '../../lib/contactModel'; 
+import Contact from '../../lib/contactModel';
+import Volunteer from '../../lib/volunteerModel'; // Import Volunteer model
 
 // ==============================
 // OAuth2 Configuration
@@ -195,6 +194,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(404).json({ message: 'Contact not found' });
       }
       res.status(200).json({ message: 'Email sent and status updated', contact: updatedContact });
+    } else if (type === 'volunteer') {
+      // Update the volunteer's status in the database
+      const updatedVolunteer = await Volunteer.findOneAndUpdate(
+        { email },
+        { status: 'Email Sent' },
+        { new: true }
+      );
+
+      if (!updatedVolunteer) {
+        return res.status(404).json({ message: 'Volunteer not found' });
+      }
+      res.status(200).json({ message: 'Email sent and status updated', volunteer: updatedVolunteer });
     }
   } catch (error: unknown) {
     if (error instanceof Error) {

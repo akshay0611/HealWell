@@ -16,6 +16,7 @@ interface VolunteerApplication {
   name: string;
   email: string;
   message: string;
+  status?: string;
 }
 
 const VolunteersAdminPanel = () => {
@@ -88,7 +89,7 @@ const VolunteersAdminPanel = () => {
     }
   };
 
-  const handleSendConfirmation = async (email: string, name: string) => {
+  const handleSendEmail = async (email: string, name: string) => {
     try {
       const response = await fetch('/api/send-confirmation-email', {
         method: 'POST',
@@ -105,6 +106,15 @@ const VolunteersAdminPanel = () => {
           title: "Email Sent",
           description: `Confirmation email sent successfully to ${name}`,
         });
+
+        // Update the status in the UI
+        setApplications((prevApplications) =>
+          prevApplications.map((application) =>
+            application.email === email
+              ? { ...application, status: 'Email Sent' }
+              : application
+          )
+        );
       } else {
         setError(data.message || 'Failed to send confirmation email');
         toast({
@@ -139,7 +149,7 @@ const VolunteersAdminPanel = () => {
                       size="icon"
                       className="text-white border-white hover:bg-white/20 transition-colors duration-200"
                     >
-                       <RefreshCw className="h-5 w-5 text-red-500 hover:text-red-500" />
+                      <RefreshCw className="h-5 w-5 text-red-500 hover:text-red-500" />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -170,6 +180,7 @@ const VolunteersAdminPanel = () => {
                       <TableHead className="w-[200px]">Name</TableHead>
                       <TableHead className="w-[200px]">Email</TableHead>
                       <TableHead className="w-[250px]">Message</TableHead>
+                      <TableHead className="w-[150px]">Status</TableHead>
                       <TableHead className="text-right w-[150px]">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -179,6 +190,19 @@ const VolunteersAdminPanel = () => {
                         <TableCell className="font-medium">{application.name}</TableCell>
                         <TableCell>{application.email}</TableCell>
                         <TableCell>{application.message}</TableCell>
+                        <TableCell>
+                          <span
+                            className={`px-2 py-1 rounded-full text-sm font-medium ${
+                              application.status === 'Email Sent'
+                                ? 'bg-green-100 text-green-800'
+                                : application.status === 'Pending'
+                                ? 'bg-yellow-100 text-yellow-800'
+                                : 'bg-gray-100 text-gray-800'
+                            }`}
+                          >
+                            {application.status || 'Pending'}
+                          </span>
+                        </TableCell>
                         <TableCell className="text-right">
                           <TooltipProvider>
                             <Tooltip>
@@ -218,7 +242,7 @@ const VolunteersAdminPanel = () => {
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <Button
-                                  onClick={() => handleSendConfirmation(application.email, application.name)}
+                                  onClick={() => handleSendEmail(application.email, application.name)}
                                   variant="ghost"
                                   size="icon"
                                   className="text-green-600 hover:text-green-800 hover:bg-green-100"

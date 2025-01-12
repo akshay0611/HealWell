@@ -15,6 +15,7 @@ const VolunteerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  status: { type: String, default: 'Pending' },  // Add status field here
   createdAt: {
     type: Date,
     default: Date.now,
