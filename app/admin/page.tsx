@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 // Define types for the fetched data
 type Timing = {
   startTime: string;
-  endTime: string;
+  endTime: string; 
 }
 
 type ScheduleDay = {
@@ -42,6 +42,12 @@ type Partner = {
   message: string;
 }
 
+type Contact = {
+  _id: string;
+  name: string;
+  email: string;
+  message: string;
+}
 
 export default function AdminDashboard() {
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -51,6 +57,7 @@ export default function AdminDashboard() {
   const [totalCareerApplications, setTotalCareerApplications] = useState<number | null>(null)
   const [totalVolunteerApplications, setTotalVolunteerApplications] = useState<number | null>(null) // New state for volunteer applications
   const [totalPartnerApplications, setTotalPartnerApplications] = useState<number | null>(null) // New state for volunteer applications
+  const [totalContactRequests, setTotalContactRequests] = useState<number | null>(null); // New state for contact requests
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000)
@@ -172,6 +179,25 @@ export default function AdminDashboard() {
     fetchTotalPartnerApplications()
   }, [])
 
+  useEffect(() => {
+    async function fetchTotalContactRequests() {
+      try {
+        const response = await fetch('/api/contact'); // Fetch all contact requests
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          setTotalContactRequests((data.data as Contact[]).length);
+        } else {
+          console.error('Failed to fetch contact requests');
+        }
+      } catch (error) {
+        console.error('Error fetching contact requests:', error);
+      }
+    }
+
+    fetchTotalContactRequests();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-100">
       <div className="container mx-auto px-4 py-8">
@@ -253,7 +279,13 @@ export default function AdminDashboard() {
                 title="Total Partner Applications"
                 value={totalPartnerApplications}
                 icon={Users}
-                color="from-purple-400 to-violet-500"
+                color="from-orange-400 to-yellow-500"
+              />
+              <DashboardCard
+                title="Total Contact Requests"
+                value={totalContactRequests}
+                icon={Users}
+                color="from-teal-400 to-cyan-500"
               />
             </div>
           </div>

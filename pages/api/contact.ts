@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'POST') {
     try {
-      const { name, email, subject, message } = req.body;
+      const { name, email, subject, message } = req.body; 
 
       // Create a new contact and set the default status as "Pending"
       const newContact = new Contact({
