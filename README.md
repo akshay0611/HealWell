@@ -37,6 +37,9 @@ Welcome to the **Heal Well** project repository! Heal Well is a hospital managem
 - **Backend**: [Node.js](https://nodejs.org/en/) (via Next.js API routes) 🖥️
 - **Database**: [MongoDB](https://www.mongodb.com/) 🗄️
 - **Deployment**: [Vercel](https://vercel.com/) 🚀
+**Email Integration**: Gmail (via OAuth2 authentication) 📧
+
+The platform supports automated email notifications, such as appointment confirmations , using **Gmail's SMTP server**. The email service is set up through **Google Cloud Console** with **OAuth2 authentication** to ensure secure communication between the app and Gmail.
 
 ## Installation 💻
 
