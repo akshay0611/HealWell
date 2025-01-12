@@ -1,4 +1,4 @@
-'use client';
+'use client'; 
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -222,8 +222,9 @@ const AdminAppointmentsPage = () => {
                               <Tooltip>
                                 <TooltipTrigger asChild>
                                   <Button
-                                    size="sm"
-                                    variant="outline"
+                                    size="icon"
+                                    variant="ghost"
+                                     className="text-blue-600 hover:text-blue-800 hover:bg-blue-100"
                                     onClick={() => setSelectedAppointment(appointment)}
                                   >
                                     <Eye className="h-4 w-4" />
@@ -239,9 +240,11 @@ const AdminAppointmentsPage = () => {
                               <Tooltip>
                                 <TooltipTrigger asChild>
                                   <Button
-                                    size="sm"
+                                     variant="ghost"
+                                     size="icon"
                                     onClick={() => handleSendConfirmationEmail(appointment)}
                                     disabled={loadingEmail === appointment._id}
+                                    className="text-green-600 hover:text-green-800 hover:bg-green-100"
                                   >
                                     {loadingEmail === appointment._id ? (
                                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -260,8 +263,9 @@ const AdminAppointmentsPage = () => {
                               <Tooltip>
                                 <TooltipTrigger asChild>
                                   <Button
-                                    variant="destructive"
-                                    size="sm"
+                                     variant="ghost"
+                                     size="icon"
+                                     className="text-red-600 hover:text-red-800 hover:bg-red-100"
                                     onClick={() => handleDeleteAppointment(appointment._id)}
                                   >
                                     <Trash2 className="h-4 w-4" />
