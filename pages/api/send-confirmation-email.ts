@@ -5,6 +5,7 @@ import Partner from '../../lib/Partner';
 import Contact from '../../lib/contactModel';
 import Volunteer from '../../lib/volunteerModel';
 import Careers from '../../lib/careers'; // Import Careers model
+import Appointment from '@/lib/appointmentModel'; // Import Appointment model
 
 // ==============================
 // OAuth2 Configuration
@@ -219,6 +220,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(404).json({ message: 'Career application not found' });
       }
       res.status(200).json({ message: 'Email sent and status updated', career: updatedCareer });
+    } else if (type === 'appointment') {
+      // Update the appointment's status in the database
+      const updatedAppointment = await Appointment.findOneAndUpdate(
+        { email },
+        { status: 'Email Sent' },
+        { new: true }
+      );
+
+      if (!updatedAppointment) {
+        return res.status(404).json({ message: 'Appointment not found' });
+      }
+      res.status(200).json({ message: 'Email sent and status updated', appointment: updatedAppointment });
     }
   } catch (error: unknown) {
     if (error instanceof Error) {

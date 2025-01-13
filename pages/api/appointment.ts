@@ -3,12 +3,15 @@ import dbConnect from '@/lib/dbConnect';
 import Appointment from '@/lib/appointmentModel';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  // Handling POST method for creating appointments
-  if (req.method === 'POST') {
-    const { name, phone, email, department, preferredDate, preferredTime, message } = req.body;
+  await dbConnect();
 
+  if (req.method === 'POST') {
     try {
-      await dbConnect();
+      const { name, phone, email, department, preferredDate, preferredTime, message } = req.body;
+
+      if (!name || !phone || !email || !department || !preferredDate || !preferredTime) {
+        return res.status(400).json({ success: false, message: 'All fields are required.' });
+      }
 
       const newAppointment = new Appointment({
         name,
@@ -18,6 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         preferredDate,
         preferredTime,
         message,
+        status: 'Pending', // Default status
       });
 
       await newAppointment.save();
@@ -27,25 +31,40 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       console.error('Error booking appointment:', error);
       return res.status(500).json({ success: false, message: 'Error booking appointment' });
     }
-  } 
-  // Handling GET method for fetching appointments
-  else if (req.method === 'GET') {
+  } else if (req.method === 'GET') {
     try {
-      await dbConnect();
-
       const appointments = await Appointment.find(); // Fetch all appointments
       return res.status(200).json({ success: true, data: appointments });
     } catch (error) {
       console.error('Error fetching appointments:', error);
       return res.status(500).json({ success: false, message: 'Error fetching appointments' });
     }
-  } 
-  // Handling DELETE method for deleting an appointment by ID
-  else if (req.method === 'DELETE') {
-    const { appointmentId } = req.query;
-
+  } else if (req.method === 'PATCH') {
     try {
-      await dbConnect();
+      const { id, updates } = req.body;
+
+      if (!id) {
+        return res.status(400).json({ success: false, message: 'Appointment ID is required for updating.' });
+      }
+
+      const updatedAppointment = await Appointment.findByIdAndUpdate(id, updates, { new: true });
+
+      if (!updatedAppointment) {
+        return res.status(404).json({ success: false, message: 'Appointment not found.' });
+      }
+
+      return res.status(200).json({ success: true, message: 'Appointment updated successfully.', data: updatedAppointment });
+    } catch (error) {
+      console.error('Error updating appointment:', error);
+      return res.status(500).json({ success: false, message: 'Internal server error.' });
+    }
+  } else if (req.method === 'DELETE') {
+    try {
+      const { appointmentId } = req.query;
+
+      if (!appointmentId) {
+        return res.status(400).json({ success: false, message: 'Appointment ID is required for deletion.' });
+      }
 
       const deletedAppointment = await Appointment.findByIdAndDelete(appointmentId);
 
@@ -58,9 +77,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       console.error('Error deleting appointment:', error);
       return res.status(500).json({ success: false, message: 'Error deleting appointment' });
     }
-  } 
-  // Handling any unsupported HTTP methods
-  else {
+  } else {
     return res.status(405).json({ success: false, message: `Method ${req.method} Not Allowed` });
   }
 };

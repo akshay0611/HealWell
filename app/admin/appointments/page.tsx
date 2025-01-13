@@ -7,7 +7,6 @@ import { Trash2, Calendar, Mail, Loader2, RefreshCw, Eye } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -22,6 +21,7 @@ type Appointment = {
   preferredDate: string;
   preferredTime: string;
   message: string;
+  status?: string; // Add status field
 };
 
 const AdminAppointmentsPage = () => {
@@ -131,6 +131,13 @@ const AdminAppointmentsPage = () => {
           description: 'Confirmation email sent successfully.',
           variant: 'default',
         });
+
+        // Update the status in the UI
+        setAppointments((prevAppointments) =>
+          prevAppointments.map((appt) =>
+            appt._id === appointment._id ? { ...appt, status: 'Email Sent' } : appt
+          )
+        );
       } else {
         toast({
           title: 'Error',
@@ -212,9 +219,17 @@ const AdminAppointmentsPage = () => {
                           <div className="text-sm text-gray-500">{appointment.preferredTime}</div>
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-300">
-                            Pending
-                          </Badge>
+                          <span
+                            className={`px-2 py-1 rounded-full text-sm font-medium ${
+                              appointment.status === 'Email Sent'
+                                ? 'bg-green-100 text-green-800'
+                                : appointment.status === 'Pending'
+                                ? 'bg-yellow-100 text-yellow-800'
+                                : 'bg-gray-100 text-gray-800'
+                            }`}
+                          >
+                            {appointment.status || 'Pending'}
+                          </span>
                         </TableCell>
                         <TableCell>
                           <div className="flex space-x-2">

@@ -8,6 +8,7 @@ interface IAppointment extends Document {
   preferredDate: string;
   preferredTime: string;
   message: string;
+  status: string; // Add status field to the interface
 }
 
 const appointmentSchema: Schema<IAppointment> = new Schema(
@@ -19,6 +20,7 @@ const appointmentSchema: Schema<IAppointment> = new Schema(
     preferredDate: { type: String, required: true },
     preferredTime: { type: String, required: true },
     message: { type: String, required: false },
+    status: { type: String, default: 'Pending' }, // Add status field to the schema
   },
   {
     timestamps: true,
