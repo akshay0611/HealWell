@@ -19,6 +19,7 @@ const navItems = [
   { href: '/admin/volunteers', label: 'Volunteers', icon: Users }, 
   { href: '/admin/partners', label: 'Partners', icon: Handshake }, 
   { href: '/admin/contacts', label: 'Contacts', icon: Users }, 
+  { href: '/admin/newsletter', label: 'Newsletter', icon: Users }, 
   { href: '/admin/settings', label: 'Settings', icon: Settings },
 ]
 

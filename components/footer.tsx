@@ -1,3 +1,5 @@
+// components/footer.tsx
+
 'use client'
 
 import React, { useState } from "react"
@@ -11,20 +13,39 @@ import { Stethoscope } from 'lucide-react'
 const Footer = () => {
   const [email, setEmail] = useState('')
   const [showConfirmation, setShowConfirmation] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubscribe = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setShowConfirmation(true)
-    
-    // Reset email and confirmation message after 5 seconds
-    setTimeout(() => {
-      setEmail('')
-      setShowConfirmation(false)
-    }, 5000)
-
-    // Handle subscription logic here
-    console.log("Subscribed to newsletter")
-  }
+  const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setShowConfirmation(false);
+    setError('');
+  
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+  
+      if (response.ok) {
+        setShowConfirmation(true);
+        setEmail('');
+  
+        // Reset email and confirmation message after 5 seconds
+        setTimeout(() => {
+          setShowConfirmation(false);
+        }, 5000);
+      } else {
+        const data = await response.json();
+        setError(data.message || 'Failed to subscribe. Please try again.');
+      }
+    } catch {
+      setError('An unexpected error occurred. Please try again.');
+    }
+  };
+  
 
   return (
     <footer className="bg-[#0B1B3F] text-white">
@@ -139,6 +160,12 @@ const Footer = () => {
             {showConfirmation && (
               <p className="text-green-400 mt-2">
                 Thank you for subscribing! We will send you the latest updates.
+              </p>
+            )}
+
+            {error && (
+              <p className="text-red-400 mt-2">
+                {error}
               </p>
             )}
           </motion.div>
