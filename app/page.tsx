@@ -12,6 +12,7 @@ import OurWatchVideo from "@/components/our-watch-video"
 import ContactUs from "@/components/contact-us"
 import OurLatestBlog from "@/components/our-latest-blog"
 import Footer from "@/components/footer"
+import { Login } from '@/components/login';
 
 export default function Home() {
   return (
@@ -29,6 +30,7 @@ export default function Home() {
       <OurWatchVideo />
       <ContactUs/>
       <OurLatestBlog />
+      <Login/>
       <Footer/>
     </main>
   );
