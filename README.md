@@ -2,7 +2,7 @@
 
 Welcome to the **Heal Well** project repository! Heal Well is a hospital management platform designed to improve healthcare services, offering an efficient user experience for both patients and staff. This platform is ideal for hospitals in New Delhi, streamlining processes like appointment management, blog creation, and staff scheduling.
 
-## Table of Contents 📚
+## Table of Contents 📚 
 
 - [Features](#features) 🌟
 - [Technologies Used](#technologies-used) ⚙️
@@ -12,9 +12,9 @@ Welcome to the **Heal Well** project repository! Heal Well is a hospital managem
 - [License](#license) 📄
 - [Contact](#contact) 📞
 
-## Features 🌟
+## Features 🌟 
 
-### **User-Friendly Interface**
+### **User-Friendly Interface** 
 - Simplified navigation with dedicated pages like **About**, **Careers**, **Doctors**, **Partners**, **Services**, **Testimonials**, and **Volunteers**.
 
 ### **Admin Panel**
@@ -102,4 +102,4 @@ For any questions, feedback, or inquiries:
 - **Email**: [info@healwell.com](mailto:info@healwell.com) 📧
 - **Website**: [Heal Well](https://heal-well-brown.vercel.app/) 🌐
 
-Thank you for contributing to and using Heal Well! 🎉
+Thank you for contributing to and using Heal Well! 🎉 
