@@ -1,16 +1,24 @@
-'use client'
+'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Send, MessageCircle, X } from 'lucide-react';
+import { Send, MessageCircle, X, Stethoscope } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ChatComponent = () => {
   const [chat, setChat] = useState("");
-  const [response, setResponse] = useState("Namaste! How can I assist you today?");
+  const [messages, setMessages] = useState([
+    { text: "Namaste! How can I assist you today?", isBot: true },
+  ]);
   const [isChatBoxVisible, setChatBoxVisible] = useState(false);
   const chatBoxRef = useRef<HTMLDivElement>(null);
 
   const handleChat = async () => {
+    if (!chat.trim()) return;
+
+    // Add user message
+    setMessages((prev) => [...prev, { text: chat, isBot: false }]);
+
+    // Fetch chatbot response
     const res = await fetch('/api/chatbot', {
       method: 'POST',
       headers: {
@@ -18,8 +26,14 @@ const ChatComponent = () => {
       },
       body: JSON.stringify({ prompt: chat }),
     });
+
     const data = await res.json();
-    setResponse(data.text || "Thank you for your question!"); // Default message if no response
+
+    // Add chatbot response
+    setMessages((prev) => [
+      ...prev,
+      { text: data.text || "Thank you for your question!", isBot: true },
+    ]);
     setChat("");
   };
 
@@ -33,7 +47,7 @@ const ChatComponent = () => {
     if (chatBoxRef.current) {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
-  }, [response]);
+  }, [messages]);
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
@@ -56,20 +70,40 @@ const ChatComponent = () => {
             transition={{ duration: 0.3 }}
             className="bg-white rounded-2xl shadow-2xl mt-4 w-96 overflow-hidden border border-gray-200"
           >
-            <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6">
-              <h2 className="text-2xl font-bold mb-1">Wellness Whisper</h2>
-              <p className="text-sm opacity-90">I&apos;m here to help you with your health questions!</p>
+            <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 flex items-center">
+              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-4 shadow-lg">
+                <Stethoscope size={24} className="text-blue-500" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold mb-1">Wellness Whisper</h2>
+                <p className="text-sm opacity-90">I&apos;m here to help you with your health questions!</p>
+              </div>
             </div>
             <div className="p-6">
               <div ref={chatBoxRef} className="bg-gray-50 rounded-xl p-4 mb-4 h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-200">
-                <motion.p 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="text-gray-700 leading-relaxed"
-                >
-                  {response}
-                </motion.p>
+                {messages.map((msg, index) => (
+                  <div
+                    key={index}
+                    className={`flex items-start mb-4 ${
+                      msg.isBot ? "" : "flex-row-reverse"
+                    }`}
+                  >
+                    {msg.isBot && (
+                      <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center mr-3 shadow-sm">
+                        <Stethoscope size={18} className="text-blue-500" />
+                      </div>
+                    )}
+                    <p
+                      className={`text-gray-700 p-3 rounded-xl shadow-sm ${
+                        msg.isBot
+                          ? "bg-blue-100"
+                          : "bg-purple-100"
+                      } max-w-xs`}
+                    >
+                      {msg.text}
+                    </p>
+                  </div>
+                ))}
               </div>
               <div className="flex items-center bg-gray-100 rounded-full overflow-hidden shadow-inner">
                 <input
@@ -99,4 +133,3 @@ const ChatComponent = () => {
 };
 
 export default ChatComponent;
-
