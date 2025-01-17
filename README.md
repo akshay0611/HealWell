@@ -29,6 +29,11 @@ Welcome to the **Heal Well** project repository! Heal Well is a hospital managem
 ### **Dynamic Content**
 - Flexible, customizable blog pages with unique styles for each post.
 
+### **Health Chatbot with AI Integration**
+- A new **ChatComponent** provides real-time interaction for health queries with:
+  - **Website-specific Context**: Tailors responses to "Heal Well" capabilities.
+  - **Query Processing**: Routes queries for relevant information on health or website specifics.
+
 ## Technologies Used ⚙️
 
 - **Framework**: [Next.js](https://nextjs.org/) ⚛️
@@ -38,6 +43,7 @@ Welcome to the **Heal Well** project repository! Heal Well is a hospital managem
 - **Database**: [MongoDB](https://www.mongodb.com/) 🗄️
 - **Deployment**: [Vercel](https://vercel.com/) 🚀
 - **Email Integration**: Gmail (via OAuth2 authentication) 📧
+- **AI Services**: Google Generative AI (`gemini-1.5-flash` model)
 
 The platform supports automated email notifications, such as appointment confirmations , using **Gmail's SMTP server**. The email service is set up through **Google Cloud Console** with **OAuth2 authentication** to ensure secure communication between the app and Gmail.
 
