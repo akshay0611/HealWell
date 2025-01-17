@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { cookies } from 'next/headers'; // Import cookies from next/headers
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -13,8 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Session and tokens are required.' });
   }
 
-  // Initialize Supabase server-side client with cookies from next/headers
-  const supabase = createServerComponentClient({ cookies });
+  // Initialize Supabase server-side client with cookies from the request headers
+  const supabase = createServerSupabaseClient({ req, res });
 
   // Manually set the session
   const { error } = await supabase.auth.setSession({
