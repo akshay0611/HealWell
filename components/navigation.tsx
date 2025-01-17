@@ -4,8 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Stethoscope, Menu, X, Calendar, ChevronDown } from 'lucide-react'
-import { Button } from "@/components/ui/button"
+import { Stethoscope, Menu, X, ChevronDown, User } from 'lucide-react'
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
@@ -111,11 +110,8 @@ export function Navigation() {
           </div>
 
           <div className="hidden lg:flex items-center mt-4 lg:mt-0">
-            <Link href="/appointment" passHref>
-              <Button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-full transition-colors duration-200">
-                <Calendar className="w-4 h-4 mr-2" />
-                Appointment
-              </Button>
+            <Link href="/auth" passHref>
+              <User className="w-6 h-6 text-blue-500 hover:text-blue-600 transition-colors duration-200 cursor-pointer" />
             </Link>
           </div>
         </div>
@@ -171,11 +167,8 @@ export function Navigation() {
                   </Link>
                 )
               })}
-              <Link href="/appointment" passHref>
-                <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-full transition-colors duration-200">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  Appointment
-                </Button>
+              <Link href="/auth" passHref>
+                <User className="w-6 h-6 text-blue-500 hover:text-blue-600 transition-colors duration-200 cursor-pointer mx-auto" />
               </Link>
             </div>
           </motion.div>
@@ -184,4 +177,3 @@ export function Navigation() {
     </nav>
   )
 }
-
