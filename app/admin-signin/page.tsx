@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
-import { Stethoscope, Mail, Lock, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { Stethoscope, Mail, Lock, AlertCircle, Eye, EyeOff, Syringe, Pill, Thermometer, Clipboard, AmbulanceIcon as FirstAid } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -49,8 +49,19 @@ export default function AdminSignIn() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-100 to-cyan-100">
-      <Card className="w-full max-w-md bg-white shadow-2xl">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-100 to-cyan-100 relative overflow-hidden">
+      {/* Background Medical Icons */}
+      <div className="absolute inset-0 z-0 opacity-10">
+        <Stethoscope className="absolute top-10 left-10 text-blue-400" size={120} />
+        <Syringe className="absolute top-1/4 right-1/4 text-green-400" size={100} />
+        <Pill className="absolute bottom-1/4 left-1/4 text-red-400" size={80} />
+        <Thermometer className="absolute top-1/3 left-1/3 text-yellow-400" size={90} />
+        <Clipboard className="absolute bottom-1/3 right-1/3 text-purple-400" size={110} />
+        <FirstAid className="absolute bottom-10 right-10 text-red-400" size={130} />
+        <Stethoscope className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-400" size={200} />
+      </div>
+
+      <Card className="w-full max-w-md bg-white shadow-2xl relative z-10">
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-4">
             <Stethoscope className="text-blue-600 w-16 h-16" />
