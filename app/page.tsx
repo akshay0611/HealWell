@@ -1,3 +1,5 @@
+"use client";
+
 import { TopBar } from "@/components/top-bar";
 import { Navigation } from "@/components/navigation";
 import { Hero } from "@/components/hero";
@@ -8,11 +10,11 @@ import OurBestServiceSection from "@/components/our-best-service-section";
 import OurTeamMember from "@/components/our-team-member";
 import WhyChooseUs from "@/components/why-choose-us";
 import OurPortfolio from "@/components/our-portfolio";
-import OurWatchVideo from "@/components/our-watch-video"
-import ContactUs from "@/components/contact-us"
-import OurLatestBlog from "@/components/our-latest-blog"
-import Footer from "@/components/footer"
-
+import OurWatchVideo from "@/components/our-watch-video";
+import ContactUs from "@/components/contact-us";
+import OurLatestBlog from "@/components/our-latest-blog";
+import Footer from "@/components/footer";
+import ChatComponent from "@/components/ChatComponent"; // Import the chat component
 
 export default function Home() {
   return (
@@ -23,14 +25,15 @@ export default function Home() {
       <TeamBanner />
       <AboutSection />
       <StatsSection />
-      <OurBestServiceSection/>
+      <OurBestServiceSection />
       <OurTeamMember />
       <WhyChooseUs />
-      <OurPortfolio/>
+      <OurPortfolio />
       <OurWatchVideo />
-      <ContactUs/>
+      <ContactUs />
       <OurLatestBlog />
-      <Footer/>
+      <Footer />
+      <ChatComponent /> {/* Use the chat component */}
     </main>
   );
 }
