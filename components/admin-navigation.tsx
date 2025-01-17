@@ -4,10 +4,11 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { LayoutDashboard, Calendar, User, Clock, Settings, BookOpen, LogOut, Handshake, Briefcase, Users} from 'lucide-react'
+import { LayoutDashboard, Calendar, User, Clock, Settings, BookOpen, LogOut, Handshake, Briefcase, Users, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 const navItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
@@ -29,14 +30,20 @@ export default function AdminNavigation() {
 
   return (
     <motion.nav 
-      className="bg-white shadow-xl h-screen flex flex-col"
+      className="bg-white shadow-lg h-screen flex flex-col relative"
       initial={{ width: 256 }}
       animate={{ width: isExpanded ? 256 : 80 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="p-6 bg-gradient-to-r from-purple-700 to-indigo-600">
+      <div className="p-6 bg-gradient-to-r from-purple-700 to-indigo-600 relative overflow-hidden">
+        <motion.div
+          className="absolute inset-0 bg-[url('/pattern.svg')] opacity-10"
+          initial={{ opacity: 0.1 }}
+          animate={{ opacity: [0.1, 0.15, 0.1] }}
+          transition={{ duration: 5, repeat: Infinity, repeatType: 'reverse' }}
+        />
         <motion.h1 
-          className="text-2xl font-bold text-white truncate"
+          className="text-2xl font-bold text-white truncate relative z-10"
           initial={{ opacity: 1 }}
           animate={{ opacity: isExpanded ? 1 : 0 }}
         >
@@ -46,17 +53,17 @@ export default function AdminNavigation() {
       
       {/* Toggle Button */}
       <Button
-        variant="ghost"
+        variant="secondary"
         size="icon"
         onClick={() => setIsExpanded(!isExpanded)}
-        className="absolute top-4 -right-4 bg-white shadow-md rounded-full z-10"
+        className="absolute top-4 -right-4 shadow-md rounded-full z-20 bg-white hover:bg-gray-100"
       >
-        {isExpanded ? '<' : '>'}
+        {isExpanded ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
       </Button>
 
       {/* Scrollable Navigation Links */}
-      <div className="flex-grow mt-6 overflow-y-auto">
-        <ul className="space-y-1">
+      <ScrollArea className="flex-grow mt-6">
+        <ul className="space-y-1 p-2">
           <TooltipProvider>
             {navItems.map((item) => {
               const isActive = pathname === item.href
@@ -66,13 +73,13 @@ export default function AdminNavigation() {
                     <TooltipTrigger asChild>
                       <Link 
                         href={item.href}
-                        className={`flex items-center px-6 py-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 ${
-                          isActive ? 'bg-indigo-50 text-indigo-600 border-r-4 border-indigo-600 font-medium' : ''
+                        className={`flex items-center px-4 py-3 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 ${
+                          isActive ? 'bg-indigo-100 text-indigo-600 font-medium' : ''
                         }`}
                       >
-                        <item.icon className={`w-5 h-5 ${isActive ? 'text-indigo-600' : 'text-gray-400'}`} />
+                        <item.icon className={`w-5 h-5 ${isActive ? 'text-indigo-600' : 'text-gray-500'}`} />
                         <motion.span 
-                          className="ml-3"
+                          className="ml-3 text-sm"
                           initial={{ opacity: 1, width: 'auto' }}
                           animate={{ opacity: isExpanded ? 1 : 0, width: isExpanded ? 'auto' : 0 }}
                           transition={{ duration: 0.2 }}
@@ -90,7 +97,7 @@ export default function AdminNavigation() {
             })}
           </TooltipProvider>
         </ul>
-      </div>
+      </ScrollArea>
 
       {/* User Info and Logout */}
       <motion.div 
@@ -107,15 +114,15 @@ export default function AdminNavigation() {
             <p className="text-sm font-medium text-gray-900 truncate">
               Admin User
             </p>
-            <p className="text-sm text-gray-500 truncate">
+            <p className="text-xs text-gray-500 truncate">
               admin@healwell.com
             </p>
           </div>
         </div>
-        <Link href="/" className="w-full">
+        <Link href="/" className="w-full block mt-4">
           <Button 
             variant="outline" 
-            className="w-full mt-4 text-indigo-600 hover:text-indigo-700"
+            className="w-full text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50"
           >
             <LogOut className="w-4 h-4 mr-2" />
             Logout
