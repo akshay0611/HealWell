@@ -110,7 +110,7 @@ export function Navigation() {
           </div>
 
           <div className="hidden lg:flex items-center mt-4 lg:mt-0">
-            <Link href="/auth" passHref>
+            <Link href="/admin-signin" passHref>
               <User className="w-6 h-6 text-blue-500 hover:text-blue-600 transition-colors duration-200 cursor-pointer" />
             </Link>
           </div>
@@ -167,7 +167,7 @@ export function Navigation() {
                   </Link>
                 )
               })}
-              <Link href="/auth" passHref>
+              <Link href="/admin-signin" passHref>
                 <User className="w-6 h-6 text-blue-500 hover:text-blue-600 transition-colors duration-200 cursor-pointer mx-auto" />
               </Link>
             </div>
