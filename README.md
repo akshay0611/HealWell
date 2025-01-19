@@ -1,5 +1,9 @@
 # Heal Well 🏥
 
+<p align="center">
+  <img src="public/images/Healwell.png" alt="Heal Well" width="900"/>
+</p>
+
 Welcome to the **Heal Well** project repository! Heal Well is a hospital management platform designed to improve healthcare services, offering an efficient user experience for both patients and staff. This platform is ideal for hospitals in New Delhi, streamlining processes like appointment management, blog creation, and staff scheduling.
 
 ## Table of Contents 📚 
