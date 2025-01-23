@@ -5,9 +5,15 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 // Add website-specific context
 const WEBSITE_CONTEXT = `
-This website, "Heal Well," is a health and wellness platform based in New Delhi. 
-It provides tools to book appointments, access medical resources, and connect with healthcare professionals.
-The chatbot answers health-related queries and assists users in navigating the website.
+Welcome to Heal Well - Your Partner in Health and Wellness.
+Located in New Delhi, "Heal Well" is a comprehensive health and wellness platform.
+We help users:
+- Book appointments with trusted healthcare professionals.
+- Access verified medical resources, including health tips and articles.
+- Connect with experts for consultations, advice, and second opinions.
+- Use telemedicine services for secure online consultations.
+- Monitor their health with tools like BMI calculators and symptom checkers.
+Our mission is to empower individuals to take charge of their health by providing accessible, user-friendly, and affordable healthcare services.
 `;
 
 export default async function handler(req, res) {
@@ -20,7 +26,7 @@ export default async function handler(req, res) {
 
   try {
     // Check if the user query is website-specific
-    const isWebsiteQuery = checkIfWebsiteQuery(prompt); 
+    const isWebsiteQuery = checkIfWebsiteQuery(prompt);
 
     let responseText;
 
@@ -72,20 +78,26 @@ function processResponse(responseText) {
 
 // Function to check if the user query is website-specific
 function checkIfWebsiteQuery(prompt) {
-  const keywords = ["website", "about", "services", "platform", "how to use", "what is"];
+  const keywords = ["website", "services", "platform", "appointments", "health tips", "telemedicine", "resources", "tools", "about"];
   return keywords.some((keyword) => prompt.toLowerCase().includes(keyword));
 }
 
 // Function to handle website-specific queries
 function handleWebsiteQuery(prompt) {
   if (prompt.toLowerCase().includes("website")) {
-    return `This website, "Heal Well," is a health and wellness platform that helps users book appointments, access medical resources, and connect with doctors.`;
+    return `Heal Well is your partner in health and wellness. Located in New Delhi, it helps users book appointments, access resources, and connect with healthcare experts.`;
   }
   if (prompt.toLowerCase().includes("services")) {
-    return `"Heal Well" offers appointment booking, health tips, and resources for patients to connect with healthcare professionals.`;
+    return `"Heal Well" offers appointment booking, health tips, telemedicine consultations, and tools for monitoring your health.`;
+  }
+  if (prompt.toLowerCase().includes("appointments")) {
+    return `You can book appointments with top healthcare professionals directly through the "Heal Well" platform.`;
   }
   if (prompt.toLowerCase().includes("how to")) {
-    return `You can navigate the website by using the menu to explore sections like Appointments, Resources, and Contact Us.`;
+    return `To navigate the website, use the menu to access sections like Appointments, Resources, and Health Tools.`;
   }
-  return `Heal Well is a platform for health and wellness services based in New Delhi.`;
+  if (prompt.toLowerCase().includes("telemedicine")) {
+    return `Heal Well provides secure telemedicine services for online consultations with doctors.`;
+  }
+  return `Heal Well is a health and wellness platform offering tools and services to improve your health journey.`;
 }
