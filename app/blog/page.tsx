@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { TopBar } from "@/components/top-bar";
 import { Navigation } from "@/components/navigation";
 import Footer from "@/components/footer";
+import ChatComponent from "@/components/ChatComponent"; 
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -133,6 +134,7 @@ const BlogPage = () => {
       </section>
 
       <Footer />
+      <ChatComponent /> 
     </div>
   );
 };

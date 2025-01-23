@@ -7,6 +7,7 @@ import { Navigation } from '@/components/navigation';
 import Footer from '@/components/footer';
 import { Calendar, Clock, User, Search } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import ChatComponent from "@/components/ChatComponent"; 
 
 type Timing = {
   from: string;
@@ -230,6 +231,7 @@ export default function TimetablePage() {
         </div>
       </div>
       <Footer />
+      <ChatComponent /> 
     </div>
   );
 }

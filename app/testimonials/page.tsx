@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { TopBar } from "@/components/top-bar"
 import { Navigation } from "@/components/navigation"
 import Footer from "@/components/footer"
+import ChatComponent from '@/components/ChatComponent'
 
 const testimonials = [
   {
@@ -237,6 +238,7 @@ const TestimonialsPage = () => {
       </section>
 
       <Footer />
+      <ChatComponent/>
     </div>
   )
 }

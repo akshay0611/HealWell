@@ -10,6 +10,7 @@ import { TopBar } from "@/components/top-bar"
 import { Navigation } from "@/components/navigation"
 import Footer from "@/components/footer"
 import Link from 'next/link'; 
+import ChatComponent from '@/components/ChatComponent'
 
 const awards = [
   {
@@ -259,6 +260,7 @@ const AwardsPage = () => {
 </section>
 
       <Footer />
+      <ChatComponent/>
     </div>
   )
 }

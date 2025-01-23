@@ -20,7 +20,7 @@ export default async function handler(req, res) {
 
   try {
     // Check if the user query is website-specific
-    const isWebsiteQuery = checkIfWebsiteQuery(prompt);
+    const isWebsiteQuery = checkIfWebsiteQuery(prompt); 
 
     let responseText;
 

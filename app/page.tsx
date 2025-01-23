@@ -1,6 +1,6 @@
 "use client";
 
-import { TopBar } from "@/components/top-bar";
+import { TopBar } from "@/components/top-bar"; 
 import { Navigation } from "@/components/navigation";
 import { Hero } from "@/components/hero";
 import { TeamBanner } from "@/components/team-banner";

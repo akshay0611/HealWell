@@ -10,6 +10,7 @@ import { Heart, Brain, Bone, Eye, SmileIcon as Tooth, Stethoscope, Pill, Scissor
 import Image from "next/image";
 import Footer from "@/components/footer"
 import Link from "next/link";  
+import ChatComponent from "@/components/ChatComponent"; 
 
 const ServicesPage = () => {
   const fadeInUp = {
@@ -197,6 +198,7 @@ const ServicesPage = () => {
         </div>
       </section>
       <Footer/>
+      <ChatComponent /> 
     </div>
   );
 };

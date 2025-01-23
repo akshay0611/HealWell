@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from 'next/image';
 import Footer from "@/components/footer";
+import ChatComponent from "@/components/ChatComponent"; 
 
 interface Doctor {
   _id: string;
@@ -204,6 +205,7 @@ export default function DoctorsPage() {
       </motion.div>
 
       <Footer />
+      <ChatComponent /> 
 
       {/* Doctor Profile Modal */}
       <AnimatePresence>

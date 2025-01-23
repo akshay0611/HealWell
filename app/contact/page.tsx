@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
 import Footer from "@/components/footer"
+import ChatComponent from "@/components/ChatComponent"; 
 
 const ContactPage = () => {
   const fadeInUp = {
@@ -295,6 +296,7 @@ const ContactPage = () => {
       </section>
 
       <Footer />
+      <ChatComponent/>
     </div>
   );
 };

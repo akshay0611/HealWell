@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { TopBar } from "@/components/top-bar"
 import { Navigation } from "@/components/navigation"
 import Footer from "@/components/footer"
+import ChatComponent from '@/components/ChatComponent'
 
 const galleryItems = [
   { id: 1, src: "/images/gallery_1.jpg", alt: "State-of-the-art operating room", category: "Facilities" },
@@ -214,6 +215,7 @@ const GalleryPage = () => {
       </section>
 
       <Footer />
+      <ChatComponent/>
     </div>
   )
 }

@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { TopBar } from "@/components/top-bar"
 import { Navigation } from "@/components/navigation"
 import Footer from "@/components/footer"
+import ChatComponent from '@/components/ChatComponent'
 
 const JobDetails: React.FC<{ job: Job; onClose: () => void }> = ({ job, onClose }) => {
   return (
@@ -542,6 +543,7 @@ const CareersPage = () => {
       )}
 
       <Footer />
+      <ChatComponent/>
     </div>
   )
 }

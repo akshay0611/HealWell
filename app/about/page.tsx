@@ -10,6 +10,7 @@ import { Heart, User, Shield, Stethoscope, Award, Clock, Calendar, ArrowRight, C
 import Image from "next/image";
 import Footer from "@/components/footer"
 import Link from 'next/link'
+import ChatComponent from "@/components/ChatComponent"; 
 
 const AboutPage = () => {
   const fadeInUp = {
@@ -245,6 +246,7 @@ const AboutPage = () => {
         </div>
       </section>
       <Footer/>
+      <ChatComponent /> 
     </div>
   );
 };

@@ -9,6 +9,7 @@ import { ArrowLeft, Calendar, Clock, User, Tag } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import './blogStyles.css';
+import ChatComponent from '@/components/ChatComponent';
 
 interface BlogPost {
   title: string;
@@ -136,6 +137,7 @@ const BlogDetailPage = () => {
       </main>
 
       <Footer />
+      <ChatComponent/>
     </div>
   );
 };
